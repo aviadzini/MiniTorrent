@@ -13,7 +13,7 @@ namespace MiniTorrentPortal
 
         protected void RegisterOnClick(object sender, EventArgs e)
         {
-            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString"].ToString();
+            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
             MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
 
             string message = "";

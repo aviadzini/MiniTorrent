@@ -42,7 +42,7 @@ namespace MiniTorrentPortal
     #endregion
 		
 		public MiniTorrentDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
