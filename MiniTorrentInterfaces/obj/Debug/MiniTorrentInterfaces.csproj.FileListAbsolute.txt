@@ -3,3 +3,7 @@ C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrent
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentInterfaces\obj\Debug\MiniTorrentInterfaces.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentInterfaces\obj\Debug\MiniTorrentInterfaces.dll
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentInterfaces\obj\Debug\MiniTorrentInterfaces.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentInterfaces\bin\Debug\MiniTorrentInterfaces.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentInterfaces\bin\Debug\MiniTorrentInterfaces.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentInterfaces\obj\Debug\MiniTorrentInterfaces.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentInterfaces\obj\Debug\MiniTorrentInterfaces.pdb

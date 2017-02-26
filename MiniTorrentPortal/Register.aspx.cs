@@ -13,29 +13,38 @@ namespace MiniTorrentPortal
 
         protected void RegisterOnClick(object sender, EventArgs e)
         {
-            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
+            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString"].ToString();
             MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
 
+            string message = "";
+
             var c = (from clients in db.Clients
-                    where clients.Username == UsernameTB.Text
+                    where clients.Username == UsernameTB.Text.Trim()
                     select clients).ToList();
 
             if (c.Count == 0)
             {
                 var u = new Clients
                 {
-                    Username = UsernameTB.Text,
-                    Password = PasswordTB.Text,
-                    UpPath = UpPathTB.Text,
-                    DownPath = DownPathTB.Text,
+                    Username = UsernameTB.Text.Trim(),
+                    Password = PasswordTB.Text.Trim(),
+                    UpPath = UpPathTB.Text.Trim(),
+                    DownPath = DownPathTB.Text.Trim(),
                     Active = false
                 };
 
                 db.Clients.InsertOnSubmit(u);
                 db.SubmitChanges();
 
-
+                message = "Registration successful.";
             }
+
+            else
+                message = "Username already exists.\\nPlease choose a different username.";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
+                "alert('" + message + "'); window.location='" +
+                Request.ApplicationPath + "HomePage.html';", true);
         }
     }
 }
