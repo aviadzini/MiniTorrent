@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="myDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Files">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Size" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserFile">
+          <Key>
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="UpPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DownPath" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="myDBModelStoreContainer">
+          <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserFile" EntityType="Self.UserFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="myDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserFiles" Relationship="myDBModel.FileUserFile" FromRole="File" ToRole="UserFile" />
+        </EntityType>
+        <EntityType Name="UserFile">
+          <Key>
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="myDBModel.UserUserFile" FromRole="UserFile" ToRole="User" />
+          <NavigationProperty Name="File" Relationship="myDBModel.FileUserFile" FromRole="UserFile" ToRole="File" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UpPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DownPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserFiles" Relationship="myDBModel.UserUserFile" FromRole="User" ToRole="UserFile" />
+        </EntityType>
+        <EntityContainer Name="myDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Files" EntityType="Self.File" />
+          <EntitySet Name="UserFiles" EntityType="Self.UserFile" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="UserUserFile" Association="myDBModel.UserUserFile">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserFile" EntitySet="UserFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FileUserFile" Association="myDBModel.FileUserFile">
+            <End Role="File" EntitySet="Files" />
+            <End Role="UserFile" EntitySet="UserFiles" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="UserUserFile">
+          <End Type="myDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="myDBModel.UserFile" Role="UserFile" Multiplicity="*" />
+        </Association>
+        <Association Name="FileUserFile">
+          <End Type="myDBModel.File" Role="File" Multiplicity="1" />
+          <End Type="myDBModel.UserFile" Role="UserFile" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="myDBModelStoreContainer" CdmEntityContainer="myDBEntities">
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="myDBModel.File">
+              <MappingFragment StoreEntitySet="Files">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserFiles">
+            <EntityTypeMapping TypeName="myDBModel.UserFile">
+              <MappingFragment StoreEntitySet="UserFile">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="myDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UpPath" ColumnName="UpPath" />
+                <ScalarProperty Name="DownPath" ColumnName="DownPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

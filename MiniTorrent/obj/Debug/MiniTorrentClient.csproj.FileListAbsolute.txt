@@ -1,0 +1,14 @@
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\bin\Debug\MiniTorrent.exe.config
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\bin\Debug\MiniTorrent.exe
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\bin\Debug\MiniTorrent.pdb
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrentClient.csprojResolveAssemblyReference.cache
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MainWindow.g.cs
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\App.g.cs
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrent_MarkupCompile.cache
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrent_MarkupCompile.lref
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MainWindow.baml
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrent.g.resources
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrent.Properties.Resources.resources
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrentClient.csproj.GenerateResource.Cache
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrent.exe
+c:\users\aviadzini\documents\visual studio 2015\Projects\MiniTorrent\MiniTorrent\obj\Debug\MiniTorrent.pdb

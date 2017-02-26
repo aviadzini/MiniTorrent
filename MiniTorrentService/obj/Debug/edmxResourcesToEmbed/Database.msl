@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="myDBModelStoreContainer" CdmEntityContainer="myDBEntities">
+    <EntitySetMapping Name="Files">
+      <EntityTypeMapping TypeName="myDBModel.File">
+        <MappingFragment StoreEntitySet="Files">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserFiles">
+      <EntityTypeMapping TypeName="myDBModel.UserFile">
+        <MappingFragment StoreEntitySet="UserFile">
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="myDBModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UpPath" ColumnName="UpPath" />
+          <ScalarProperty Name="DownPath" ColumnName="DownPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
