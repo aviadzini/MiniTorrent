@@ -6,8 +6,8 @@
 <head runat="server">
     <title>Registeration</title>
 </head>
-<body>
-    <p>Registeration</p>
+<body style="background-image:url(BackGround.jpg);">
+    <h1>Registeration</h1>
     <form id="form1" runat="server">
     <div>
         <p>Enter Username: </p>

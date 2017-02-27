@@ -13,5 +13,36 @@ namespace MiniTorrentPortal
         {
 
         }
+        protected void LoginOnClick(object sender, EventArgs e)
+        {
+            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
+            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
+
+            string message = "";
+
+            var c = (from clients in db.Clients
+                     where clients.Username == UsernameTB.Text.Trim()
+                     where clients.Password==PasswordTB.Text.Trim()
+                     select clients).ToList();
+            /*
+             * if((UsernameTB.Text.Trim()=="admin")&&(PasswordTB.Text.Trim()=="admin"))
+             */
+
+            if (c.Count == 0)
+            {
+                message = "Username or password is incorrect";
+                ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
+                   "alert('" + message + "'); window.location='" +
+                   Request.ApplicationPath + "Admin.aspx';", true);
+            }
+            else
+            {
+                message = "Login successful.";
+                ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
+                    "alert('" + message + "'); window.location='" +
+                    Request.ApplicationPath + "AdminPage.aspx';", true);
+            }
+        }
     }
+
 }

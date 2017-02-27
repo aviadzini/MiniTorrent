@@ -6,10 +6,14 @@
 <head runat="server">
     <title>Admin Page</title>
 </head>
-<body>
+    <body style="background-image:url(BackGround.jpg);" >
+        <h1>Admin Page</h1>
     <form id="form1" runat="server">
     <div>
-    
+        <p>All Users</p>
+        <table>
+           
+        </table>
     </div>
     </form>
 </body>
