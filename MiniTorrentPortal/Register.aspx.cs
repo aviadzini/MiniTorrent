@@ -30,7 +30,8 @@ namespace MiniTorrentPortal
                     Password = PasswordTB.Text.Trim(),
                     UpPath = UpPathTB.Text.Trim(),
                     DownPath = DownPathTB.Text.Trim(),
-                    Active = false
+                    Active = false,
+                    Admin = false
                 };
 
                 db.Clients.InsertOnSubmit(u);

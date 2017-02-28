@@ -11,9 +11,9 @@
     <form id="form1" runat="server">
     <div>
         <p>All Users</p>
-        <table>
-           
-        </table>
+
+        <table id = "ClientTable" runat = "server" />
+
     </div>
     </form>
 </body>

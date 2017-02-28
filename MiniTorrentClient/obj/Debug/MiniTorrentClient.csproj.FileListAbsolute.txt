@@ -6,14 +6,6 @@ C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrent
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.exe.config
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.exe
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentInterfaces.dll
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentInterfaces.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.csprojResolveAssemblyReference.cache
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.exe.config
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.pdb
@@ -22,3 +14,11 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorre
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.exe.config
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.exe
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentInterfaces.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentInterfaces.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.csprojResolveAssemblyReference.cache
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb

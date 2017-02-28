@@ -10,18 +10,6 @@ C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrent
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.exe
 C:\Users\AviadZini\Documents\Visual Studio 2015\Projects\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.exe.config
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.exe
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.dll
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentInterfaces.dll
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentInterfaces.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.xml
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.csprojResolveAssemblyReference.cache
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.exe
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.exe.config
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.pdb
@@ -34,3 +22,15 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFr
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.exe.config
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.exe
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentService.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentInterfaces.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\MiniTorrentInterfaces.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.xml
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.csprojResolveAssemblyReference.cache
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.exe
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentService\obj\Debug\MiniTorrentService.pdb

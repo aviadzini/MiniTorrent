@@ -100,6 +100,7 @@
     <Content Include="App_Data\MiniTorrentDB_log.ldf">
       <DependentUpon>MiniTorrentDB.mdf</DependentUpon>
     </Content>
+    <Content Include="ClientPage.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -117,7 +118,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Admin.aspx" />
+    <Content Include="Login.aspx" />
     <Content Include="AdminPage.aspx" />
     <Content Include="Download.aspx" />
     <Content Include="HomePage.html" />
@@ -127,12 +128,19 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin.aspx.cs">
-      <DependentUpon>Admin.aspx</DependentUpon>
+    <Compile Include="ClientPage.aspx.cs">
+      <DependentUpon>ClientPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin.aspx.designer.cs">
-      <DependentUpon>Admin.aspx</DependentUpon>
+    <Compile Include="ClientPage.aspx.designer.cs">
+      <DependentUpon>ClientPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminPage.aspx.cs">
       <DependentUpon>AdminPage.aspx</DependentUpon>

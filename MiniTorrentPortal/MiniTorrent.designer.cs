@@ -33,12 +33,12 @@ namespace MiniTorrentPortal
     partial void InsertClientFile(ClientFile instance);
     partial void UpdateClientFile(ClientFile instance);
     partial void DeleteClientFile(ClientFile instance);
-    partial void InsertClients(Clients instance);
-    partial void UpdateClients(Clients instance);
-    partial void DeleteClients(Clients instance);
     partial void InsertFile(File instance);
     partial void UpdateFile(File instance);
     partial void DeleteFile(File instance);
+    partial void InsertClients(Clients instance);
+    partial void UpdateClients(Clients instance);
+    partial void DeleteClients(Clients instance);
     #endregion
 		
 		public MiniTorrentDataContext() : 
@@ -79,19 +79,19 @@ namespace MiniTorrentPortal
 			}
 		}
 		
-		public System.Data.Linq.Table<Clients> Clients
-		{
-			get
-			{
-				return this.GetTable<Clients>();
-			}
-		}
-		
 		public System.Data.Linq.Table<File> Files
 		{
 			get
 			{
 				return this.GetTable<File>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Clients> Clients
+		{
+			get
+			{
+				return this.GetTable<Clients>();
 			}
 		}
 	}
@@ -106,9 +106,9 @@ namespace MiniTorrentPortal
 		
 		private string _FileName;
 		
-		private EntityRef<Clients> _Clients;
-		
 		private EntityRef<File> _File;
+		
+		private EntityRef<Clients> _Clients;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -122,8 +122,8 @@ namespace MiniTorrentPortal
 		
 		public ClientFile()
 		{
-			this._Clients = default(EntityRef<Clients>);
 			this._File = default(EntityRef<File>);
+			this._Clients = default(EntityRef<Clients>);
 			OnCreated();
 		}
 		
@@ -175,40 +175,6 @@ namespace MiniTorrentPortal
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_Clients", ThisKey="Username", OtherKey="Username", IsForeignKey=true)]
-		public Clients Clients
-		{
-			get
-			{
-				return this._Clients.Entity;
-			}
-			set
-			{
-				Clients previousValue = this._Clients.Entity;
-				if (((previousValue != value) 
-							|| (this._Clients.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Clients.Entity = null;
-						previousValue.ClientFiles.Remove(this);
-					}
-					this._Clients.Entity = value;
-					if ((value != null))
-					{
-						value.ClientFiles.Add(this);
-						this._Username = value.Username;
-					}
-					else
-					{
-						this._Username = default(string);
-					}
-					this.SendPropertyChanged("Clients");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_File", ThisKey="FileName", OtherKey="Name", IsForeignKey=true)]
 		public File File
 		{
@@ -243,177 +209,37 @@ namespace MiniTorrentPortal
 			}
 		}
 		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Clients")]
-	public partial class Clients : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _Username;
-		
-		private string _Password;
-		
-		private string _UpPath;
-		
-		private string _DownPath;
-		
-		private bool _Active;
-		
-		private EntitySet<ClientFile> _ClientFiles;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUsernameChanging(string value);
-    partial void OnUsernameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnUpPathChanging(string value);
-    partial void OnUpPathChanged();
-    partial void OnDownPathChanging(string value);
-    partial void OnDownPathChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public Clients()
-		{
-			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string Username
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_ClientFile", Storage="_Clients", ThisKey="Username", OtherKey="Username", IsForeignKey=true)]
+		public Clients Clients
 		{
 			get
 			{
-				return this._Username;
+				return this._Clients.Entity;
 			}
 			set
 			{
-				if ((this._Username != value))
+				Clients previousValue = this._Clients.Entity;
+				if (((previousValue != value) 
+							|| (this._Clients.HasLoadedOrAssignedValue == false)))
 				{
-					this.OnUsernameChanging(value);
 					this.SendPropertyChanging();
-					this._Username = value;
-					this.SendPropertyChanged("Username");
-					this.OnUsernameChanged();
+					if ((previousValue != null))
+					{
+						this._Clients.Entity = null;
+						previousValue.ClientFiles.Remove(this);
+					}
+					this._Clients.Entity = value;
+					if ((value != null))
+					{
+						value.ClientFiles.Add(this);
+						this._Username = value.Username;
+					}
+					else
+					{
+						this._Username = default(string);
+					}
+					this.SendPropertyChanged("Clients");
 				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpPath", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string UpPath
-		{
-			get
-			{
-				return this._UpPath;
-			}
-			set
-			{
-				if ((this._UpPath != value))
-				{
-					this.OnUpPathChanging(value);
-					this.SendPropertyChanging();
-					this._UpPath = value;
-					this.SendPropertyChanged("UpPath");
-					this.OnUpPathChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownPath", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string DownPath
-		{
-			get
-			{
-				return this._DownPath;
-			}
-			set
-			{
-				if ((this._DownPath != value))
-				{
-					this.OnDownPathChanging(value);
-					this.SendPropertyChanging();
-					this._DownPath = value;
-					this.SendPropertyChanged("DownPath");
-					this.OnDownPathChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_ClientFiles", ThisKey="Username", OtherKey="Username")]
-		public EntitySet<ClientFile> ClientFiles
-		{
-			get
-			{
-				return this._ClientFiles;
-			}
-			set
-			{
-				this._ClientFiles.Assign(value);
 			}
 		}
 		
@@ -435,18 +261,6 @@ namespace MiniTorrentPortal
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_ClientFiles(ClientFile entity)
-		{
-			this.SendPropertyChanging();
-			entity.Clients = this;
-		}
-		
-		private void detach_ClientFiles(ClientFile entity)
-		{
-			this.SendPropertyChanging();
-			entity.Clients = null;
 		}
 	}
 	
@@ -561,6 +375,216 @@ namespace MiniTorrentPortal
 		{
 			this.SendPropertyChanging();
 			entity.File = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Clients")]
+	public partial class Clients : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Username;
+		
+		private string _Password;
+		
+		private string _UpPath;
+		
+		private string _DownPath;
+		
+		private bool _Active;
+		
+		private bool _Admin;
+		
+		private EntitySet<ClientFile> _ClientFiles;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnUpPathChanging(string value);
+    partial void OnUpPathChanged();
+    partial void OnDownPathChanging(string value);
+    partial void OnDownPathChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    partial void OnAdminChanging(bool value);
+    partial void OnAdminChanged();
+    #endregion
+		
+		public Clients()
+		{
+			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpPath", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string UpPath
+		{
+			get
+			{
+				return this._UpPath;
+			}
+			set
+			{
+				if ((this._UpPath != value))
+				{
+					this.OnUpPathChanging(value);
+					this.SendPropertyChanging();
+					this._UpPath = value;
+					this.SendPropertyChanged("UpPath");
+					this.OnUpPathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownPath", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string DownPath
+		{
+			get
+			{
+				return this._DownPath;
+			}
+			set
+			{
+				if ((this._DownPath != value))
+				{
+					this.OnDownPathChanging(value);
+					this.SendPropertyChanging();
+					this._DownPath = value;
+					this.SendPropertyChanged("DownPath");
+					this.OnDownPathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Admin", DbType="Bit NOT NULL")]
+		public bool Admin
+		{
+			get
+			{
+				return this._Admin;
+			}
+			set
+			{
+				if ((this._Admin != value))
+				{
+					this.OnAdminChanging(value);
+					this.SendPropertyChanging();
+					this._Admin = value;
+					this.SendPropertyChanged("Admin");
+					this.OnAdminChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_ClientFile", Storage="_ClientFiles", ThisKey="Username", OtherKey="Username")]
+		public EntitySet<ClientFile> ClientFiles
+		{
+			get
+			{
+				return this._ClientFiles;
+			}
+			set
+			{
+				this._ClientFiles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.Clients = this;
+		}
+		
+		private void detach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.Clients = null;
 		}
 	}
 }
