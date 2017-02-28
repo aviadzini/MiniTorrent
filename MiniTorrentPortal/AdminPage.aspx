@@ -12,7 +12,8 @@
     <div>
         <p>All Users</p>
 
-        <table id = "ClientTable" runat = "server" />
+        <table id = "ClientTable" runat = "server"/> 
+           
 
     </div>
     </form>
