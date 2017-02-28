@@ -10,8 +10,10 @@
         <h1>Client Page</h1>
     <form id="form1" runat="server">
     <div>
-        <table id = "ClientTable" runat = "server" />
-    </div>
+        <asp:GridView ID = "GridView1" runat = "server" DataKeyNames = "Username" 
+            OnRowEditing = "OnRowEditing" OnRowCancelingEdit = "OnRowCancelingEdit"
+            OnRowUpdating = "OnRowUpdating" AutoGenerateEditButton = "true" />
+    </div> 
     </form>
 </body>
 </html>
