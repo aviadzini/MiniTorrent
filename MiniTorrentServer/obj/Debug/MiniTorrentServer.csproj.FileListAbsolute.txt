@@ -7,3 +7,11 @@ C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\Mini
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.csproj.GenerateResource.Cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.exe
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.pdb
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentServer.exe
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentServer.exe.config
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.Form1.resources
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.Properties.Resources.resources
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.csproj.GenerateResource.Cache
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.exe
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.pdb
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentServer.pdb

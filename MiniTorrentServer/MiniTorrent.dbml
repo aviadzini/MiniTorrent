@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MiniTorrentDB" Class="MiniTorrentDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\App_Data\MiniTorrentDB.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="MiniTorrentServer.Properties.Settings" SettingsPropertyName="MiniTorrentDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ClientFile" Member="ClientFiles">
+    <Type Name="ClientFile">
+      <Column Name="Username" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="ClientFile_Client" Member="Clients" ThisKey="Username" OtherKey="Username" Type="Client" />
+      <Association Name="ClientFile_File" Member="Files" ThisKey="FileName" OtherKey="Name" Type="File" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Client">
+      <Column Name="Username" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UpPath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DownPath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ClientFile_Client" Member="ClientFile" ThisKey="Username" OtherKey="Username" Type="ClientFile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Files" Member="Files">
+    <Type Name="File">
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Size" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="ClientFile_File" Member="ClientFile" ThisKey="Name" OtherKey="FileName" Type="ClientFile" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

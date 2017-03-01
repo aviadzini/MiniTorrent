@@ -47,38 +47,41 @@ namespace MiniTorrentClient
 
             else
             {
-                if (!clientSocket.Connected)
-                    connectToServer();
+                
+                    if (!clientSocket.Connected)
+                        connectToServer();
 
-                if (clientSocket.Connected)
-                {
-                    try
+                    if (clientSocket.Connected)
                     {
-                        string ipA = "";
-
-                        var host = Dns.GetHostEntry(Dns.GetHostName());
-                        foreach (var ip in host.AddressList)
-                            if (ip.AddressFamily == AddressFamily.InterNetwork)
-                                ipA = ip.ToString();
-
-                        LoginPackage loginPackage = new LoginPackage
+                        try
                         {
-                            Username = usernameTB.Text,
-                            Password = passwordTB.Text,
-                            IP = ipA
-                        };
-                        var json = new JavaScriptSerializer().Serialize(loginPackage);
+                            string ipA = "";
 
-                        byte[] buffer = Encoding.ASCII.GetBytes(json);
-                        clientSocket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
-                    }
+                            var host = Dns.GetHostEntry(Dns.GetHostName());
+                            foreach (var ip in host.AddressList)
+                                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                                    ipA = ip.ToString();
 
-                    catch (Exception ex)
-                    {
-                        MessageBoxResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            LoginPackage loginPackage = new LoginPackage
+                            {
+                                Username = usernameTB.Text,
+                                Password = passwordTB.Text,
+                                IP = ipA
+                            };
+                            var json = new JavaScriptSerializer().Serialize(loginPackage);
+
+                            byte[] buffer = Encoding.ASCII.GetBytes(json);
+                            clientSocket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            MessageBoxResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
-                }
+              
             }
+
         }
 
         private void SendCallback(IAsyncResult AR)
@@ -90,7 +93,14 @@ namespace MiniTorrentClient
         {
             try
             {
-                clientSocket.EndConnect(AR);
+                if (clientSocket.Connected)
+                {
+                    clientSocket.EndConnect(AR);
+                }
+                else
+                {
+                    MessageBoxResult result = MessageBox.Show("Try later\\nthe server fail.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
             catch (Exception ex)
@@ -106,5 +116,6 @@ namespace MiniTorrentClient
             if (clientSocket != null && clientSocket.Connected)
                 clientSocket.Close();
         }
+       
     }
 }
