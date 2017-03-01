@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MiniTorrentClient
 {
@@ -27,11 +18,15 @@ namespace MiniTorrentClient
         public MainWindow()
         {
             InitializeComponent();
+            connectToServer();
+        }
 
+        private void connectToServer()
+        {
             try
             {
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.BeginConnect(new IPEndPoint(IPAddress.Loopback, 8005), new AsyncCallback(ConnectCallback), null);
+                clientSocket.BeginConnect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8005), new AsyncCallback(ConnectCallback), null);
             }
 
             catch (Exception ex)
@@ -52,15 +47,36 @@ namespace MiniTorrentClient
 
             else
             {
-                try
-                {
-                    byte[] buffer = Encoding.ASCII.GetBytes(usernameTB.Text);
-                    clientSocket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
-                }
+                if (!clientSocket.Connected)
+                    connectToServer();
 
-                catch (Exception ex)
+                if (clientSocket.Connected)
                 {
-                    MessageBoxResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    try
+                    {
+                        string ipA = "";
+
+                        var host = Dns.GetHostEntry(Dns.GetHostName());
+                        foreach (var ip in host.AddressList)
+                            if (ip.AddressFamily == AddressFamily.InterNetwork)
+                                ipA = ip.ToString();
+
+                        LoginPackage loginPackage = new LoginPackage
+                        {
+                            Username = usernameTB.Text,
+                            Password = passwordTB.Text,
+                            IP = ipA
+                        };
+                        var json = new JavaScriptSerializer().Serialize(loginPackage);
+
+                        byte[] buffer = Encoding.ASCII.GetBytes(json);
+                        clientSocket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
+                    }
+
+                    catch (Exception ex)
+                    {
+                        MessageBoxResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
@@ -81,6 +97,14 @@ namespace MiniTorrentClient
             {
                 MessageBoxResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            if (clientSocket != null && clientSocket.Connected)
+                clientSocket.Close();
         }
     }
 }

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MiniTorrentServer
@@ -31,8 +25,10 @@ namespace MiniTorrentServer
             {
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 serverSocket.Bind(new IPEndPoint(IPAddress.Any, 8005));
-                serverSocket.Listen(0);
+                serverSocket.Listen(10);
                 serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+
+                serverTB.Text += "The server has started.\r\n";
             }
 
             catch (Exception ex)
@@ -48,6 +44,9 @@ namespace MiniTorrentServer
                 clientSocket = serverSocket.EndAccept(AR);
                 buffer = new byte[clientSocket.ReceiveBufferSize];
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
+                serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+
+                serverTB.Text += "Client has connected to the server.\r\n";
             }
 
             catch (Exception ex)
@@ -61,9 +60,16 @@ namespace MiniTorrentServer
             try
             {
                 int received = clientSocket.EndReceive(AR);
+
+                if (received == 0)
+                {
+                    serverTB.Text += "Client has disconnected from the server.\r\n";
+                    return;
+                }
+
                 Array.Resize(ref buffer, received);
                 string text = Encoding.ASCII.GetString(buffer);
-                serverTB.Text += text + "\r\n";
+                serverTB.Text += "Client: " + text + ".\r\n";
                 Array.Resize(ref buffer, clientSocket.ReceiveBufferSize);
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
             }
