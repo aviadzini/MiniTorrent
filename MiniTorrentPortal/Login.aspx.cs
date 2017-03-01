@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,7 +19,7 @@ namespace MiniTorrentPortal
                 .ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
 
             MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
-            
+
             var c = (from clients in db.Clients
                      where clients.Username == UsernameTB.Text.Trim()
                      where clients.Password == PasswordTB.Text.Trim()
@@ -29,8 +30,16 @@ namespace MiniTorrentPortal
                    "alert(' Username or password is incorrect '); window.location='" +
                    Request.ApplicationPath + "Login.aspx';", true);
 
+            else if (c.ElementAt(0).Active)
+                ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
+                   "alert(' Username is already loggedin '); window.location='" +
+                   Request.ApplicationPath + "Login.aspx';", true);
+
             else
             {
+
+                c.ElementAt(0).Active = true;
+                db.SubmitChanges();
                 if (c.ElementAtOrDefault(0).Admin)
                     Response.Redirect("AdminPage.aspx");
 

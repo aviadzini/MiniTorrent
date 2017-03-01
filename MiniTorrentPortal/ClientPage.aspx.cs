@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using System.Linq;
 namespace MiniTorrentPortal
 {
     public partial class ClientPage : Page
@@ -14,6 +14,18 @@ namespace MiniTorrentPortal
         {
             if (!IsPostBack)
                 BindGrid();
+            LinkButton logoutBT = new LinkButton();
+            logoutBT.Text = "Logout";
+            logoutBT.Attributes.Add("style", "right: 0px;");
+            logoutBT.Click += new EventHandler(LogoutOnClick);
+            form1.Controls.Add(logoutBT);
+        }
+
+        private void LogoutOnClick(object sender, EventArgs e)
+        {
+          
+           
+
         }
 
         private void BindGrid()

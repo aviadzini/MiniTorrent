@@ -10,6 +10,12 @@ namespace MiniTorrentPortal
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            LinkButton logoutBT = new LinkButton();
+            logoutBT.Text = "Logout";
+            logoutBT.Attributes.Add("style", "right: 0px;");
+            logoutBT.Click += new EventHandler(LogoutOnClick);
+            form1.Controls.Add(logoutBT);
+
             string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
             MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
 
@@ -82,6 +88,11 @@ namespace MiniTorrentPortal
             }
         }
 
+        private void LogoutOnClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void UpdateToAdmin(object sender, EventArgs e)
         {
             string message = "";
@@ -122,7 +133,7 @@ namespace MiniTorrentPortal
                          where clients.Username == user
                          select clients).First();
 
-            if (string.Compare(c.Active.ToString(), "true") == 0)
+            if (c.Active==true)
                 message = "The user active now,/nPlease try later! ";
             else
             {
