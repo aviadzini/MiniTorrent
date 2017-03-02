@@ -41,8 +41,9 @@ namespace MiniTorrentPortal
                 c.ElementAt(0).Active = true;
                 db.SubmitChanges();
                 if (c.ElementAtOrDefault(0).Admin)
-                    Response.Redirect("AdminPage.aspx");
-
+                {
+                    Response.Redirect("AdminPage.aspx?Name="+ UsernameTB.Text);
+                }
                 else
                     Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
             }

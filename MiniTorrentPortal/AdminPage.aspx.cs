@@ -90,7 +90,20 @@ namespace MiniTorrentPortal
 
         private void LogoutOnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
+            string username = Request.QueryString["Name"];
+            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
+            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
+            var c = (from clients in db.Clients
+                     where clients.Username == username
+                     select clients).ToList();
+            c.ElementAt(0).Active = false;
+            db.SubmitChanges();
+          
+             Response.Redirect("HomePage.html");
+
+
+
         }
 
         private void UpdateToAdmin(object sender, EventArgs e)

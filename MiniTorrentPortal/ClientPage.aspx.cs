@@ -19,12 +19,24 @@ namespace MiniTorrentPortal
             logoutBT.Attributes.Add("style", "right: 0px;");
             logoutBT.Click += new EventHandler(LogoutOnClick);
             form1.Controls.Add(logoutBT);
+          
+
         }
 
         private void LogoutOnClick(object sender, EventArgs e)
         {
-          
-           
+
+            string username = Request.QueryString["Name"];
+            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
+            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
+            var c = (from clients in db.Clients
+                     where clients.Username == username
+                     select clients).ToList();
+            c.ElementAt(0).Active = false;
+            db.SubmitChanges();
+            Response.Redirect("HomePage.html");
+
+
 
         }
 
