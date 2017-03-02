@@ -12,7 +12,6 @@ namespace MiniTorrentPortal
         {
             LinkButton logoutBT = new LinkButton();
             logoutBT.Text = "Logout";
-            logoutBT.Attributes.Add("style", "right: 0px;");
             logoutBT.Click += new EventHandler(LogoutOnClick);
             form1.Controls.Add(logoutBT);
 

@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MiniTorrentClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button x:Name="loginB" Content="Login" HorizontalAlignment="Left" Margin="136,171,0,0" VerticalAlignment="Top" Width="75" Click="loginB_Click"/>
+        Title="MainWindow" Height="413.228" Width="671.215">
+    <Grid Margin="0,0,346,176" RenderTransformOrigin="0.148,0.142">
+        <Button x:Name="loginB" Content="Login" HorizontalAlignment="Left" Margin="218,171,-19,0" VerticalAlignment="Top" Width="118" Click="loginB_Click" Height="26"/>
         <Label x:Name="label" Content="Username:" HorizontalAlignment="Left" Margin="60,58,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label1" Content="Password:" HorizontalAlignment="Left" Margin="60,106,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="136,61,0,0" TextWrapping="Wrap" Text="Enter username" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="passwordTB" HorizontalAlignment="Left" Height="23" Margin="136,106,0,0" TextWrapping="Wrap" Text="Enter password" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="label2" Content="Login" HorizontalAlignment="Left" Margin="218,21,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="136,61,-38,0" TextWrapping="Wrap" Text="Please Enter Your Username" VerticalAlignment="Top" Width="219" GotFocus="ClickUserNameTB"/>
+        <TextBox x:Name="passwordTB" HorizontalAlignment="Left" Height="26" Margin="136,106,-38,0" TextWrapping="Wrap" Text="Please Enter Your Password" VerticalAlignment="Top" Width="219" GotFocus="ClickPassowrdTB" />
+        <Label x:Name="label2" Content="Login" HorizontalAlignment="Left" Margin="218,21,0,0" VerticalAlignment="Top" Height="35" Width="221"/>
 
     </Grid>
 </Window>

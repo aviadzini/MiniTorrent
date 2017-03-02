@@ -15,3 +15,4 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorre
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentServer.pdb
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.csprojResolveAssemblyReference.cache

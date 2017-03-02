@@ -8,9 +8,9 @@
 </head>
 <body style="background-image:url(BackGround.jpg);" >
 
-     <h1>Login</h1>
+      <p style="font-size:40px; margin-left:50px;"><strong>Login</strong></p>
     <form id="form1" runat="server">
-    <div>
+     <div style="margin-left:50px; font-size:medium;">
         <p>Enter Username: </p>
         <asp:TextBox ID = "UsernameTB" runat = "server" />
         <asp:RequiredFieldValidator ErrorMessage="Required Username!" ForeColor="Red" 
@@ -21,8 +21,9 @@
         <asp:RequiredFieldValidator ErrorMessage="Required Password!" ForeColor="Red" 
             ControlToValidate="PasswordTB" runat="server" />
          <br/>
+         <p>
         <asp:Button ID = "LogInB" Text = "Login" runat = "server" OnClick = "LoginOnClick" />
-         <br/>
+         </p>
     </div>
 
     </form>

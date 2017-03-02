@@ -7,12 +7,13 @@
     <title>Client Page</title>
 </head>
     <body style="background-image:url(BackGround.jpg);" >
-        <h1>Client Page</h1>
-    <form id="form1" runat="server">
-    <div>
+        <p style="font-size:40px; margin-left:50px;"><strong>Client Page</strong></p>
+    <form id="form1" runat="server" >
+    <div style="margin-left:50px; font-size:medium;">
         <asp:GridView ID = "GridView1" runat = "server" DataKeyNames = "Username" 
             OnRowEditing = "OnRowEditing" OnRowCancelingEdit = "OnRowCancelingEdit"
-            OnRowUpdating = "OnRowUpdating" AutoGenerateEditButton = "true" />
+            OnRowUpdating = "OnRowUpdating" AutoGenerateEditButton = "true"
+            CellPadding="10" CellSpacing="10" />
     </div> 
     </form>
 </body>
