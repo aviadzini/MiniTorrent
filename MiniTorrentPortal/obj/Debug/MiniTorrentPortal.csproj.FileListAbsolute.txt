@@ -69,7 +69,6 @@ C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\Microsoft.
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\Microsoft.ApplicationInsights.xml
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\Newtonsoft.Json.xml
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.dll
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\ApplicationInsights.config
@@ -107,3 +106,4 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\Newtonsoft.Json
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.dll
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.csprojResolveAssemblyReference.cache
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.csprojResolveAssemblyReference.cache

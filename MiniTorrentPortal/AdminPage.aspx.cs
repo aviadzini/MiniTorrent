@@ -101,7 +101,7 @@ namespace MiniTorrentPortal
 
         private void UpdateToAdmin(object sender, EventArgs e)
         {
-            string message = "";
+            string message = "The user is already admin!";
             LinkButton button = (LinkButton)sender;
             string user = button.CommandArgument;
 
@@ -114,12 +114,12 @@ namespace MiniTorrentPortal
                 c.Admin = true;
                 db.SubmitChanges();
 
-                message = "The user is no longer admin! ";
+                message = "The user become an admin! ";
             }
 
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
               "alert('" + message + "'); window.location='" +
-              Request.ApplicationPath + "AdminPage.aspx';", true);
+              Request.ApplicationPath + "AdminPage.aspx?Name=" + username + "';", true);
         }
 
         private void DeleteUser(object sender, EventArgs e)
@@ -147,7 +147,7 @@ namespace MiniTorrentPortal
 
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
               "alert('" + message + "'); window.location='" +
-              Request.ApplicationPath + "AdminPage.aspx';", true);
+              Request.ApplicationPath + "AdminPage.aspx?Name=" + username + "';", true);
         }
     }
 }

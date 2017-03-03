@@ -33,16 +33,16 @@ namespace MiniTorrentServer
     partial void InsertClientFile(ClientFile instance);
     partial void UpdateClientFile(ClientFile instance);
     partial void DeleteClientFile(ClientFile instance);
-    partial void InsertClient(Client instance);
-    partial void UpdateClient(Client instance);
-    partial void DeleteClient(Client instance);
+    partial void InsertClients(Clients instance);
+    partial void UpdateClients(Clients instance);
+    partial void DeleteClients(Clients instance);
     partial void InsertFile(File instance);
     partial void UpdateFile(File instance);
     partial void DeleteFile(File instance);
     #endregion
 		
 		public MiniTorrentDataContext() : 
-				base(global::MiniTorrentServer.Properties.Settings.Default.MiniTorrentDBConnectionString, mappingSource)
+				base(global::MiniTorrentServer.Properties.Settings.Default.MiniTorrentDBConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -79,11 +79,11 @@ namespace MiniTorrentServer
 			}
 		}
 		
-		public System.Data.Linq.Table<Client> Clients
+		public System.Data.Linq.Table<Clients> Clients
 		{
 			get
 			{
-				return this.GetTable<Client>();
+				return this.GetTable<Clients>();
 			}
 		}
 		
@@ -106,9 +106,9 @@ namespace MiniTorrentServer
 		
 		private string _FileName;
 		
-		private EntitySet<Client> _Clients;
+		private EntityRef<Clients> _Clients;
 		
-		private EntitySet<File> _Files;
+		private EntityRef<File> _File;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -122,8 +122,8 @@ namespace MiniTorrentServer
 		
 		public ClientFile()
 		{
-			this._Clients = new EntitySet<Client>(new Action<Client>(this.attach_Clients), new Action<Client>(this.detach_Clients));
-			this._Files = new EntitySet<File>(new Action<File>(this.attach_Files), new Action<File>(this.detach_Files));
+			this._Clients = default(EntityRef<Clients>);
+			this._File = default(EntityRef<File>);
 			OnCreated();
 		}
 		
@@ -138,6 +138,10 @@ namespace MiniTorrentServer
 			{
 				if ((this._Username != value))
 				{
+					if (this._Clients.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnUsernameChanging(value);
 					this.SendPropertyChanging();
 					this._Username = value;
@@ -158,6 +162,10 @@ namespace MiniTorrentServer
 			{
 				if ((this._FileName != value))
 				{
+					if (this._File.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnFileNameChanging(value);
 					this.SendPropertyChanging();
 					this._FileName = value;
@@ -167,29 +175,71 @@ namespace MiniTorrentServer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClientFile_Client", Storage="_Clients", ThisKey="Username", OtherKey="Username")]
-		public EntitySet<Client> Clients
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_Clients", ThisKey="Username", OtherKey="Username", IsForeignKey=true)]
+		public Clients Clients
 		{
 			get
 			{
-				return this._Clients;
+				return this._Clients.Entity;
 			}
 			set
 			{
-				this._Clients.Assign(value);
+				Clients previousValue = this._Clients.Entity;
+				if (((previousValue != value) 
+							|| (this._Clients.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Clients.Entity = null;
+						previousValue.ClientFiles.Remove(this);
+					}
+					this._Clients.Entity = value;
+					if ((value != null))
+					{
+						value.ClientFiles.Add(this);
+						this._Username = value.Username;
+					}
+					else
+					{
+						this._Username = default(string);
+					}
+					this.SendPropertyChanged("Clients");
+				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClientFile_File", Storage="_Files", ThisKey="FileName", OtherKey="Name")]
-		public EntitySet<File> Files
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_File", ThisKey="FileName", OtherKey="Name", IsForeignKey=true)]
+		public File File
 		{
 			get
 			{
-				return this._Files;
+				return this._File.Entity;
 			}
 			set
 			{
-				this._Files.Assign(value);
+				File previousValue = this._File.Entity;
+				if (((previousValue != value) 
+							|| (this._File.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._File.Entity = null;
+						previousValue.ClientFiles.Remove(this);
+					}
+					this._File.Entity = value;
+					if ((value != null))
+					{
+						value.ClientFiles.Add(this);
+						this._FileName = value.Name;
+					}
+					else
+					{
+						this._FileName = default(string);
+					}
+					this.SendPropertyChanged("File");
+				}
 			}
 		}
 		
@@ -212,34 +262,10 @@ namespace MiniTorrentServer
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-		
-		private void attach_Clients(Client entity)
-		{
-			this.SendPropertyChanging();
-			entity.ClientFile = this;
-		}
-		
-		private void detach_Clients(Client entity)
-		{
-			this.SendPropertyChanging();
-			entity.ClientFile = null;
-		}
-		
-		private void attach_Files(File entity)
-		{
-			this.SendPropertyChanging();
-			entity.ClientFile = this;
-		}
-		
-		private void detach_Files(File entity)
-		{
-			this.SendPropertyChanging();
-			entity.ClientFile = null;
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Clients")]
-	public partial class Client : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Clients : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -256,7 +282,7 @@ namespace MiniTorrentServer
 		
 		private bool _Admin;
 		
-		private EntityRef<ClientFile> _ClientFile;
+		private EntitySet<ClientFile> _ClientFiles;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -276,9 +302,9 @@ namespace MiniTorrentServer
     partial void OnAdminChanged();
     #endregion
 		
-		public Client()
+		public Clients()
 		{
-			this._ClientFile = default(EntityRef<ClientFile>);
+			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
 			OnCreated();
 		}
 		
@@ -293,10 +319,6 @@ namespace MiniTorrentServer
 			{
 				if ((this._Username != value))
 				{
-					if (this._ClientFile.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnUsernameChanging(value);
 					this.SendPropertyChanging();
 					this._Username = value;
@@ -406,37 +428,16 @@ namespace MiniTorrentServer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClientFile_Client", Storage="_ClientFile", ThisKey="Username", OtherKey="Username", IsForeignKey=true)]
-		public ClientFile ClientFile
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_ClientFiles", ThisKey="Username", OtherKey="Username")]
+		public EntitySet<ClientFile> ClientFiles
 		{
 			get
 			{
-				return this._ClientFile.Entity;
+				return this._ClientFiles;
 			}
 			set
 			{
-				ClientFile previousValue = this._ClientFile.Entity;
-				if (((previousValue != value) 
-							|| (this._ClientFile.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ClientFile.Entity = null;
-						previousValue.Clients.Remove(this);
-					}
-					this._ClientFile.Entity = value;
-					if ((value != null))
-					{
-						value.Clients.Add(this);
-						this._Username = value.Username;
-					}
-					else
-					{
-						this._Username = default(string);
-					}
-					this.SendPropertyChanged("ClientFile");
-				}
+				this._ClientFiles.Assign(value);
 			}
 		}
 		
@@ -459,6 +460,18 @@ namespace MiniTorrentServer
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.Clients = this;
+		}
+		
+		private void detach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.Clients = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Files")]
@@ -471,7 +484,7 @@ namespace MiniTorrentServer
 		
 		private int _Size;
 		
-		private EntityRef<ClientFile> _ClientFile;
+		private EntitySet<ClientFile> _ClientFiles;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -485,7 +498,7 @@ namespace MiniTorrentServer
 		
 		public File()
 		{
-			this._ClientFile = default(EntityRef<ClientFile>);
+			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
 			OnCreated();
 		}
 		
@@ -500,10 +513,6 @@ namespace MiniTorrentServer
 			{
 				if ((this._Name != value))
 				{
-					if (this._ClientFile.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnNameChanging(value);
 					this.SendPropertyChanging();
 					this._Name = value;
@@ -533,37 +542,16 @@ namespace MiniTorrentServer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClientFile_File", Storage="_ClientFile", ThisKey="Name", OtherKey="FileName", IsForeignKey=true)]
-		public ClientFile ClientFile
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_ClientFiles", ThisKey="Name", OtherKey="FileName")]
+		public EntitySet<ClientFile> ClientFiles
 		{
 			get
 			{
-				return this._ClientFile.Entity;
+				return this._ClientFiles;
 			}
 			set
 			{
-				ClientFile previousValue = this._ClientFile.Entity;
-				if (((previousValue != value) 
-							|| (this._ClientFile.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ClientFile.Entity = null;
-						previousValue.Files.Remove(this);
-					}
-					this._ClientFile.Entity = value;
-					if ((value != null))
-					{
-						value.Files.Add(this);
-						this._Name = value.FileName;
-					}
-					else
-					{
-						this._Name = default(string);
-					}
-					this.SendPropertyChanged("ClientFile");
-				}
+				this._ClientFiles.Assign(value);
 			}
 		}
 		
@@ -585,6 +573,18 @@ namespace MiniTorrentServer
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.File = this;
+		}
+		
+		private void detach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.File = null;
 		}
 	}
 }
