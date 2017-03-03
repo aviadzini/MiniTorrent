@@ -16,9 +16,14 @@
                 <table id = "ClientTable" runat = "server" cellpadding="10"/> 
             </div> <br />
 
+            <asp:LinkButton ID = "editLB" runat = "server" Text = "EditProfile" 
+                        style = "margin-left:50px; font-size:medium;"
+                        OnClick = "EditProfileOnClick">Edit Profile</asp:LinkButton>
+
             <asp:LinkButton ID = "logoutB" runat = "server" Text = "Logout" 
-                style = "margin-left:50px; font-size:medium;"
+                style = "font-size:medium;"
                 OnClick = "LogoutOnClick">Logout</asp:LinkButton>
+          
         </form>
     </body>
 </html>

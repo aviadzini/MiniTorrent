@@ -87,6 +87,10 @@ namespace MiniTorrentPortal
             }
         }
 
+        protected void EditProfileOnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("ClientPage.aspx?Name=" + username);
+        }
         protected void LogoutOnClick(object sender, EventArgs e)
         {
             var c = (from clients in db.Clients

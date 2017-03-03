@@ -26,3 +26,5 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorre
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.csprojResolveAssemblyReference.cache
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\DownlodedPage.g.cs
+C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\DownlodedPage.baml

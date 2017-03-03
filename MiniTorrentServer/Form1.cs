@@ -7,6 +7,7 @@ using System.Text;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace MiniTorrentServer
 {
@@ -99,10 +100,31 @@ namespace MiniTorrentServer
                              select clients).FirstOrDefault();
 
                     if (c != null)
-                        Send(handler, bool.TrueString);
+                    {
+
+                        Random rnd = new Random();
+                        List<Clients> ports;
+                        int portRand;
+
+                        do
+                        {
+                            portRand = rnd.Next(8006, 9000);
+                            ports = (from clients in db.Clients
+                                         where clients.Port == portRand
+                                         select clients).ToList();
+                        }
+                        while (ports.Count > 0);
+
+                        c.Active = true;
+                        c.Port = portRand;
+                        c.IP = loginPacage.IP;
+                        db.SubmitChanges();
+
+                        Send(handler, portRand.ToString());
+                    }
 
                     else
-                        Send(handler, bool.FalseString);
+                        Send(handler, "-1");
                 }
 
                 else

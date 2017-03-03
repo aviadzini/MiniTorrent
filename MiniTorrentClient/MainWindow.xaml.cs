@@ -190,9 +190,12 @@ namespace MiniTorrentClient
                     Receive(clientSocket);  
                     receiveDone.WaitOne();
 
-                    if (bool.Parse(response))
+                    if (int.Parse(response) > 0)
                     {
-                        MessageBoxResult result = MessageBox.Show(response, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        // MessageBoxResult result = MessageBox.Show(response, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DownlodedPage dp = new DownlodedPage(usernameTB.Text, int.Parse(response));
+                        dp.Show();
+                        Close();
                     }
 
                     else

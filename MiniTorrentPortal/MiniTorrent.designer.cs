@@ -396,6 +396,10 @@ namespace MiniTorrentPortal
 		
 		private bool _Admin;
 		
+		private string _IP;
+		
+		private System.Nullable<int> _Port;
+		
 		private EntitySet<ClientFile> _ClientFiles;
 		
     #region Extensibility Method Definitions
@@ -414,6 +418,10 @@ namespace MiniTorrentPortal
     partial void OnActiveChanged();
     partial void OnAdminChanging(bool value);
     partial void OnAdminChanged();
+    partial void OnIPChanging(string value);
+    partial void OnIPChanged();
+    partial void OnPortChanging(System.Nullable<int> value);
+    partial void OnPortChanged();
     #endregion
 		
 		public Clients()
@@ -538,6 +546,46 @@ namespace MiniTorrentPortal
 					this._Admin = value;
 					this.SendPropertyChanged("Admin");
 					this.OnAdminChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IP", DbType="NVarChar(50)")]
+		public string IP
+		{
+			get
+			{
+				return this._IP;
+			}
+			set
+			{
+				if ((this._IP != value))
+				{
+					this.OnIPChanging(value);
+					this.SendPropertyChanging();
+					this._IP = value;
+					this.SendPropertyChanged("IP");
+					this.OnIPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Port", DbType="Int")]
+		public System.Nullable<int> Port
+		{
+			get
+			{
+				return this._Port;
+			}
+			set
+			{
+				if ((this._Port != value))
+				{
+					this.OnPortChanging(value);
+					this.SendPropertyChanging();
+					this._Port = value;
+					this.SendPropertyChanged("Port");
+					this.OnPortChanged();
 				}
 			}
 		}

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="413.228" Width="671.215">
     <Grid Margin="0,0,346,176" RenderTransformOrigin="0.148,0.142">
-        <Button x:Name="loginB" Content="Login" HorizontalAlignment="Left" Margin="218,171,-19,0" VerticalAlignment="Top" Width="118" Click="loginB_Click" Height="26"/>
+        <Button x:Name="loginB" Content="Login" HorizontalAlignment="Left" Margin="169,161,-38,0" VerticalAlignment="Top" Width="186" Click="loginB_Click" Height="36"/>
         <Label x:Name="label" Content="Username:" HorizontalAlignment="Left" Margin="60,58,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label1" Content="Password:" HorizontalAlignment="Left" Margin="60,106,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="136,61,-38,0" TextWrapping="Wrap" Text="Please Enter Your Username" VerticalAlignment="Top" Width="219" GotFocus="ClickUserNameTB"/>
