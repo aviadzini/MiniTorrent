@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -10,7 +9,6 @@ namespace MiniTorrentPortal
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void LoginOnClick(object sender, EventArgs e)
@@ -21,8 +19,8 @@ namespace MiniTorrentPortal
             MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
 
             var c = (from clients in db.Clients
-                     where clients.Username == UsernameTB.Text.Trim()
-                     where clients.Password == PasswordTB.Text.Trim()
+                     where clients.Username == UsernameTB.Text
+                     where clients.Password == PasswordTB.Text
                      select clients).ToList();
 
             if (c.Count == 0)
@@ -37,13 +35,11 @@ namespace MiniTorrentPortal
 
             else
             {
-
                 c.ElementAt(0).Active = true;
                 db.SubmitChanges();
+
                 if (c.ElementAtOrDefault(0).Admin)
-                {
-                    Response.Redirect("AdminPage.aspx?Name="+ UsernameTB.Text);
-                }
+                    Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
                 else
                     Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
             }

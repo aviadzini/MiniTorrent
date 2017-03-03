@@ -10,21 +10,18 @@ namespace MiniTorrentPortal
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
+
         protected void UploadClick(object sender, ImageClickEventArgs e)
         {   
-
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.RootFolder = Environment.SpecialFolder.Desktop;
             fbd.ShowNewFolderButton = false;
             if (fbd.ShowDialog() == DialogResult.OK)
-            {
                 UpPathTB.Text = fbd.SelectedPath;
-            }
-           
         }
-        protected void DownledClick(object sender, ImageClickEventArgs e)
+
+        protected void DownloadClick(object sender, ImageClickEventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.RootFolder = Environment.SpecialFolder.Desktop;
@@ -33,9 +30,8 @@ namespace MiniTorrentPortal
                     UpPathTB.Text = fbd.SelectedPath;
           
             fbd.Description = "Select Folder";
-            
-            
         }
+
         protected void RegisterOnClick(object sender, EventArgs e)
         {
             if (UpPathTB.Text == null)
@@ -52,17 +48,17 @@ namespace MiniTorrentPortal
                 string message = "";
 
                 var c = (from clients in db.Clients
-                         where clients.Username == UsernameTB.Text.Trim()
+                         where clients.Username == UsernameTB.Text
                          select clients).ToList();
 
                 if (c.Count == 0)
                 {
                     var u = new Clients
                     {
-                        Username = UsernameTB.Text.Trim(),
-                        Password = PasswordTB.Text.Trim(),
-                        UpPath = UpPathTB.Text.Trim(),
-                        DownPath = DownPathTB.Text.Trim(),
+                        Username = UsernameTB.Text,
+                        Password = PasswordTB.Text,
+                        UpPath = UpPathTB.Text,
+                        DownPath = DownPathTB.Text,
                         Active = false,
                         Admin = false
                     };
@@ -81,6 +77,5 @@ namespace MiniTorrentPortal
                     Request.ApplicationPath + "HomePage.html';", true);
             }
         }
-       
     }
 }

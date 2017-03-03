@@ -3,30 +3,33 @@ using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 namespace MiniTorrentPortal
 {
     public partial class AdminPage : Page
     {
+        string username = "";
+        string connectString;
+        MiniTorrentDataContext db;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            LinkButton logoutBT = new LinkButton();
-            logoutBT.Text = "Logout";
-            logoutBT.Click += new EventHandler(LogoutOnClick);
-            form1.Controls.Add(logoutBT);
+            username = Request.QueryString["Name"];
 
-            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
+            connectString = ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
+            db = new MiniTorrentDataContext(connectString);
 
             var c = (from clients in db.Clients
+                     where clients.Username != username
                      select clients).ToList();
-
-            HtmlTableRow row = new HtmlTableRow();
-            HtmlTableCell cell = new HtmlTableCell();
+            
             LinkButton deleteButton = new LinkButton();
             LinkButton updateButton = new LinkButton();
-            
-           
+
+            HtmlTableRow row = new HtmlTableRow();
+
+            HtmlTableCell cell = new HtmlTableCell();
             cell.InnerText = "Username";
             row.Cells.Add(cell);
 
@@ -45,14 +48,11 @@ namespace MiniTorrentPortal
             cell = new HtmlTableCell();
             cell.InnerText = "Delete";
             row.Cells.Add(cell);
-
-            cell = new HtmlTableCell();
-            ClientTable.CellPadding = 10;
+            
             ClientTable.Rows.Add(row);
            
             foreach (var item in c)
             {
-
                 row = new HtmlTableRow();
 
                 cell = new HtmlTableCell();
@@ -87,22 +87,16 @@ namespace MiniTorrentPortal
             }
         }
 
-        private void LogoutOnClick(object sender, EventArgs e)
+        protected void LogoutOnClick(object sender, EventArgs e)
         {
-
-            string username = Request.QueryString["Name"];
-            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
             var c = (from clients in db.Clients
                      where clients.Username == username
-                     select clients).ToList();
-            c.ElementAt(0).Active = false;
+                     select clients).Single();
+
+            c.Active = false;
             db.SubmitChanges();
-          
-             Response.Redirect("HomePage.html");
 
-
-
+            Response.Redirect("HomePage.html");
         }
 
         private void UpdateToAdmin(object sender, EventArgs e)
@@ -110,28 +104,22 @@ namespace MiniTorrentPortal
             string message = "";
             LinkButton button = (LinkButton)sender;
             string user = button.CommandArgument;
-            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
+
             var c = (from clients in db.Clients
                      where clients.Username == user
-                     select clients).First();
+                     select clients).Single();
 
-            if (c.Admin == true) { 
-                c.Admin = false;
-                message = "The user is no longer admin! ";
-                db.SubmitChanges();
-        }
-            else
+            if (!c.Admin)
             {
-
                 c.Admin = true;
-                message = "The user is now admin! ";
                 db.SubmitChanges();
+
+                message = "The user is no longer admin! ";
             }
+
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
               "alert('" + message + "'); window.location='" +
               Request.ApplicationPath + "AdminPage.aspx';", true);
-
         }
 
         private void DeleteUser(object sender, EventArgs e)
@@ -139,27 +127,27 @@ namespace MiniTorrentPortal
             string message = "";
             LinkButton button = (LinkButton)sender;
             string user = button.CommandArgument;
-            string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
+
             var c = (from clients in db.Clients
                          where clients.Username == user
-                         select clients).First();
+                         select clients).Single();
 
-            if (c.Active==true)
-                message = "The user active now,/nPlease try later! ";
+            if (c.Active)
+                message = "The user active now,//nPlease try later! ";
+
+            else if (c.Admin)
+                message = "You cannot delete an admin user! ";
+
             else
             {
                 db.Clients.DeleteOnSubmit(c);
-                message = "The user deleted! ";
                 db.SubmitChanges();
-
-
+                message = "The user have been deleted! ";
             }
+
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
               "alert('" + message + "'); window.location='" +
               Request.ApplicationPath + "AdminPage.aspx';", true);
-
         }
     }
- 
 }
