@@ -11,6 +11,7 @@ namespace MiniTorrentClient
 {
     public partial class MainWindow : Window
     {
+        IPEndPoint remoteEP;
         private Socket clientSocket;
         private static ManualResetEvent connectDone = new ManualResetEvent(false);
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
@@ -32,10 +33,10 @@ namespace MiniTorrentClient
             {
                 IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, RemotePort);
+                remoteEP = new IPEndPoint(ipAddress, RemotePort);
                 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), clientSocket);   
+                clientSocket.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), clientSocket);
                 connectDone.WaitOne();
             }
 
@@ -168,6 +169,7 @@ namespace MiniTorrentClient
             {
                 try
                 {
+
                     string ipA = "";
 
                     var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -184,7 +186,7 @@ namespace MiniTorrentClient
                     var json = new JavaScriptSerializer().Serialize(loginPackage);
 
 
-                    Send(clientSocket, json+"<EOF>");      
+                    Send(clientSocket, json + "<EOF>");      
                     sendDone.WaitOne();
 
                     Receive(clientSocket);  
@@ -203,6 +205,7 @@ namespace MiniTorrentClient
                         usernameTB.Clear();
                         passwordTB.Clear();
 
+                        response = "";
                         MessageBoxResult result = MessageBox.Show("Username or Password incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }

@@ -64,6 +64,7 @@ namespace MiniTorrentServer
 
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
             state.StartTime = DateTime.Now;
+            listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
         }
 
         public void ReadCallback(IAsyncResult ar)
@@ -121,6 +122,11 @@ namespace MiniTorrentServer
                         db.SubmitChanges();
 
                         Send(handler, portRand.ToString());
+                        //  FileTransfer ft = new FileTransfer(username);
+
+                        handler.Shutdown(SocketShutdown.Both);
+                        handler.Close();
+                        serverTB.Text += string.Format("Waiting for a connection...\n\n");
                     }
 
                     else
@@ -151,10 +157,6 @@ namespace MiniTorrentServer
                 
                 int bytesSent = handler.EndSend(ar);
                 serverTB.Text += string.Format("Sent {0} bytes to client.", bytesSent);
-
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
-                serverTB.Text += string.Format("Waiting for a connection...\n\n");
             }
 
             catch (Exception e)
