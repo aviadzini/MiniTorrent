@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
@@ -59,8 +63,6 @@
     <Compile Include="DownlodedPage.xaml.cs">
       <DependentUpon>DownlodedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FilePackage.cs" />
-    <Compile Include="StateObject.cs" />
     <Page Include="DownlodedPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -73,7 +75,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoginPackage.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -97,6 +98,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -107,13 +109,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MiniTorrentPortal\MiniTorrentPortal.csproj">
-      <Project>{CA9A02AD-BB98-4731-A024-53B3304B07C4}</Project>
-      <Name>MiniTorrentPortal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniTorrentServer\MiniTorrentServer.csproj">
-      <Project>{A0974BAD-0E15-4BA8-8F7C-E919408A8BCD}</Project>
-      <Name>MiniTorrentServer</Name>
+    <ProjectReference Include="..\MiniTorrentLibrary\MiniTorrentLibrary.csproj">
+      <Project>{f7918fe1-326e-44c9-9675-3bcc8cd37ec0}</Project>
+      <Name>MiniTorrentLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

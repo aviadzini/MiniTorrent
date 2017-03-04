@@ -30,19 +30,19 @@ namespace MiniTorrentServer
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertClients(Clients instance);
+    partial void UpdateClients(Clients instance);
+    partial void DeleteClients(Clients instance);
     partial void InsertClientFile(ClientFile instance);
     partial void UpdateClientFile(ClientFile instance);
     partial void DeleteClientFile(ClientFile instance);
     partial void InsertFile(File instance);
     partial void UpdateFile(File instance);
     partial void DeleteFile(File instance);
-    partial void InsertClients(Clients instance);
-    partial void UpdateClients(Clients instance);
-    partial void DeleteClients(Clients instance);
     #endregion
 		
 		public MiniTorrentDataContext() : 
-				base(global::MiniTorrentServer.Properties.Settings.Default.MiniTorrentDBConnectionString, mappingSource)
+				base(global::MiniTorrentServer.Properties.Settings.Default.MiniTorrentDBConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -71,6 +71,14 @@ namespace MiniTorrentServer
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<Clients> Clients
+		{
+			get
+			{
+				return this.GetTable<Clients>();
+			}
+		}
+		
 		public System.Data.Linq.Table<ClientFile> ClientFiles
 		{
 			get
@@ -85,296 +93,6 @@ namespace MiniTorrentServer
 			{
 				return this.GetTable<File>();
 			}
-		}
-		
-		public System.Data.Linq.Table<Clients> Clients
-		{
-			get
-			{
-				return this.GetTable<Clients>();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ClientFile")]
-	public partial class ClientFile : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _Username;
-		
-		private string _FileName;
-		
-		private EntityRef<File> _File;
-		
-		private EntityRef<Clients> _Clients;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUsernameChanging(string value);
-    partial void OnUsernameChanged();
-    partial void OnFileNameChanging(string value);
-    partial void OnFileNameChanged();
-    #endregion
-		
-		public ClientFile()
-		{
-			this._File = default(EntityRef<File>);
-			this._Clients = default(EntityRef<Clients>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string Username
-		{
-			get
-			{
-				return this._Username;
-			}
-			set
-			{
-				if ((this._Username != value))
-				{
-					if (this._Clients.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUsernameChanging(value);
-					this.SendPropertyChanging();
-					this._Username = value;
-					this.SendPropertyChanged("Username");
-					this.OnUsernameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string FileName
-		{
-			get
-			{
-				return this._FileName;
-			}
-			set
-			{
-				if ((this._FileName != value))
-				{
-					if (this._File.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnFileNameChanging(value);
-					this.SendPropertyChanging();
-					this._FileName = value;
-					this.SendPropertyChanged("FileName");
-					this.OnFileNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_File", ThisKey="FileName", OtherKey="Name", IsForeignKey=true)]
-		public File File
-		{
-			get
-			{
-				return this._File.Entity;
-			}
-			set
-			{
-				File previousValue = this._File.Entity;
-				if (((previousValue != value) 
-							|| (this._File.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._File.Entity = null;
-						previousValue.ClientFiles.Remove(this);
-					}
-					this._File.Entity = value;
-					if ((value != null))
-					{
-						value.ClientFiles.Add(this);
-						this._FileName = value.Name;
-					}
-					else
-					{
-						this._FileName = default(string);
-					}
-					this.SendPropertyChanged("File");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_Clients", ThisKey="Username", OtherKey="Username", IsForeignKey=true)]
-		public Clients Clients
-		{
-			get
-			{
-				return this._Clients.Entity;
-			}
-			set
-			{
-				Clients previousValue = this._Clients.Entity;
-				if (((previousValue != value) 
-							|| (this._Clients.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Clients.Entity = null;
-						previousValue.ClientFiles.Remove(this);
-					}
-					this._Clients.Entity = value;
-					if ((value != null))
-					{
-						value.ClientFiles.Add(this);
-						this._Username = value.Username;
-					}
-					else
-					{
-						this._Username = default(string);
-					}
-					this.SendPropertyChanged("Clients");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Files")]
-	public partial class File : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _Name;
-		
-		private int _Size;
-		
-		private EntitySet<ClientFile> _ClientFiles;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnSizeChanging(int value);
-    partial void OnSizeChanged();
-    #endregion
-		
-		public File()
-		{
-			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Size", DbType="Int NOT NULL")]
-		public int Size
-		{
-			get
-			{
-				return this._Size;
-			}
-			set
-			{
-				if ((this._Size != value))
-				{
-					this.OnSizeChanging(value);
-					this.SendPropertyChanging();
-					this._Size = value;
-					this.SendPropertyChanged("Size");
-					this.OnSizeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_ClientFiles", ThisKey="Name", OtherKey="FileName")]
-		public EntitySet<ClientFile> ClientFiles
-		{
-			get
-			{
-				return this._ClientFiles;
-			}
-			set
-			{
-				this._ClientFiles.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_ClientFiles(ClientFile entity)
-		{
-			this.SendPropertyChanging();
-			entity.File = this;
-		}
-		
-		private void detach_ClientFiles(ClientFile entity)
-		{
-			this.SendPropertyChanging();
-			entity.File = null;
 		}
 	}
 	
@@ -633,6 +351,288 @@ namespace MiniTorrentServer
 		{
 			this.SendPropertyChanging();
 			entity.Clients = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ClientFile")]
+	public partial class ClientFile : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Username;
+		
+		private string _FileName;
+		
+		private EntityRef<Clients> _Clients;
+		
+		private EntityRef<File> _File;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnFileNameChanging(string value);
+    partial void OnFileNameChanged();
+    #endregion
+		
+		public ClientFile()
+		{
+			this._Clients = default(EntityRef<Clients>);
+			this._File = default(EntityRef<File>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					if (this._Clients.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileName", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string FileName
+		{
+			get
+			{
+				return this._FileName;
+			}
+			set
+			{
+				if ((this._FileName != value))
+				{
+					if (this._File.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFileNameChanging(value);
+					this.SendPropertyChanging();
+					this._FileName = value;
+					this.SendPropertyChanged("FileName");
+					this.OnFileNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_Clients", ThisKey="Username", OtherKey="Username", IsForeignKey=true)]
+		public Clients Clients
+		{
+			get
+			{
+				return this._Clients.Entity;
+			}
+			set
+			{
+				Clients previousValue = this._Clients.Entity;
+				if (((previousValue != value) 
+							|| (this._Clients.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Clients.Entity = null;
+						previousValue.ClientFiles.Remove(this);
+					}
+					this._Clients.Entity = value;
+					if ((value != null))
+					{
+						value.ClientFiles.Add(this);
+						this._Username = value.Username;
+					}
+					else
+					{
+						this._Username = default(string);
+					}
+					this.SendPropertyChanged("Clients");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_File", ThisKey="FileName", OtherKey="Name", IsForeignKey=true)]
+		public File File
+		{
+			get
+			{
+				return this._File.Entity;
+			}
+			set
+			{
+				File previousValue = this._File.Entity;
+				if (((previousValue != value) 
+							|| (this._File.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._File.Entity = null;
+						previousValue.ClientFiles.Remove(this);
+					}
+					this._File.Entity = value;
+					if ((value != null))
+					{
+						value.ClientFiles.Add(this);
+						this._FileName = value.Name;
+					}
+					else
+					{
+						this._FileName = default(string);
+					}
+					this.SendPropertyChanged("File");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Files")]
+	public partial class File : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Name;
+		
+		private int _Size;
+		
+		private EntitySet<ClientFile> _ClientFiles;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnSizeChanging(int value);
+    partial void OnSizeChanged();
+    #endregion
+		
+		public File()
+		{
+			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Size", DbType="Int NOT NULL")]
+		public int Size
+		{
+			get
+			{
+				return this._Size;
+			}
+			set
+			{
+				if ((this._Size != value))
+				{
+					this.OnSizeChanging(value);
+					this.SendPropertyChanging();
+					this._Size = value;
+					this.SendPropertyChanged("Size");
+					this.OnSizeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_ClientFiles", ThisKey="Name", OtherKey="FileName")]
+		public EntitySet<ClientFile> ClientFiles
+		{
+			get
+			{
+				return this._ClientFiles;
+			}
+			set
+			{
+				this._ClientFiles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.File = this;
+		}
+		
+		private void detach_ClientFiles(ClientFile entity)
+		{
+			this.SendPropertyChanging();
+			entity.File = null;
 		}
 	}
 }

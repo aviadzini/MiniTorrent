@@ -45,3 +45,9 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorre
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentServer.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentPortal.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentServer.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\DownlodedPage.g.cs
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\DownlodedPage.baml
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentLibrary.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentLibrary.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\Newtonsoft.Json.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\Newtonsoft.Json.xml

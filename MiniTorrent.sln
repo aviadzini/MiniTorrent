@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTorrentClient", "MiniTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTorrentServer", "MiniTorrentServer\MiniTorrentServer.csproj", "{A0974BAD-0E15-4BA8-8F7C-E919408A8BCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTorrentLibrary", "MiniTorrentLibrary\MiniTorrentLibrary.csproj", "{F7918FE1-326E-44C9-9675-3BCC8CD37EC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A0974BAD-0E15-4BA8-8F7C-E919408A8BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0974BAD-0E15-4BA8-8F7C-E919408A8BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0974BAD-0E15-4BA8-8F7C-E919408A8BCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7918FE1-326E-44C9-9675-3BCC8CD37EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7918FE1-326E-44C9-9675-3BCC8CD37EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7918FE1-326E-44C9-9675-3BCC8CD37EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7918FE1-326E-44C9-9675-3BCC8CD37EC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

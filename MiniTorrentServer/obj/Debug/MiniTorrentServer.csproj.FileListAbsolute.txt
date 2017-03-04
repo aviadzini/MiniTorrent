@@ -2,7 +2,6 @@ C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\Mini
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentServer.exe
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentServer.pdb
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.csprojResolveAssemblyReference.cache
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.Form1.resources
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.Properties.Resources.resources
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.csproj.GenerateResource.Cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.exe
@@ -46,3 +45,8 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\roslyn\VB
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\roslyn\VBCSCompiler.exe.config
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentPortal.dll
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentPortal.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorrentServer.ServerWindow.resources
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentLibrary.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentLibrary.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\Newtonsoft.Json.xml
