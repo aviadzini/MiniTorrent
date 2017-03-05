@@ -133,6 +133,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MiniTorrentClient\MiniTorrentClient.csproj">
+      <Project>{678D67AC-4FAB-4177-AC59-9F32759B0A3B}</Project>
+      <Name>MiniTorrentClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MiniTorrentLibrary\MiniTorrentLibrary.csproj">
       <Project>{f7918fe1-326e-44c9-9675-3bcc8cd37ec0}</Project>
       <Name>MiniTorrentLibrary</Name>

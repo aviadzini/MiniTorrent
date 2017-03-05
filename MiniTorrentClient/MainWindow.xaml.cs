@@ -81,7 +81,7 @@ namespace MiniTorrentClient
 
                     if (int.Parse(response) > 0)
                     {
-                        DownlodedPage dp = new DownlodedPage(clientSocket, usernameTB.Text, int.Parse(response));
+                       SearchPage dp = new SearchPage(clientSocket, usernameTB.Text, int.Parse(response));
                         dp.Show();
                         Close();
                     }

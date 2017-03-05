@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using MiniTorrentLibrary;
 using Newtonsoft.Json;
+using MiniTorrentClient;
 
 namespace MiniTorrentServer
 {
@@ -83,16 +84,17 @@ namespace MiniTorrentServer
                     MiniTorrentDataContext db = new MiniTorrentDataContext();
 
                     var deserialized = JsonConvert.DeserializeObject<PackageWrapper>(content);
+                  
 
                     if (deserialized.PackageType == typeof(LoginPackage))
                     {
                         var lp = JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
-
+                        
                         var c = (from clients in db.Clients
                                  where clients.Username == ((LoginPackage)lp).Username
                                  where clients.Password == ((LoginPackage)lp).Password
                                  select clients).FirstOrDefault();
-
+                    //    serverTB.Text += string.Format(((LoginPackage)lp).Password);
                         if (c != null)
                         {
                             Random rnd = new Random();
@@ -106,6 +108,7 @@ namespace MiniTorrentServer
                                          where clients.Port == randomPort
                                          select clients).ToList();
                             }
+
                             while (ports.Count > 0);
 
                             c.Active = true;
@@ -129,8 +132,12 @@ namespace MiniTorrentServer
                         var fs = JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
                         var f = (from files in db.Files
+                                 join clintsFile in db.ClientFiles
+                                 on files.Name equals clintsFile.FileName
+                                 join clients in db.Clients
+                                 on clintsFile.Username equals clients.Username
                                  where files.Name == ((FileSearch)fs).FileName
-                                 select files).ToList();
+                                 select new { clients.Username,files.Size,clients.Port,clients.IP}).ToList();
 
                         if (f.Count == 0)
                         {
@@ -138,7 +145,31 @@ namespace MiniTorrentServer
                             {
                                 Exist = false
                             };
-                            
+
+                            byte[] sendAnswer = Encoding.ASCII.GetBytes(javaScriptSerializer.Serialize(fp) + Constants.EOF);
+                            handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
+                        }
+                        else
+                        {
+                            List<MiniTorrentLibrary.File> l = new List<MiniTorrentLibrary.File>();
+                            for (int i = 0; i < f.Count; i++)
+                            {
+                                MiniTorrentLibrary.File file = new MiniTorrentLibrary.File
+                                {
+                                    Username=f.ElementAt(i).Username,
+                                    FileSize=f.ElementAt(i).Size,
+                                    Port=(int)f.ElementAt(i).Port,
+                                    Ip=f.ElementAt(i).IP
+                                };
+                                l.Add(file);
+                            }
+                            FilePackage fp = new FilePackage
+                                {
+                                    Exist = true,
+                                    FileName = ((FileSearch)fs).FileName,
+                                    CountClients = f.Count,
+                                    FilesList = l
+                                };
                             byte[] sendAnswer = Encoding.ASCII.GetBytes(javaScriptSerializer.Serialize(fp) + Constants.EOF);
                             handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
