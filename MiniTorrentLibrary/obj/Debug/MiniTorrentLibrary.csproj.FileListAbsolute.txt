@@ -2,7 +2,6 @@ C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\Min
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\MiniTorrentLibrary.pdb
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.dll
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\Newtonsoft.Json.dll
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\Newtonsoft.Json.xml
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\MiniTorrentLibrary.dll
@@ -12,3 +11,5 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\Newtonso
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.dll
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.csprojResolveAssemblyReference.cache
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\MiniTorrentLibrary.dll.config
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.csprojResolveAssemblyReference.cache

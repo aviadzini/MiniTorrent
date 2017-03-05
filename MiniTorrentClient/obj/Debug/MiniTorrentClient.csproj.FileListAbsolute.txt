@@ -12,8 +12,6 @@ C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\Mini
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.csproj.GenerateResource.Cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\DownlodedPage.g.cs
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\DownlodedPage.baml
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentLibrary.dll
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentLibrary.pdb
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\Newtonsoft.Json.dll
@@ -38,3 +36,5 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorre
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.exe
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\MiniTorrentClient.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentClient\bin\Debug\MiniTorrentClient.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\SearchPage.g.cs
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentClient\obj\Debug\SearchPage.baml

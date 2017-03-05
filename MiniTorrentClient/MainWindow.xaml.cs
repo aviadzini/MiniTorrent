@@ -11,12 +11,15 @@ namespace MiniTorrentClient
 {
     public partial class MainWindow : Window
     {
-        private Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        private static string response = string.Empty; 
+        private Socket clientSocket;
+
+        private string response = string.Empty; 
         
         public MainWindow()
         {
             InitializeComponent();
+
+            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
         private void StartClient()
@@ -24,8 +27,8 @@ namespace MiniTorrentClient
             try
             {
                 clientSocket.Connect(new IPEndPoint(
-                    IPAddress.Parse(Constants.ServerIP),
-                    Constants.ServerPort));
+                    IPAddress.Parse(ServerConstants.ServerIP),
+                    ServerConstants.ServerPort));
             }
 
             catch (Exception ex)
@@ -53,7 +56,7 @@ namespace MiniTorrentClient
                 IP = ipA
             };
 
-            return JsonConvert.SerializeObject(pw) + Constants.EOF;
+            return JsonConvert.SerializeObject(pw) + ServerConstants.EOF;
         }
 
         private void loginB_Click(object sender, RoutedEventArgs e)
