@@ -49,13 +49,13 @@ namespace MiniTorrentPortal {
         protected global::System.Web.UI.WebControls.Label FilesLabel;
         
         /// <summary>
-        /// FielsTable control.
+        /// FilesTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable FielsTable;
+        protected global::System.Web.UI.HtmlControls.HtmlTable FilesTable;
         
         /// <summary>
         /// SumLable control.

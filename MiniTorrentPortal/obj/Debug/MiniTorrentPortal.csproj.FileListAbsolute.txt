@@ -106,3 +106,6 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\Newtonsoft.Json
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.dll
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.csprojResolveAssemblyReference.cache
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\MiniTorrentLibrary.dll
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\MiniTorrentLibrary.pdb

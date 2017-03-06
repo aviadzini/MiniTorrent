@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Linq;
+using MiniTorrentLibrary;
 
 namespace MiniTorrentPortal
 {
     public partial class ClientPage : Page
     {
         string username = "";
-        string connectString;
-        MiniTorrentDataContext db;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             username = Request.QueryString["Name"];
-
-            connectString = ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-            db = new MiniTorrentDataContext(connectString);
 
             if (!IsPostBack)
                 BindGrid();
@@ -26,18 +21,15 @@ namespace MiniTorrentPortal
 
         protected void LogoutOnClick(object sender, EventArgs e)
         {
-            var c = (from clients in db.Clients
-                     where clients.Username == username
-                     select clients).Single();
-
-            c.Active = false;
-            db.SubmitChanges();
+            ClientsDBO.deactivateClient(username);
 
             Response.Redirect("HomePage.html");
         }
 
         private void BindGrid()
         {
+            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+
             var c = from clients in db.Clients
                     where clients.Username == username
                     select new { clients.Username, clients.Password, clients.UpPath, clients.DownPath };
@@ -60,14 +52,9 @@ namespace MiniTorrentPortal
             string upPath = (row.Cells[3].Controls[0] as TextBox).Text;
             string downPath = (row.Cells[4].Controls[0] as TextBox).Text;
 
-            var c = (from clients in db.Clients
-                    where clients.Username == username
-                    select clients).Single();
-
-            c.Password = password;
-            c.UpPath = upPath;
-            c.DownPath = downPath;
-            db.SubmitChanges();
+            ClientsDBO.updatePassword(username, password);
+            ClientsDBO.updateUpPath(username, upPath);
+            ClientsDBO.updateDownPath(username, downPath);
 
             GridView1.EditIndex = -1;
             BindGrid();

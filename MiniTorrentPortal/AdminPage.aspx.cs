@@ -3,27 +3,18 @@ using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Configuration;
+using MiniTorrentLibrary;
 
 namespace MiniTorrentPortal
 {
     public partial class AdminPage : Page
     {
         string username = "";
-        string connectString;
-        MiniTorrentDataContext db;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             username = Request.QueryString["Name"];
 
-            connectString = ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-            db = new MiniTorrentDataContext(connectString);
-
-            var c = (from clients in db.Clients
-                     where clients.Username != username
-                     select clients).ToList();
-            
             LinkButton deleteButton = new LinkButton();
             LinkButton updateButton = new LinkButton();
 
@@ -48,11 +39,16 @@ namespace MiniTorrentPortal
             cell = new HtmlTableCell();
             cell.InnerText = "Delete";
             row.Cells.Add(cell);
-            
+
             ClientTable.Rows.Add(row);
-           
-            foreach (var item in c)
+
+            var listOfClients = ClientsDBO.getAllClients();
+
+            foreach (var item in listOfClients)
             {
+                if (item.Username == username)
+                    break;
+
                 row = new HtmlTableRow();
 
                 cell = new HtmlTableCell();
@@ -74,7 +70,7 @@ namespace MiniTorrentPortal
                 cell = new HtmlTableCell();
                 cell.Controls.Add(updateButton);
                 row.Cells.Add(cell);
- 
+
                 deleteButton = new LinkButton();
                 deleteButton.Text = "Delete";
                 deleteButton.CommandArgument = item.Username;
@@ -91,35 +87,23 @@ namespace MiniTorrentPortal
         {
             Response.Redirect("ClientPage.aspx?Name=" + username);
         }
+
         protected void LogoutOnClick(object sender, EventArgs e)
         {
-            var c = (from clients in db.Clients
-                     where clients.Username == username
-                     select clients).Single();
-
-            c.Active = false;
-            db.SubmitChanges();
+            ClientsDBO.deactivateClient(username);
 
             Response.Redirect("HomePage.html");
         }
 
         private void UpdateToAdmin(object sender, EventArgs e)
         {
-            string message = "The user is already admin!";
             LinkButton button = (LinkButton)sender;
             string user = button.CommandArgument;
 
-            var c = (from clients in db.Clients
-                     where clients.Username == user
-                     select clients).Single();
+            string message = "The user is already admin!";
 
-            if (!c.Admin)
-            {
-                c.Admin = true;
-                db.SubmitChanges();
-
+            if (ClientsDBO.updateToAdmin(user))
                 message = "The user become an admin! ";
-            }
 
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
               "alert('" + message + "'); window.location='" +
@@ -128,25 +112,20 @@ namespace MiniTorrentPortal
 
         private void DeleteUser(object sender, EventArgs e)
         {
-            string message = "";
             LinkButton button = (LinkButton)sender;
             string user = button.CommandArgument;
 
-            var c = (from clients in db.Clients
-                         where clients.Username == user
-                         select clients).Single();
+            string message = "You cannot delete an admin user!";
 
-            if (c.Active)
-                message = "The user active now,//nPlease try later! ";
-
-            else if (c.Admin)
-                message = "You cannot delete an admin user! ";
+            if (ClientsDBO.deleteClient(user))
+                message = "The user have been deleted!";
 
             else
             {
-                db.Clients.DeleteOnSubmit(c);
-                db.SubmitChanges();
-                message = "The user have been deleted! ";
+                var c = ClientsDBO.getClientsByName(user).First();
+
+                if (c.Active)
+                    message = "The user active now,//nPlease try later!";
             }
 
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",

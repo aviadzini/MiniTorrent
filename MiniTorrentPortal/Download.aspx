@@ -19,7 +19,7 @@
              
         </p>
         <asp:Label ID =  "FilesLabel" runat="server" Text="Files in application"/> 
-        <table id = "FielsTable" runat = "server" cellpadding="5" />
+        <table id = "FilesTable" runat = "server" cellpadding="5" />
         <p>
          <asp:Label ID =  "SumLable" runat="server" Text=""/> 
         </p>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using MiniTorrentLibrary;
 
 namespace MiniTorrentPortal
 {
@@ -13,35 +13,30 @@ namespace MiniTorrentPortal
 
         protected void LoginOnClick(object sender, EventArgs e)
         {
-            string connectString = System.Configuration.ConfigurationManager
-                .ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
+            var client = ClientsDBO.getClientsByUsernamePassword(UsernameTB.Text, PasswordTB.Text);
 
-            MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
-
-            var c = (from clients in db.Clients
-                     where clients.Username == UsernameTB.Text
-                     where clients.Password == PasswordTB.Text
-                     select clients).ToList();
-
-            if (c.Count == 0)
+            if (client.Count == 0)
                 ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
                    "alert(' Username or password is incorrect '); window.location='" +
                    Request.ApplicationPath + "Login.aspx';", true);
 
-            else if (c.ElementAt(0).Active)
-                ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
-                   "alert(' Username is already loggedin '); window.location='" +
-                   Request.ApplicationPath + "Login.aspx';", true);
-
             else
             {
-                c.ElementAt(0).Active = true;
-                db.SubmitChanges();
+                if (!client.First().Active)
+                {
+                    ClientsDBO.activateClient(client.First().Username);
 
-                if (c.ElementAtOrDefault(0).Admin)
-                    Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
+                    if (client.First().Admin)
+                        Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
+
+                    else
+                        Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
+                }
+
                 else
-                    Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
+                       "alert(' Username is already loggedin '); window.location='" +
+                       Request.ApplicationPath + "Login.aspx';", true);
             }
         }
     }

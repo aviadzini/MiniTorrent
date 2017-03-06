@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using MiniTorrentLibrary;
 
 namespace MiniTorrentPortal
 {
@@ -34,26 +33,20 @@ namespace MiniTorrentPortal
 
         protected void RegisterOnClick(object sender, EventArgs e)
         {
-            if (UpPathTB.Text == null)
+            if (UpPathTB.Text == "")
             {
-
                 //DownPathRFV.ErrorMessage="Required Upload Path!";
             }
+
             else
-
             {
-                string connectString = System.Configuration.ConfigurationManager.ConnectionStrings["MiniTorrentDBConnectionString1"].ToString();
-                MiniTorrentDataContext db = new MiniTorrentDataContext(connectString);
-
                 string message = "";
 
-                var c = (from clients in db.Clients
-                         where clients.Username == UsernameTB.Text
-                         select clients).ToList();
+                var c = ClientsDBO.getClientsByName(UsernameTB.Text);
 
                 if (c.Count == 0)
                 {
-                    var u = new Clients
+                    var client = new Clients
                     {
                         Username = UsernameTB.Text,
                         Password = PasswordTB.Text,
@@ -63,8 +56,7 @@ namespace MiniTorrentPortal
                         Admin = false
                     };
 
-                    db.Clients.InsertOnSubmit(u);
-                    db.SubmitChanges();
+                    ClientsDBO.insertClient(client);
 
                     message = "Registration successful.";
                 }
