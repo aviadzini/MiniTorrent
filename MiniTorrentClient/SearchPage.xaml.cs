@@ -95,10 +95,10 @@ namespace MiniTorrentClient
             clientSocket.Disconnect(true);
             clientSocket.Dispose();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            /////////////////////////////////////////////////////////
+            
         }
     }
 

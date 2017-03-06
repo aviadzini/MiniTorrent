@@ -14,6 +14,7 @@
             <div style = "margin-left:50px; ">
                 <p style = "font-size:medium;">All Users</p>
                 <table id = "ClientTable" runat = "server" cellpadding="10"/> 
+                
             </div> <br />
 
             <asp:LinkButton ID = "editLB" runat = "server" Text = "EditProfile" 

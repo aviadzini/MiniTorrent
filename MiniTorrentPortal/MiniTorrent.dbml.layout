@@ -2,36 +2,36 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="MiniTorrent">
   <DataContextMoniker Name="/MiniTorrentDataContext" />
   <nestedChildShapes>
-    <classShape Id="109ce670-efdd-4f99-85f1-78bd0a5f5190" absoluteBounds="0.5, 0.5, 2, 1.1939925130208333">
-      <DataClassMoniker Name="/MiniTorrentDataContext/ClientFile" />
-      <nestedChildShapes>
-        <elementListCompartment Id="c2fc4ea9-0bed-4ba9-8540-c3bd74988788" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="0f07b5ae-7d68-4b72-b86c-582c3c12acc7" absoluteBounds="3.25, 0.5, 2, 1.1939925130208333">
-      <DataClassMoniker Name="/MiniTorrentDataContext/File" />
-      <nestedChildShapes>
-        <elementListCompartment Id="8020083a-452b-469e-a695-d33d5a56d378" absoluteBounds="3.2649999999999997, 0.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(3.25 : 1.09699625651042); (2.5 : 1.09699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/MiniTorrentDataContext/File/File_ClientFile" />
-      <nodes>
-        <classShapeMoniker Id="0f07b5ae-7d68-4b72-b86c-582c3c12acc7" />
-        <classShapeMoniker Id="109ce670-efdd-4f99-85f1-78bd0a5f5190" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="f041de3d-1bd7-4561-8cad-71e01d444a4e" absoluteBounds="0.625, 2.125, 2, 2.3478011067708335">
+    <classShape Id="f041de3d-1bd7-4561-8cad-71e01d444a4e" absoluteBounds="0.5, 2.25, 2, 2.3478011067708335">
       <DataClassMoniker Name="/MiniTorrentDataContext/Clients" />
       <nestedChildShapes>
-        <elementListCompartment Id="62e897e8-1444-4530-a02a-d6fbc32fc945" absoluteBounds="0.64000000000000012, 2.585, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="62e897e8-1444-4530-a02a-d6fbc32fc945" absoluteBounds="0.51500000000000012, 2.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.5625 : 2.125); (1.5625 : 1.69399251302083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/MiniTorrentDataContext/Clients/Client_ClientFile" />
+    <classShape Id="0f69ce23-02c8-4228-b58e-c6f952a24ab5" absoluteBounds="1.875, 0.5, 2, 1.3862939453125">
+      <DataClassMoniker Name="/MiniTorrentDataContext/ClientFile" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a123a112-e257-4733-b02b-7e32e9d214e0" absoluteBounds="1.8900000000000001, 0.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3a39ed08-494c-44c8-84d6-5df4fe4849ea" absoluteBounds="3.875, 2, 2, 1.3862939453125">
+      <DataClassMoniker Name="/MiniTorrentDataContext/File" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4506a8c2-b14e-494f-9eba-7a029c024b33" absoluteBounds="3.8899999999999997, 2.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.1875 : 2.25); (2.1875 : 1.8862939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/MiniTorrentDataContext/Clients/Clients_ClientFile" />
       <nodes>
         <classShapeMoniker Id="f041de3d-1bd7-4561-8cad-71e01d444a4e" />
-        <classShapeMoniker Id="109ce670-efdd-4f99-85f1-78bd0a5f5190" />
+        <classShapeMoniker Id="0f69ce23-02c8-4228-b58e-c6f952a24ab5" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.8750005 : 2); (4.8750005 : 1.19314697265625); (3.875 : 1.19314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/MiniTorrentDataContext/File/File_ClientFile" />
+      <nodes>
+        <classShapeMoniker Id="3a39ed08-494c-44c8-84d6-5df4fe4849ea" />
+        <classShapeMoniker Id="0f69ce23-02c8-4228-b58e-c6f952a24ab5" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>
