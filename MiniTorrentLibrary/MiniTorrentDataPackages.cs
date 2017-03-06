@@ -23,7 +23,12 @@ namespace MiniTorrentLibrary
         public string Password { get; set; }
         public string IP { get; set; }
     }
-
+   
+   /////////////////////////////////////////////
+    public class LogoutPackage
+    {
+        public string Username { get; set; }
+    }
     public class FileSearch
     {
         public string FileName { get; set; }

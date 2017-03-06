@@ -70,6 +70,8 @@ namespace MiniTorrentLibrary
 
             var u = (from clients in db.Clients
                      where clients.Username == username
+                     /////////////////////////////////////////only if the user is active we can download his files.
+                     where clients.Active==true
                      select clients).Single();
 
             return new Tuple<string, int>(u.IP, (int)u.Port);
@@ -84,6 +86,22 @@ namespace MiniTorrentLibrary
                      select files.Size).Single();
 
             return z;
+        }
+      
+        /// /////////////////////////////////////////////////
+  
+        public static void logout(string username)
+        {
+            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).Single();
+
+            client.Active = false;
+            client.IP = null;
+            client.Port = null;
+
+            db.SubmitChanges();
         }
     }
 

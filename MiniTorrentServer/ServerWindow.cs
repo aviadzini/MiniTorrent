@@ -117,8 +117,8 @@ namespace MiniTorrentServer
                             handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
                     }
-
-                    else
+                    //////////////////////
+                    else if (deserialized.PackageType == typeof(FileSearch))
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
@@ -164,6 +164,12 @@ namespace MiniTorrentServer
                             byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(fp) + ServerConstants.EOF);
                             handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
+                    }
+                    //////////////////////////////////////
+                    else
+                    {
+                        LogoutPackage logoutp = (LogoutPackage)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
+                        ClientsClass.logout(logoutp.Username);
                     }
                 }
 

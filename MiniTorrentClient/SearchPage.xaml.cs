@@ -87,11 +87,25 @@ namespace MiniTorrentClient
                 dataGrid.Items.Add(new Item() { Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
             }
         }
+    
+        /// ///////////////////////////////////
+      
+        private void Logout()
+        {
+            var pw = new PackageWrapper();
 
+            pw.PackageType = typeof(LoginPackage);
+            pw.Package = new LogoutPackage
+            {
+                Username = username
+            };
+            clientSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
+        }
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
+            //////////////////////////////////////
+            Logout();
             clientSocket.Disconnect(true);
             clientSocket.Dispose();
         }
