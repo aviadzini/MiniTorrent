@@ -22,16 +22,14 @@ namespace MiniTorrentPortal
 
             else
             {
-                if (!client.First().Active)
-                {
-                    ClientsDBO.activateClient(client.First().Username);
+               
 
                     if (client.First().Admin)
                         Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
 
                     else
                         Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
-                }
+                
 
                 else
                     ScriptManager.RegisterStartupScript(this, GetType(), "redirect",

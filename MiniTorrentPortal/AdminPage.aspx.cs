@@ -90,7 +90,7 @@ namespace MiniTorrentPortal
 
         protected void LogoutOnClick(object sender, EventArgs e)
         {
-            ClientsDBO.deactivateClient(username);
+            
 
             Response.Redirect("HomePage.html");
         }
@@ -115,7 +115,7 @@ namespace MiniTorrentPortal
             LinkButton button = (LinkButton)sender;
             string user = button.CommandArgument;
 
-            string message = "You cannot delete an admin user!";
+            string message ="";
 
             if (ClientsDBO.deleteClient(user))
                 message = "The user have been deleted!";
@@ -124,8 +124,8 @@ namespace MiniTorrentPortal
             {
                 var c = ClientsDBO.getClientsByName(user).First();
 
-                if (c.Active)
-                    message = "The user active now,//nPlease try later!";
+                if (c.Admin)
+                    message = "You cannot delete an admin user!";
             }
 
             ScriptManager.RegisterStartupScript(this, GetType(), "redirect",

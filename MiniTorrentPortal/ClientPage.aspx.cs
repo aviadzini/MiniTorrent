@@ -21,7 +21,7 @@ namespace MiniTorrentPortal
 
         protected void LogoutOnClick(object sender, EventArgs e)
         {
-            ClientsDBO.deactivateClient(username);
+            
 
             Response.Redirect("HomePage.html");
         }

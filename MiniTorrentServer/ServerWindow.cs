@@ -90,7 +90,7 @@ namespace MiniTorrentServer
                     {
                         LoginPackage lp = (LoginPackage)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
-                        var client = ClientsClass.getClientsByLogin(lp);
+                        var client = ClientsDBO.getClientsByLoginPackage(lp);
 
                         if (client.Count > 0)
                         {
@@ -101,11 +101,11 @@ namespace MiniTorrentServer
                             do
                             {
                                 randomPort = random.Next(8006, 9000);
-                                portClients = ClientsClass.getClientsByPort(randomPort);
+                                portClients = ClientsDBO.getClientsByPort(randomPort);
                             }
                             while (portClients.Count > 0);
 
-                            ClientsClass.setClientActive(lp, randomPort);
+                            ClientsDBO.setClientLogin(lp, randomPort);
 
                             byte[] sendPort = Encoding.ASCII.GetBytes(randomPort.ToString());
                             handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
@@ -122,7 +122,7 @@ namespace MiniTorrentServer
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
-                        List<ClientFile> list = ClientsClass.getClientFiles(fs.FileName);
+                        List<ClientFile> list = ClientFileDBO.getClientFileByName(fs.FileName);
 
                         if (list.Count == 0)
                         {
@@ -140,8 +140,8 @@ namespace MiniTorrentServer
                             List<FileDetails> lfd = new List<FileDetails>();
                             foreach (var item in list)
                             {
-                                Tuple<string, int> d = ClientsClass.getIpPort(item.Username);
-                                int size = ClientsClass.getFileSize(item.FileID);
+                                Tuple<string, int> d = ClientsDBO.getIpPortByName(item.Username);
+                                int size = FilesDBO.getFileSize(item.FileID);
                                 FileDetails file = new FileDetails
                                 {
                                     Username = item.Username,
@@ -169,7 +169,7 @@ namespace MiniTorrentServer
                     else
                     {
                         LogoutPackage logoutp = (LogoutPackage)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
-                        ClientsClass.logout(logoutp.Username);
+                        ClientsDBO.setClientLogout(logoutp.Username);
                     }
                 }
 

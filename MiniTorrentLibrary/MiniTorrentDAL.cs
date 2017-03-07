@@ -140,7 +140,7 @@ namespace MiniTorrentLibrary
 
             var client = getClientsByName(username).First();
 
-            if (client.Admin || client.Active)
+            if (client.Admin) 
                 return false;
 
             db.Clients.DeleteOnSubmit(client);
