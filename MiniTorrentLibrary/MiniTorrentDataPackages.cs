@@ -8,7 +8,7 @@ namespace MiniTorrentLibrary
         public const int ServerPort = 8005;
         public const int BufferSize = 1024;
         public const string EOF = "<EOF>";
-        public const string ServerIP = "192.168.1.12";
+        public const string ServerIP = "192.168.1.15";
     }
 
     public class PackageWrapper

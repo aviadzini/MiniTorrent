@@ -33,12 +33,12 @@ namespace MiniTorrentLibrary
     partial void InsertClients(Clients instance);
     partial void UpdateClients(Clients instance);
     partial void DeleteClients(Clients instance);
-    partial void InsertFile(File instance);
-    partial void UpdateFile(File instance);
-    partial void DeleteFile(File instance);
-    partial void InsertClientFile(ClientFile instance);
-    partial void UpdateClientFile(ClientFile instance);
-    partial void DeleteClientFile(ClientFile instance);
+    partial void InsertFiles(Files instance);
+    partial void UpdateFiles(Files instance);
+    partial void DeleteFiles(Files instance);
+    partial void InsertClientFiles(ClientFiles instance);
+    partial void UpdateClientFiles(ClientFiles instance);
+    partial void DeleteClientFiles(ClientFiles instance);
     #endregion
 		
 		public MiniTorrentDBDataContext() : 
@@ -79,19 +79,19 @@ namespace MiniTorrentLibrary
 			}
 		}
 		
-		public System.Data.Linq.Table<File> Files
+		public System.Data.Linq.Table<Files> Files
 		{
 			get
 			{
-				return this.GetTable<File>();
+				return this.GetTable<Files>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ClientFile> ClientFiles
+		public System.Data.Linq.Table<ClientFiles> ClientFiles
 		{
 			get
 			{
-				return this.GetTable<ClientFile>();
+				return this.GetTable<ClientFiles>();
 			}
 		}
 	}
@@ -118,7 +118,7 @@ namespace MiniTorrentLibrary
 		
 		private System.Nullable<int> _Port;
 		
-		private EntitySet<ClientFile> _ClientFiles;
+		private EntitySet<ClientFiles> _ClientFiles;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -144,7 +144,7 @@ namespace MiniTorrentLibrary
 		
 		public Clients()
 		{
-			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
+			this._ClientFiles = new EntitySet<ClientFiles>(new Action<ClientFiles>(this.attach_ClientFiles), new Action<ClientFiles>(this.detach_ClientFiles));
 			OnCreated();
 		}
 		
@@ -309,7 +309,7 @@ namespace MiniTorrentLibrary
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Clients_ClientFile", Storage="_ClientFiles", ThisKey="Username", OtherKey="Username")]
-		public EntitySet<ClientFile> ClientFiles
+		public EntitySet<ClientFiles> ClientFiles
 		{
 			get
 			{
@@ -341,13 +341,13 @@ namespace MiniTorrentLibrary
 			}
 		}
 		
-		private void attach_ClientFiles(ClientFile entity)
+		private void attach_ClientFiles(ClientFiles entity)
 		{
 			this.SendPropertyChanging();
 			entity.Clients = this;
 		}
 		
-		private void detach_ClientFiles(ClientFile entity)
+		private void detach_ClientFiles(ClientFiles entity)
 		{
 			this.SendPropertyChanging();
 			entity.Clients = null;
@@ -355,7 +355,7 @@ namespace MiniTorrentLibrary
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Files")]
-	public partial class File : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Files : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -366,7 +366,7 @@ namespace MiniTorrentLibrary
 		
 		private int _Size;
 		
-		private EntitySet<ClientFile> _ClientFiles;
+		private EntitySet<ClientFiles> _ClientFiles;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -380,9 +380,9 @@ namespace MiniTorrentLibrary
     partial void OnSizeChanged();
     #endregion
 		
-		public File()
+		public Files()
 		{
-			this._ClientFiles = new EntitySet<ClientFile>(new Action<ClientFile>(this.attach_ClientFiles), new Action<ClientFile>(this.detach_ClientFiles));
+			this._ClientFiles = new EntitySet<ClientFiles>(new Action<ClientFiles>(this.attach_ClientFiles), new Action<ClientFiles>(this.detach_ClientFiles));
 			OnCreated();
 		}
 		
@@ -447,7 +447,7 @@ namespace MiniTorrentLibrary
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_ClientFiles", ThisKey="ID", OtherKey="FileID")]
-		public EntitySet<ClientFile> ClientFiles
+		public EntitySet<ClientFiles> ClientFiles
 		{
 			get
 			{
@@ -479,21 +479,21 @@ namespace MiniTorrentLibrary
 			}
 		}
 		
-		private void attach_ClientFiles(ClientFile entity)
+		private void attach_ClientFiles(ClientFiles entity)
 		{
 			this.SendPropertyChanging();
-			entity.File = this;
+			entity.Files = this;
 		}
 		
-		private void detach_ClientFiles(ClientFile entity)
+		private void detach_ClientFiles(ClientFiles entity)
 		{
 			this.SendPropertyChanging();
-			entity.File = null;
+			entity.Files = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ClientFile")]
-	public partial class ClientFile : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class ClientFiles : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -504,7 +504,7 @@ namespace MiniTorrentLibrary
 		
 		private string _FileName;
 		
-		private EntityRef<File> _File;
+		private EntityRef<Files> _File;
 		
 		private EntityRef<Clients> _Clients;
 		
@@ -520,9 +520,9 @@ namespace MiniTorrentLibrary
     partial void OnFileNameChanged();
     #endregion
 		
-		public ClientFile()
+		public ClientFiles()
 		{
-			this._File = default(EntityRef<File>);
+			this._File = default(EntityRef<Files>);
 			this._Clients = default(EntityRef<Clients>);
 			OnCreated();
 		}
@@ -596,7 +596,7 @@ namespace MiniTorrentLibrary
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="File_ClientFile", Storage="_File", ThisKey="FileID", OtherKey="ID", IsForeignKey=true)]
-		public File File
+		public Files Files
 		{
 			get
 			{
@@ -604,7 +604,7 @@ namespace MiniTorrentLibrary
 			}
 			set
 			{
-				File previousValue = this._File.Entity;
+				Files previousValue = this._File.Entity;
 				if (((previousValue != value) 
 							|| (this._File.HasLoadedOrAssignedValue == false)))
 				{
@@ -624,7 +624,7 @@ namespace MiniTorrentLibrary
 					{
 						this._FileID = default(int);
 					}
-					this.SendPropertyChanged("File");
+					this.SendPropertyChanged("Files");
 				}
 			}
 		}

@@ -12,5 +12,4 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorr
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.pdb
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\MiniTorrentLibrary.dll.config
-C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\obj\Debug\MiniTorrentLibrary.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\bin\Debug\MiniTorrentLibrary.dll.config

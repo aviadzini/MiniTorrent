@@ -95,32 +95,26 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            if (isLoginPackageExist(lp))
-            {
-                var client = getClientsByLoginPackage(lp).First();
+            var client = getClientsByLoginPackage(lp).First();
 
-                client.Active = true;
-                client.IP = lp.IP;
-                client.Port = port;
+            client.Active = true;
+            client.IP = lp.IP;
+            client.Port = port;
 
-                db.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public static void setClientLogout(string username)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            if (isUsernameExist(username))
-            {
-                var client = getClientsByName(username).First();
+            var client = getClientsByName(username).First();
 
-                client.Active = false;
-                client.IP = null;
-                client.Port = null;
+            client.Active = false;
+            client.IP = null;
+            client.Port = null;
 
-                db.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public static Tuple<string, int> getIpPortByName(string username)
@@ -211,7 +205,7 @@ namespace MiniTorrentLibrary
 
     public class FilesDBO
     {
-        public static List<File> getAllFiles()
+        public static List<Files> getAllFiles()
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
@@ -219,7 +213,7 @@ namespace MiniTorrentLibrary
                     select files).ToList();
         }
 
-        public static List<File> getFilesByName(string fileName)
+        public static List<Files> getFilesByName(string fileName)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
@@ -228,14 +222,14 @@ namespace MiniTorrentLibrary
                     select files).ToList();
         }
 
-        public static List<File> getAllDistinctFiles()
+        public static List<Files> getAllDistinctFiles()
         {
-            return new HashSet<File>(getAllFiles()).ToList();
+            return new HashSet<Files>(getAllFiles()).ToList();
         }
 
-        public static List<File> getAllDistinctFilesByName(string fileName)
+        public static List<Files> getAllDistinctFilesByName(string fileName)
         {
-            return new HashSet<File>(getFilesByName(fileName)).ToList();
+            return new HashSet<Files>(getFilesByName(fileName)).ToList();
         }
 
         public static int getFileSize(int id)
@@ -250,7 +244,7 @@ namespace MiniTorrentLibrary
 
     public class ClientFileDBO
     {
-        public static List<ClientFile> getClientFileByName(string fileName)
+        public static List<ClientFiles> getClientFileByName(string fileName)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
@@ -259,4 +253,16 @@ namespace MiniTorrentLibrary
                     select files).ToList();
         }
     }
+}
+
+public class User
+{
+    public string Username { get; private set; }
+    public string Password { get; private set; }
+    public string UpPath { get; private set; }
+    public string DownPath { get; private set; }
+    public bool Active { get; private set; }
+    public bool Admin { get; private set; }
+    public string IP { get; private set; }
+    public int Port { get; private set; }
 }

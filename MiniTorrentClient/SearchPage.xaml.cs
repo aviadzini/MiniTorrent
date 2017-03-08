@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
@@ -94,13 +93,14 @@ namespace MiniTorrentClient
         {
             var pw = new PackageWrapper();
 
-            pw.PackageType = typeof(LoginPackage);
+            pw.PackageType = typeof(LogoutPackage);
             pw.Package = new LogoutPackage
             {
                 Username = username
             };
             clientSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
         }
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);

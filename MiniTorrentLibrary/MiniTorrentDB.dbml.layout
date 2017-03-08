@@ -9,25 +9,25 @@
       </nestedChildShapes>
     </classShape>
     <classShape Id="0d8162df-3728-4429-9098-26ed801191ec" absoluteBounds="1, 2.875, 2, 1.3862939453125">
-      <DataClassMoniker Name="/MiniTorrentDBDataContext/File" />
+      <DataClassMoniker Name="/MiniTorrentDBDataContext/Files" />
       <nestedChildShapes>
         <elementListCompartment Id="543830c7-27a3-4411-8f6e-108a363ec036" absoluteBounds="1.0150000000000001, 3.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="f65c1b89-9a86-4536-ab2d-a7717a7d7808" absoluteBounds="1, 0.625, 2, 1.3862939453125">
-      <DataClassMoniker Name="/MiniTorrentDBDataContext/ClientFile" />
+      <DataClassMoniker Name="/MiniTorrentDBDataContext/ClientFiles" />
       <nestedChildShapes>
         <elementListCompartment Id="dbdd2986-8982-4102-8d85-bea9efe9e707" absoluteBounds="1.0150000000000001, 1.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2 : 2.875); (2 : 2.0112939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/MiniTorrentDBDataContext/File/File_ClientFile" />
+    <associationConnector edgePoints="[(2 : 2.875); (2 : 2.0112939453125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/MiniTorrentDBDataContext/Files/File_ClientFile" />
       <nodes>
         <classShapeMoniker Id="0d8162df-3728-4429-9098-26ed801191ec" />
         <classShapeMoniker Id="f65c1b89-9a86-4536-ab2d-a7717a7d7808" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.25 : 1.31814697265625); (3 : 1.31814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.25 : 1.31814697265625); (3 : 1.31814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/MiniTorrentDBDataContext/Clients/Clients_ClientFile" />
       <nodes>
         <classShapeMoniker Id="af8d1ff4-6fd8-46f9-afd5-b26fb4c1e739" />

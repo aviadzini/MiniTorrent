@@ -119,13 +119,5 @@ namespace MiniTorrentClient
             if (textBox.Text == "Please Enter Your Password")
                 textBox.Clear();
         }
-        ////////////////////////////////////////////
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-
-            clientSocket.Disconnect(true);
-            clientSocket.Dispose();
-        }
     }
 }

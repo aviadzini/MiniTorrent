@@ -122,7 +122,7 @@ namespace MiniTorrentServer
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
-                        List<ClientFile> list = ClientFileDBO.getClientFileByName(fs.FileName);
+                        List<ClientFiles> list = ClientFileDBO.getClientFileByName(fs.FileName);
 
                         if (list.Count == 0)
                         {
@@ -138,6 +138,7 @@ namespace MiniTorrentServer
                         else
                         {
                             List<FileDetails> lfd = new List<FileDetails>();
+
                             foreach (var item in list)
                             {
                                 Tuple<string, int> d = ClientsDBO.getIpPortByName(item.Username);

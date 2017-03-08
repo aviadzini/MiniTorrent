@@ -22,19 +22,11 @@ namespace MiniTorrentPortal
 
             else
             {
-               
-
-                    if (client.First().Admin)
-                        Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
-
-                    else
-                        Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
-                
+                if (client.First().Admin)
+                    Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
 
                 else
-                    ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
-                       "alert(' Username is already loggedin '); window.location='" +
-                       Request.ApplicationPath + "Login.aspx';", true);
+                    Response.Redirect("ClientPage.aspx?Name=" + UsernameTB.Text);
             }
         }
     }

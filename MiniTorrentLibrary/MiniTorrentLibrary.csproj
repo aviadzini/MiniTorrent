@@ -47,6 +47,9 @@
   <ItemGroup>
     <Compile Include="MiniTorrentDAL.cs" />
     <Compile Include="MiniTorrentDataPackages.cs" />
+    <Compile Include="MiniTorrentDB.cs">
+      <DependentUpon>MiniTorrentDB.dbml</DependentUpon>
+    </Compile>
     <Compile Include="MiniTorrentDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
