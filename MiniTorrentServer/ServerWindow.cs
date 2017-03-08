@@ -117,8 +117,8 @@ namespace MiniTorrentServer
                             handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
                     }
-                    //////////////////////
-                    else if (deserialized.PackageType == typeof(FileSearch))
+
+                    else
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
@@ -166,12 +166,15 @@ namespace MiniTorrentServer
                             handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
                     }
+<<<<<<< HEAD
                     //////////////////////////////////////
                     else
                     {
                         LogoutPackage logoutp = (LogoutPackage)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
                         ClientsDBO.setClientLogout(logoutp.Username);
                     }
+=======
+>>>>>>> parent of c3c5bd8... client logout 2.1.6
                 }
 
                 else

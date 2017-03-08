@@ -132,6 +132,7 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
+<<<<<<< HEAD
             var client = getClientsByName(username).First();
 
             if (client.Admin) 
@@ -139,6 +140,11 @@ namespace MiniTorrentLibrary
 
             db.Clients.DeleteOnSubmit(client);
             db.SubmitChanges();
+=======
+            var u = (from clients in db.Clients
+                     where clients.Username == username
+                     select clients).Single();
+>>>>>>> parent of c3c5bd8... client logout 2.1.6
 
             return true;
         }
@@ -157,6 +163,7 @@ namespace MiniTorrentLibrary
 
             return true;
         }
+<<<<<<< HEAD
 
         public static bool updatePassword(string username, string password)
         {
@@ -201,6 +208,8 @@ namespace MiniTorrentLibrary
             db.Clients.InsertOnSubmit(client);
             db.SubmitChanges();
         }
+=======
+>>>>>>> parent of c3c5bd8... client logout 2.1.6
     }
 
     public class FilesDBO
