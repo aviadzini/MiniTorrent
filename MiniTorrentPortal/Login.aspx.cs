@@ -15,14 +15,14 @@ namespace MiniTorrentPortal
         {
             var client = ClientsDBO.getClientsByUsernamePassword(UsernameTB.Text, PasswordTB.Text);
 
-            if (client.Count == 0)
+            if (client == null)
                 ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
                    "alert(' Username or password is incorrect '); window.location='" +
                    Request.ApplicationPath + "Login.aspx';", true);
 
             else
             {
-                if (client.First().Admin)
+                if (client.Admin)
                     Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
 
                 else

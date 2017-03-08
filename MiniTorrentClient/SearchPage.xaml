@@ -14,6 +14,8 @@
         <Label x:Name="label" Content="Please choose your source" HorizontalAlignment="Left" Margin="286,180,0,0" VerticalAlignment="Top" Width="160" Visibility="Hidden"/>
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="236,264,0,0" VerticalAlignment="Top" Height="212" Width="417" Visibility="Hidden">
             <DataGrid.Columns>
+
+                <DataGridTextColumn Header="NO" IsReadOnly="True" Binding="{Binding Path=NO}" Width="50"></DataGridTextColumn>
                 <DataGridTextColumn Header="Username" IsReadOnly="True" Binding="{Binding Path=Username}" Width="100"></DataGridTextColumn>
                 <DataGridTextColumn Header="File Size" IsReadOnly="True"  Binding="{Binding Path=FileSize}" Width="65"></DataGridTextColumn>
                 <DataGridTextColumn Header="Port" IsReadOnly="True"  Binding="{Binding Path=Port}" Width="50"></DataGridTextColumn>
@@ -21,7 +23,7 @@
                 <DataGridTemplateColumn  MinWidth="100" Header="Download">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="Button_Click">Download</Button>
+                            <Button Name = "button" Click = "Button_Click" Content = "Download"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

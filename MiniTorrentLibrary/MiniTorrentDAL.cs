@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace MiniTorrentLibrary
 {
@@ -41,17 +43,17 @@ namespace MiniTorrentLibrary
                     select clients).ToList();
         }
 
-        public static List<Clients> getClientsByUsernamePassword(string username, string password)
+        public static Clients getClientsByUsernamePassword(string username, string password)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
             return (from clients in db.Clients
                     where clients.Username == username
                     where clients.Password == password
-                    select clients).ToList();
+                    select clients).First();
         }
 
-        public static List<Clients> getClientsByLoginPackage(LoginPackage lp)
+        public static Clients getClientsByLoginPackage(LoginPackage lp)
         {
             return getClientsByUsernamePassword(lp.Username, lp.Password);
         }
@@ -68,14 +70,17 @@ namespace MiniTorrentLibrary
 
         public static bool isLoginPackageExist(LoginPackage lp)
         {
-            return getClientsByLoginPackage(lp).Count > 0;
+            return getClientsByLoginPackage(lp) != null;
         }
 
         public static void activateClient(string username)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                    where clients.Username == username
+                    select clients).First();
+
             client.Active = true;
 
             db.SubmitChanges();
@@ -85,21 +90,27 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
+
             client.Active = false;
 
             db.SubmitChanges();
         }
 
-        public static void setClientLogin(LoginPackage lp, int port)
+        public static void setClientLogin(LoginPackage lp)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByLoginPackage(lp).First();
+            var client = (from clients in db.Clients
+                    where clients.Username == lp.Username
+                    where clients.Password == lp.Password
+                    select clients).First();
 
             client.Active = true;
             client.IP = lp.IP;
-            client.Port = port;
+            client.Port = lp.Port;
 
             db.SubmitChanges();
         }
@@ -108,11 +119,11 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
 
             client.Active = false;
-            client.IP = null;
-            client.Port = null;
 
             db.SubmitChanges();
         }
@@ -132,19 +143,15 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-<<<<<<< HEAD
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
 
             if (client.Admin) 
                 return false;
 
             db.Clients.DeleteOnSubmit(client);
             db.SubmitChanges();
-=======
-            var u = (from clients in db.Clients
-                     where clients.Username == username
-                     select clients).Single();
->>>>>>> parent of c3c5bd8... client logout 2.1.6
 
             return true;
         }
@@ -153,7 +160,9 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
 
             if (client.Admin)
                 return false;
@@ -163,13 +172,14 @@ namespace MiniTorrentLibrary
 
             return true;
         }
-<<<<<<< HEAD
 
         public static bool updatePassword(string username, string password)
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
 
             client.Password = password;
             db.SubmitChanges();
@@ -181,7 +191,9 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
 
             client.UpPath = upPath;
             db.SubmitChanges();
@@ -193,7 +205,9 @@ namespace MiniTorrentLibrary
         {
             MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
 
-            var client = getClientsByName(username).First();
+            var client = (from clients in db.Clients
+                          where clients.Username == username
+                          select clients).First();
 
             client.DownPath = downPath;
             db.SubmitChanges();
@@ -208,8 +222,6 @@ namespace MiniTorrentLibrary
             db.Clients.InsertOnSubmit(client);
             db.SubmitChanges();
         }
-=======
->>>>>>> parent of c3c5bd8... client logout 2.1.6
     }
 
     public class FilesDBO

@@ -13,6 +13,9 @@ namespace MiniTorrentClient
     {
         private Socket clientSocket;
 
+        private string Ip = "";
+        private int port = 0;
+
         private string response = string.Empty; 
         
         public MainWindow()
@@ -20,6 +23,14 @@ namespace MiniTorrentClient
             InitializeComponent();
 
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    Ip = ip.ToString();
+
+            Random random = new Random();
+            port = random.Next(8006, 9000);
         }
 
         private void StartClient()
@@ -39,13 +50,6 @@ namespace MiniTorrentClient
 
         private string getJsonData()
         {
-            string ipA = "";
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                    ipA = ip.ToString();
-
             var pw = new PackageWrapper();
 
             pw.PackageType = typeof(LoginPackage);
@@ -53,7 +57,8 @@ namespace MiniTorrentClient
             {
                 Username = usernameTB.Text,
                 Password = passwordTB.Text,
-                IP = ipA
+                IP = Ip,
+                Port = port
             };
 
             return JsonConvert.SerializeObject(pw) + ServerConstants.EOF;
@@ -84,7 +89,7 @@ namespace MiniTorrentClient
 
                     if (int.Parse(response) > 0)
                     {
-                       SearchPage dp = new SearchPage(clientSocket, usernameTB.Text, int.Parse(response));
+                        SearchPage dp = new SearchPage(clientSocket, usernameTB.Text, port, Ip);
                         dp.Show();
                         Close();
                     }

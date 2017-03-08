@@ -92,22 +92,11 @@ namespace MiniTorrentServer
 
                         var client = ClientsDBO.getClientsByLoginPackage(lp);
 
-                        if (client.Count > 0)
+                        if (client != null)
                         {
-                            Random random = new Random();
-                            List<Clients> portClients;
-                            int randomPort;
+                            ClientsDBO.setClientLogin(lp);
 
-                            do
-                            {
-                                randomPort = random.Next(8006, 9000);
-                                portClients = ClientsDBO.getClientsByPort(randomPort);
-                            }
-                            while (portClients.Count > 0);
-
-                            ClientsDBO.setClientLogin(lp, randomPort);
-
-                            byte[] sendPort = Encoding.ASCII.GetBytes(randomPort.ToString());
+                            byte[] sendPort = Encoding.ASCII.GetBytes("1");
                             handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
 
@@ -166,15 +155,6 @@ namespace MiniTorrentServer
                             handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
                         }
                     }
-<<<<<<< HEAD
-                    //////////////////////////////////////
-                    else
-                    {
-                        LogoutPackage logoutp = (LogoutPackage)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
-                        ClientsDBO.setClientLogout(logoutp.Username);
-                    }
-=======
->>>>>>> parent of c3c5bd8... client logout 2.1.6
                 }
 
                 else

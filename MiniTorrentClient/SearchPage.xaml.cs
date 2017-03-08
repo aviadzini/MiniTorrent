@@ -5,29 +5,134 @@ using System.Windows;
 using System.Windows.Controls;
 using MiniTorrentLibrary;
 using Newtonsoft.Json;
+using System.Net;
+using System.IO;
+using System.Collections.Generic;
 
 namespace MiniTorrentClient
 {
     public partial class SearchPage : Window
     {
-        private string username { get; set; }
-        private int port { get; set; }
-
         private Socket clientSocket;
+        private Socket downloadSocket;
+        private Socket serverSocket;
 
+        byte[] buffer = new byte[ServerConstants.BufferSize];
+        private StringBuilder sb = new StringBuilder();
+
+        /// ///////////////////////
+        private List<FileDetails> listOfFiles;
+       /// //////////////////
+      
         private string response = string.Empty;
 
-        public SearchPage(Socket clientSocket, string username, int port)
+        public SearchPage(Socket clientSocket, string username, int port, string ip)
         {
             InitializeComponent();
-
-            this.username = username;
-            this.port = port;
+            
             this.clientSocket = clientSocket;
+
+            MessageBoxResult recvsult = MessageBox.Show(ip + ":" + port, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            downloadSocket = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp);
+
+            serverSocket = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp);
+
+            try
+            {
+                serverSocket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
+                serverSocket.Listen(1);
+                serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             MainLablePage.Content = "Hello " + username;
         }
-        
+
+        public void AcceptCallback(IAsyncResult ar)
+        {
+            Socket handler = serverSocket.EndAccept(ar);
+
+            handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0,
+                new AsyncCallback(ReadCallback), handler);
+
+            serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+        }
+
+        public void ReadCallback(IAsyncResult ar)
+        {
+            Socket handler = (Socket)ar.AsyncState;
+            int received = handler.EndReceive(ar);
+
+            if (received > 0)
+            {
+                sb.Append(Encoding.ASCII.GetString(buffer, 0, received));
+                string content = sb.ToString();
+
+                if (content.IndexOf(ServerConstants.EOF) > -1)
+                {
+                    content = content.Substring(0, content.Length - 5);
+                    
+                    var deserialized = JsonConvert.DeserializeObject<PackageWrapper>(content);
+
+                    if (deserialized.PackageType == typeof(FileSearch))
+                    {
+                        FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
+                        //sendFile(fs.FileName, handler);
+                        MessageBoxResult result = MessageBox.Show(fs.FileName, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+
+                else
+                    handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
+
+                sb.Clear();
+                handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
+            }
+        }
+
+        private void sendFile(string fileName, Socket socket)
+        {
+            Socket handler = socket;
+            FileStream fin = null;
+
+            try
+            {
+                FileInfo ftemp = new FileInfo(fileName);
+                long total = ftemp.Length;
+                long ToatlSent = 0;
+                int len = 0;
+
+                fin = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                NetworkStream nfs = new NetworkStream(handler);
+
+
+                while (ToatlSent < total && nfs.CanWrite)
+                {
+                    len = fin.Read(buffer, 0, buffer.Length);
+                    nfs.Write(buffer, 0, len);
+                    ToatlSent = ToatlSent + len;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBoxResult result = MessageBox.Show("A Exception occured in transfer" + ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            finally
+            {
+                if (fin != null)
+                    fin.Close();
+            }
+        }
+
         private void SearchTBClicked(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -83,21 +188,11 @@ namespace MiniTorrentClient
             for (int i = 0; i < fp.CountClients; i++)
             {
                 FileDetails file = fp.FilesList[i];
-                dataGrid.Items.Add(new Item() { Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
+                dataGrid.Items.Add(new Item() { NO = (i+1), Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
             }
+            listOfFiles = fp.FilesList;
         }
-
-<<<<<<< HEAD
-            pw.PackageType = typeof(LogoutPackage);
-            pw.Package = new LogoutPackage
-            {
-                Username = username
-            };
-            clientSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
-        }
-
-=======
->>>>>>> parent of c3c5bd8... client logout 2.1.6
+        
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
@@ -107,13 +202,30 @@ namespace MiniTorrentClient
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            /////////////////////////////////////////////////////////
-            
+            Item item = dataGrid.SelectedItem as Item;
+            int port = item.Port;
+            string ip = item.IP;
+
+            try
+            {
+                downloadSocket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
+                PackageWrapper pw = new PackageWrapper();
+                pw.PackageType = typeof(FileSearch);
+                FileSearch fs = new FileSearch { FileName = item.Username };
+                pw.Package = fs;
+                downloadSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 
     public class Item
     {
+        public int NO { get; set; }
         public string Username { get; set; }
         public int FileSize { get; set; }
         public int Port { get; set; }
