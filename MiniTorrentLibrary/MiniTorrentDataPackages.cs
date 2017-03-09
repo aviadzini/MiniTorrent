@@ -45,4 +45,8 @@ namespace MiniTorrentLibrary
         public int Port { get; set; }
         public string Ip { get; set; }
     }
+    public class LogoutPackage
+    {
+       public string Username { get; set; }
+    }
 }
