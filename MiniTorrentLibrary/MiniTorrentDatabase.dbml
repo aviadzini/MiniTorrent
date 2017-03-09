@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MiniTorrentDB" Class="MiniTorrentDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentLibrary\App_Data\MiniTorrentDB.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="MiniTorrentLibrary.Properties.Settings" SettingsPropertyName="MiniTorrentDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Clients">
+      <Column Name="Username" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UpPath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DownPath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Port" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Clients_ClientFile" Member="ClientFiles" ThisKey="Username" OtherKey="Username" Type="ClientFiles" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClientFile" Member="ClientFiles">
+    <Type Name="ClientFiles">
+      <Column Name="Username" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FileID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_ClientFile" Member="Clients" Storage="_Client" ThisKey="Username" OtherKey="Username" Type="Clients" IsForeignKey="true" />
+      <Association Name="Files_ClientFile" Member="Files" Storage="_File" ThisKey="FileID" OtherKey="ID" Type="Files" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Files" Member="Files">
+    <Type Name="Files">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Size" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Files_ClientFile" Member="ClientFiles" ThisKey="ID" OtherKey="FileID" Type="ClientFiles" />
+    </Type>
+  </Table>
+</Database>

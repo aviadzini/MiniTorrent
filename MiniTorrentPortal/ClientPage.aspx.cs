@@ -28,7 +28,7 @@ namespace MiniTorrentPortal
 
         private void BindGrid()
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var c = from clients in db.Clients
                     where clients.Username == username

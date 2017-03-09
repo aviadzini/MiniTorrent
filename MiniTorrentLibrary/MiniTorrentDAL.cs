@@ -10,7 +10,7 @@ namespace MiniTorrentLibrary
     {
         public static List<Clients> getAllClients()
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from clients in db.Clients
                     select clients).ToList();
@@ -18,7 +18,7 @@ namespace MiniTorrentLibrary
 
         public static List<Clients> getAllActiveClients()
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from clients in db.Clients
                     where clients.Active == true
@@ -27,7 +27,7 @@ namespace MiniTorrentLibrary
 
         public static List<Clients> getClientsByName(string username)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from clients in db.Clients
                     where clients.Username == username
@@ -36,7 +36,7 @@ namespace MiniTorrentLibrary
 
         public static List<Clients> getClientsByPort(int port)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from clients in db.Clients
                     where clients.Port == port
@@ -45,7 +45,7 @@ namespace MiniTorrentLibrary
 
         public static Clients getClientsByUsernamePassword(string username, string password)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from clients in db.Clients
                     where clients.Username == username
@@ -75,7 +75,7 @@ namespace MiniTorrentLibrary
 
         public static void activateClient(string username)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                     where clients.Username == username
@@ -88,7 +88,7 @@ namespace MiniTorrentLibrary
 
         public static void deactivateClient(string username)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -101,7 +101,7 @@ namespace MiniTorrentLibrary
 
         public static void setClientLogin(LoginPackage lp)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                     where clients.Username == lp.Username
@@ -117,7 +117,7 @@ namespace MiniTorrentLibrary
 
         public static void setClientLogout(string username)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -141,7 +141,7 @@ namespace MiniTorrentLibrary
 
         public static bool deleteClient(string username)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -158,7 +158,7 @@ namespace MiniTorrentLibrary
 
         public static bool updateToAdmin(string username)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -175,7 +175,7 @@ namespace MiniTorrentLibrary
 
         public static bool updatePassword(string username, string password)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -189,7 +189,7 @@ namespace MiniTorrentLibrary
 
         public static bool updateUpPath(string username, string upPath)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -203,7 +203,7 @@ namespace MiniTorrentLibrary
 
         public static bool updateDownPath(string username, string downPath)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             var client = (from clients in db.Clients
                           where clients.Username == username
@@ -217,7 +217,7 @@ namespace MiniTorrentLibrary
 
         public static void insertClient(Clients client)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             db.Clients.InsertOnSubmit(client);
             db.SubmitChanges();
@@ -228,7 +228,7 @@ namespace MiniTorrentLibrary
     {
         public static List<Files> getAllFiles()
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from files in db.Files
                     select files).ToList();
@@ -236,7 +236,7 @@ namespace MiniTorrentLibrary
 
         public static List<Files> getFilesByName(string fileName)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from files in db.Files
                     where files.Name == fileName
@@ -255,7 +255,7 @@ namespace MiniTorrentLibrary
 
         public static int getFileSize(int id)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from files in db.Files
                      where files.ID == id
@@ -267,23 +267,11 @@ namespace MiniTorrentLibrary
     {
         public static List<ClientFiles> getClientFileByName(string fileName)
         {
-            MiniTorrentDBDataContext db = new MiniTorrentDBDataContext();
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
 
             return (from files in db.ClientFiles
                     where files.FileName == fileName
                     select files).ToList();
         }
     }
-}
-
-public class User
-{
-    public string Username { get; private set; }
-    public string Password { get; private set; }
-    public string UpPath { get; private set; }
-    public string DownPath { get; private set; }
-    public bool Active { get; private set; }
-    public bool Admin { get; private set; }
-    public string IP { get; private set; }
-    public int Port { get; private set; }
 }
