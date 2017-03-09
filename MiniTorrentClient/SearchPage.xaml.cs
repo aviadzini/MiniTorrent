@@ -17,12 +17,10 @@ namespace MiniTorrentClient
         private Socket downloadSocket;
         private Socket serverSocket;
 
+        private string file = "";
         byte[] buffer = new byte[ServerConstants.BufferSize];
         private StringBuilder sb = new StringBuilder();
 
-        /// ///////////////////////
-        private List<FileDetails> listOfFiles;
-       /// //////////////////
       
         private string response = string.Empty;
 
@@ -150,6 +148,7 @@ namespace MiniTorrentClient
 
             else
             {
+                file = FileTB.Text;
                 var pw = new PackageWrapper();
 
                 pw.PackageType = typeof(FileSearch);
@@ -190,7 +189,6 @@ namespace MiniTorrentClient
                 FileDetails file = fp.FilesList[i];
                 dataGrid.Items.Add(new Item() { NO = (i+1), Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
             }
-            listOfFiles = fp.FilesList;
         }
         
         protected override void OnClosed(EventArgs e)
@@ -199,6 +197,7 @@ namespace MiniTorrentClient
 
             clientSocket.Disconnect(true);
             clientSocket.Dispose();
+
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -211,7 +210,7 @@ namespace MiniTorrentClient
                 downloadSocket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
                 PackageWrapper pw = new PackageWrapper();
                 pw.PackageType = typeof(FileSearch);
-                FileSearch fs = new FileSearch { FileName = item.Username };
+                FileSearch fs = new FileSearch { FileName = file };
                 pw.Package = fs;
                 downloadSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
             }
