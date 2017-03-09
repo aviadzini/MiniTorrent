@@ -45,8 +45,19 @@ namespace MiniTorrentLibrary
         public int Port { get; set; }
         public string Ip { get; set; }
     }
+
     public class LogoutPackage
     {
        public string Username { get; set; }
+    }
+
+    public class ClientsDetailsPackage
+    {
+        public bool Exist { get; set; }
+        public string Username { get; set; }
+        public string IP { get; set; }
+        public int Port { get; set; }
+        public string UpPath { get; set; }
+        public string DownPath { get; set; }
     }
 }

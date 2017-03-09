@@ -7,7 +7,6 @@ using MiniTorrentLibrary;
 using Newtonsoft.Json;
 using System.Net;
 using System.IO;
-using System.Collections.Generic;
 
 namespace MiniTorrentClient
 {
@@ -17,21 +16,26 @@ namespace MiniTorrentClient
         private Socket downloadSocket;
         private Socket serverSocket;
 
+        private string upPath;
+        private string downPath;
+
         private string file = "";
         byte[] buffer = new byte[ServerConstants.BufferSize];
         private StringBuilder sb = new StringBuilder();
 
+        private int index = 1;
       
         private string response = string.Empty;
 
-        public SearchPage(Socket clientSocket, string username, int port, string ip)
+        public SearchPage(Socket clientSocket, ClientsDetailsPackage cdp)
         {
             InitializeComponent();
-            
+
+            upPath = cdp.UpPath;
+            downPath = cdp.DownPath;
+
             this.clientSocket = clientSocket;
-
-            MessageBoxResult recvsult = MessageBox.Show(ip + ":" + port, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
+            
             downloadSocket = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp);
 
@@ -40,7 +44,7 @@ namespace MiniTorrentClient
 
             try
             {
-                serverSocket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
+                serverSocket.Bind(new IPEndPoint(IPAddress.Parse(cdp.IP), cdp.Port));
                 serverSocket.Listen(1);
                 serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
             }
@@ -50,7 +54,7 @@ namespace MiniTorrentClient
                 MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            MainLablePage.Content = "Hello " + username;
+            MainLablePage.Content = "Hello " + cdp.Username;
         }
 
         public void AcceptCallback(IAsyncResult ar)
@@ -82,8 +86,7 @@ namespace MiniTorrentClient
                     if (deserialized.PackageType == typeof(FileSearch))
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
-                        //sendFile(fs.FileName, handler);
-                        MessageBoxResult result = MessageBox.Show(fs.FileName, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        sendFile(fs.FileName, handler);
                     }
                 }
 
@@ -95,6 +98,19 @@ namespace MiniTorrentClient
             }
         }
 
+        private void SendFileCallback(IAsyncResult ar)
+        {
+            try
+            {
+                Socket handler = (Socket)ar.AsyncState;
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void sendFile(string fileName, Socket socket)
         {
             Socket handler = socket;
@@ -102,20 +118,17 @@ namespace MiniTorrentClient
 
             try
             {
-                FileInfo ftemp = new FileInfo(fileName);
+                FileInfo ftemp = new FileInfo(upPath + fileName);
                 long total = ftemp.Length;
                 long ToatlSent = 0;
-                int len = 0;
 
-                fin = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                NetworkStream nfs = new NetworkStream(handler);
+                fin = new FileStream(upPath + fileName, FileMode.Open, FileAccess.Read);
 
-
-                while (ToatlSent < total && nfs.CanWrite)
+                while (ToatlSent < total)
                 {
-                    len = fin.Read(buffer, 0, buffer.Length);
-                    nfs.Write(buffer, 0, len);
-                    ToatlSent = ToatlSent + len;
+                    index = fin.Read(buffer, 0, buffer.Length);
+                    handler.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(SendFileCallback), handler);
+                    ToatlSent = ToatlSent + index;
                 }
             }
 
@@ -207,17 +220,89 @@ namespace MiniTorrentClient
 
             try
             {
-                downloadSocket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
-                PackageWrapper pw = new PackageWrapper();
-                pw.PackageType = typeof(FileSearch);
-                FileSearch fs = new FileSearch { FileName = file };
-                pw.Package = fs;
-                downloadSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
+                downloadSocket.BeginConnect(new IPEndPoint(IPAddress.Parse(ip), port), new AsyncCallback(ConnectCallback), null);
             }
 
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                downloadSocket.EndConnect(ar);
+
+                PackageWrapper pw = new PackageWrapper();
+                pw.PackageType = typeof(FileSearch);
+                pw.Package = new FileSearch { FileName = file };
+
+                byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF);
+
+                downloadSocket.BeginSend(sendAnswer, 0, sendAnswer.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                downloadSocket.EndSend(ar);
+
+                GetFile(file);
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void GetFile(string FileName)
+        {
+            FileStream fout = new FileStream(downPath + FileName, FileMode.Create, FileAccess.Write);
+
+            long rby = 0;
+            try
+            {
+                downloadSocket.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadFileCallback), null);
+                while (index > 0)
+                {
+                    fout.Write(buffer, 0, index);
+                    rby = rby + index;
+                    downloadSocket.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadFileCallback), null);
+                }
+            }
+
+            catch (Exception ed)
+            {
+                Console.WriteLine("A Exception occured in file transfer" + ed.Message);
+            }
+
+            finally
+            {
+                if (fout != null)
+                    fout.Close();
+            }
+        }
+
+        private void ReadFileCallback(IAsyncResult ar)
+        {
+            try
+            {
+                index = downloadSocket.EndReceive(ar);
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

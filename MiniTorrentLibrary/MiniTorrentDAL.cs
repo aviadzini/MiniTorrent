@@ -53,9 +53,19 @@ namespace MiniTorrentLibrary
                     select clients).First();
         }
 
-        public static Clients getClientsByLoginPackage(LoginPackage lp)
+        public static ClientsDetailsPackage getClientsByLoginPackage(LoginPackage lp)
         {
-            return getClientsByUsernamePassword(lp.Username, lp.Password);
+            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
+
+            var c = (from clients in db.Clients
+                    where clients.Username == lp.Username
+                    where clients.Password == lp.Password
+                    select clients).ToList();
+
+            if (c.Count > 0)
+                return new ClientsDetailsPackage { Exist = true, Username = c.First().Username, IP = c.First().IP, Port = (int)c.First().Port, UpPath = c.First().UpPath, DownPath = c.First().DownPath };
+
+            return new ClientsDetailsPackage { Exist = false };
         }
 
         public static bool isUsernameExist(string username)

@@ -92,19 +92,8 @@ namespace MiniTorrentServer
 
                         var client = ClientsDBO.getClientsByLoginPackage(lp);
 
-                        if (client != null)
-                        {
-                            ClientsDBO.setClientLogin(lp);
-
-                            byte[] sendPort = Encoding.ASCII.GetBytes("1");
-                            handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
-                        }
-
-                        else
-                        {
-                            byte[] sendPort = Encoding.ASCII.GetBytes("-1");
-                            handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
-                        }
+                        byte[] sendPort = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(client) + ServerConstants.EOF);
+                        handler.BeginSend(sendPort, 0, sendPort.Length, 0, new AsyncCallback(SendCallback), handler);
                     }
 
                     else if (deserialized.PackageType == typeof(FileSearch))

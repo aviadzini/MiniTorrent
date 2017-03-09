@@ -16,6 +16,8 @@ namespace MiniTorrentClient
         private string Ip = "";
         private int port = 0;
 
+        byte[] buffer = new byte[ServerConstants.BufferSize];
+
         private string response = string.Empty; 
         
         public MainWindow()
@@ -37,15 +39,18 @@ namespace MiniTorrentClient
         {
             try
             {
-                clientSocket.Connect(new IPEndPoint(
-                    IPAddress.Parse(ServerConstants.ServerIP),
-                    ServerConstants.ServerPort));
+                clientSocket.BeginConnect(new IPEndPoint(IPAddress.Parse(ServerConstants.ServerIP), ServerConstants.ServerPort), new AsyncCallback(ConnectCallback), null);
             }
 
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            clientSocket.EndConnect(ar);
         }
 
         private string getJsonData()
@@ -81,27 +86,8 @@ namespace MiniTorrentClient
                     if(!clientSocket.Connected)
                         StartClient();
 
-                    clientSocket.Send(Encoding.ASCII.GetBytes(getJsonData()));
-
-                    byte[] receiveBuffer = new byte[1024];
-                    int received = clientSocket.Receive(receiveBuffer);
-                    response = Encoding.ASCII.GetString(receiveBuffer, 0, received);
-
-                    if (int.Parse(response) > 0)
-                    {
-                        SearchPage dp = new SearchPage(clientSocket, usernameTB.Text, port, Ip);
-                        dp.Show();
-                        Close();
-                    }
-
-                    else
-                    {
-                        usernameTB.Clear();
-                        passwordTB.Clear();
-
-                        response = "";
-                        MessageBoxResult result = MessageBox.Show("Username or Password incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    byte[] bufferJ = Encoding.ASCII.GetBytes(getJsonData());
+                    clientSocket.BeginSend(bufferJ, 0, bufferJ.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
                 }
 
                 catch (Exception ex)
@@ -110,7 +96,70 @@ namespace MiniTorrentClient
                 }
             }
         }
-              
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                clientSocket.EndSend(ar);
+
+                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(ReciveCallback), null);
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ReciveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                int received = clientSocket.EndReceive(ar);
+
+                if (received > 0)
+                {
+                    response = Encoding.ASCII.GetString(buffer, 0, received);
+
+                    response = response.Substring(0, response.Length - 5);
+
+                    ClientsDetailsPackage cdp = (ClientsDetailsPackage)JsonConvert.DeserializeObject(response, typeof(ClientsDetailsPackage));
+
+                    if (cdp.Exist)
+                    {
+                        Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                        (Action)(() =>
+                        {
+                            SearchPage dp = new SearchPage(clientSocket, cdp);
+                            dp.Show();
+                            Close();
+                        }
+                        ));
+                    }
+
+                    else
+                    {
+                        Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                            (Action)(() =>
+                            {
+                                usernameTB.Clear();
+                                passwordTB.Clear();
+                            }
+                            ));
+                        
+                        response = "";
+                        MessageBoxResult result = MessageBox.Show("Username or Password incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void ClickUserNameTB(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
