@@ -462,7 +462,30 @@ namespace MiniTorrentLibrary
             return count != 0;
         }
 
-        public static List<File> getAllFilesList(string name)
+        public static List<File> getAllFilesList()
+        {
+            List<File> list = new List<File>();
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MiniTorrentLibrary.Properties.Settings.MiniTorrentDBConnectionString"].ConnectionString;
+            string query = "SELECT * from Files";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(new File(reader[1].ToString(), int.Parse(reader[2].ToString())));
+                }
+                reader.Close();
+            }
+
+            return list;
+        }
+
+        public static List<File> getAllFilesListByName(string name)
         {
             List<File> list = new List<File>();
 

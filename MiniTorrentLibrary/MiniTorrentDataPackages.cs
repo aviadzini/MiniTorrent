@@ -33,7 +33,6 @@ namespace MiniTorrentLibrary
     public class FilePackage
     {
         public bool Exist { get; set; }
-        public string FileName { get; set; }
         public int CountClients { get; set; }
         public List<FileDetails> FilesList { get; set; }
     }
@@ -41,6 +40,7 @@ namespace MiniTorrentLibrary
     public class FileDetails
     {
         public string Username { get; set; }
+        public string FileName { get; set; }
         public int FileSize { get; set; }
         public int Port { get; set; }
         public string Ip { get; set; }

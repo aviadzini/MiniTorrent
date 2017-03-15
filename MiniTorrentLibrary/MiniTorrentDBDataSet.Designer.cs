@@ -24,11 +24,15 @@ namespace MiniTorrentLibrary {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class MiniTorrentDBDataSet : global::System.Data.DataSet {
         
-        private ClientFileDataTable tableClientFile;
+        private ClientFilesDataTable tableClientFiles;
         
         private ClientsDataTable tableClients;
         
         private FilesDataTable tableFiles;
+        
+        private global::System.Data.DataRelation relationClientsFK;
+        
+        private global::System.Data.DataRelation relationFilesFK;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -58,8 +62,8 @@ namespace MiniTorrentLibrary {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["ClientFile"] != null)) {
-                    base.Tables.Add(new ClientFileDataTable(ds.Tables["ClientFile"]));
+                if ((ds.Tables["ClientFiles"] != null)) {
+                    base.Tables.Add(new ClientFilesDataTable(ds.Tables["ClientFiles"]));
                 }
                 if ((ds.Tables["Clients"] != null)) {
                     base.Tables.Add(new ClientsDataTable(ds.Tables["Clients"]));
@@ -89,9 +93,9 @@ namespace MiniTorrentLibrary {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public ClientFileDataTable ClientFile {
+        public ClientFilesDataTable ClientFiles {
             get {
-                return this.tableClientFile;
+                return this.tableClientFiles;
             }
         }
         
@@ -182,8 +186,8 @@ namespace MiniTorrentLibrary {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["ClientFile"] != null)) {
-                    base.Tables.Add(new ClientFileDataTable(ds.Tables["ClientFile"]));
+                if ((ds.Tables["ClientFiles"] != null)) {
+                    base.Tables.Add(new ClientFilesDataTable(ds.Tables["ClientFiles"]));
                 }
                 if ((ds.Tables["Clients"] != null)) {
                     base.Tables.Add(new ClientsDataTable(ds.Tables["Clients"]));
@@ -224,10 +228,10 @@ namespace MiniTorrentLibrary {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableClientFile = ((ClientFileDataTable)(base.Tables["ClientFile"]));
+            this.tableClientFiles = ((ClientFilesDataTable)(base.Tables["ClientFiles"]));
             if ((initTable == true)) {
-                if ((this.tableClientFile != null)) {
-                    this.tableClientFile.InitVars();
+                if ((this.tableClientFiles != null)) {
+                    this.tableClientFiles.InitVars();
                 }
             }
             this.tableClients = ((ClientsDataTable)(base.Tables["Clients"]));
@@ -242,6 +246,8 @@ namespace MiniTorrentLibrary {
                     this.tableFiles.InitVars();
                 }
             }
+            this.relationClientsFK = this.Relations["ClientsFK"];
+            this.relationFilesFK = this.Relations["FilesFK"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -252,17 +258,25 @@ namespace MiniTorrentLibrary {
             this.Namespace = "http://tempuri.org/MiniTorrentDBDataSet.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableClientFile = new ClientFileDataTable();
-            base.Tables.Add(this.tableClientFile);
+            this.tableClientFiles = new ClientFilesDataTable();
+            base.Tables.Add(this.tableClientFiles);
             this.tableClients = new ClientsDataTable();
             base.Tables.Add(this.tableClients);
             this.tableFiles = new FilesDataTable();
             base.Tables.Add(this.tableFiles);
+            this.relationClientsFK = new global::System.Data.DataRelation("ClientsFK", new global::System.Data.DataColumn[] {
+                        this.tableClients.UsernameColumn}, new global::System.Data.DataColumn[] {
+                        this.tableClientFiles.UsernameColumn}, false);
+            this.Relations.Add(this.relationClientsFK);
+            this.relationFilesFK = new global::System.Data.DataRelation("FilesFK", new global::System.Data.DataColumn[] {
+                        this.tableFiles.IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableClientFiles.FileIDColumn}, false);
+            this.Relations.Add(this.relationFilesFK);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeClientFile() {
+        private bool ShouldSerializeClientFiles() {
             return false;
         }
         
@@ -334,7 +348,7 @@ namespace MiniTorrentLibrary {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void ClientFileRowChangeEventHandler(object sender, ClientFileRowChangeEvent e);
+        public delegate void ClientFilesRowChangeEventHandler(object sender, ClientFilesRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void ClientsRowChangeEventHandler(object sender, ClientsRowChangeEvent e);
@@ -347,7 +361,7 @@ namespace MiniTorrentLibrary {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ClientFileDataTable : global::System.Data.TypedTableBase<ClientFileRow> {
+        public partial class ClientFilesDataTable : global::System.Data.TypedTableBase<ClientFilesRow> {
             
             private global::System.Data.DataColumn columnUsername;
             
@@ -355,8 +369,8 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileDataTable() {
-                this.TableName = "ClientFile";
+            public ClientFilesDataTable() {
+                this.TableName = "ClientFiles";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -364,7 +378,7 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ClientFileDataTable(global::System.Data.DataTable table) {
+            internal ClientFilesDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -381,7 +395,7 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected ClientFileDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected ClientFilesDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -413,54 +427,52 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileRow this[int index] {
+            public ClientFilesRow this[int index] {
                 get {
-                    return ((ClientFileRow)(this.Rows[index]));
+                    return ((ClientFilesRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ClientFileRowChangeEventHandler ClientFileRowChanging;
+            public event ClientFilesRowChangeEventHandler ClientFilesRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ClientFileRowChangeEventHandler ClientFileRowChanged;
+            public event ClientFilesRowChangeEventHandler ClientFilesRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ClientFileRowChangeEventHandler ClientFileRowDeleting;
+            public event ClientFilesRowChangeEventHandler ClientFilesRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ClientFileRowChangeEventHandler ClientFileRowDeleted;
+            public event ClientFilesRowChangeEventHandler ClientFilesRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddClientFileRow(ClientFileRow row) {
+            public void AddClientFilesRow(ClientFilesRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileRow AddClientFileRow(string Username, int FileID) {
-                ClientFileRow rowClientFileRow = ((ClientFileRow)(this.NewRow()));
+            public ClientFilesRow AddClientFilesRow(ClientsRow parentClientsRowByClientsFK, FilesRow parentFilesRowByFilesFK) {
+                ClientFilesRow rowClientFilesRow = ((ClientFilesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        Username,
-                        FileID};
-                rowClientFileRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowClientFileRow);
-                return rowClientFileRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileRow FindByUsernameFileID(string Username, int FileID) {
-                return ((ClientFileRow)(this.Rows.Find(new object[] {
-                            Username,
-                            FileID})));
+                        null,
+                        null};
+                if ((parentClientsRowByClientsFK != null)) {
+                    columnValuesArray[0] = parentClientsRowByClientsFK[0];
+                }
+                if ((parentFilesRowByFilesFK != null)) {
+                    columnValuesArray[1] = parentFilesRowByFilesFK[0];
+                }
+                rowClientFilesRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowClientFilesRow);
+                return rowClientFilesRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                ClientFileDataTable cln = ((ClientFileDataTable)(base.Clone()));
+                ClientFilesDataTable cln = ((ClientFilesDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -468,7 +480,7 @@ namespace MiniTorrentLibrary {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new ClientFileDataTable();
+                return new ClientFilesDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -485,9 +497,6 @@ namespace MiniTorrentLibrary {
                 base.Columns.Add(this.columnUsername);
                 this.columnFileID = new global::System.Data.DataColumn("FileID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFileID);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnUsername,
-                                this.columnFileID}, true));
                 this.columnUsername.AllowDBNull = false;
                 this.columnUsername.MaxLength = 50;
                 this.columnFileID.AllowDBNull = false;
@@ -495,28 +504,28 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileRow NewClientFileRow() {
-                return ((ClientFileRow)(this.NewRow()));
+            public ClientFilesRow NewClientFilesRow() {
+                return ((ClientFilesRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new ClientFileRow(builder);
+                return new ClientFilesRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(ClientFileRow);
+                return typeof(ClientFilesRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.ClientFileRowChanged != null)) {
-                    this.ClientFileRowChanged(this, new ClientFileRowChangeEvent(((ClientFileRow)(e.Row)), e.Action));
+                if ((this.ClientFilesRowChanged != null)) {
+                    this.ClientFilesRowChanged(this, new ClientFilesRowChangeEvent(((ClientFilesRow)(e.Row)), e.Action));
                 }
             }
             
@@ -524,8 +533,8 @@ namespace MiniTorrentLibrary {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.ClientFileRowChanging != null)) {
-                    this.ClientFileRowChanging(this, new ClientFileRowChangeEvent(((ClientFileRow)(e.Row)), e.Action));
+                if ((this.ClientFilesRowChanging != null)) {
+                    this.ClientFilesRowChanging(this, new ClientFilesRowChangeEvent(((ClientFilesRow)(e.Row)), e.Action));
                 }
             }
             
@@ -533,8 +542,8 @@ namespace MiniTorrentLibrary {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.ClientFileRowDeleted != null)) {
-                    this.ClientFileRowDeleted(this, new ClientFileRowChangeEvent(((ClientFileRow)(e.Row)), e.Action));
+                if ((this.ClientFilesRowDeleted != null)) {
+                    this.ClientFilesRowDeleted(this, new ClientFilesRowChangeEvent(((ClientFilesRow)(e.Row)), e.Action));
                 }
             }
             
@@ -542,14 +551,14 @@ namespace MiniTorrentLibrary {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.ClientFileRowDeleting != null)) {
-                    this.ClientFileRowDeleting(this, new ClientFileRowChangeEvent(((ClientFileRow)(e.Row)), e.Action));
+                if ((this.ClientFilesRowDeleting != null)) {
+                    this.ClientFilesRowDeleting(this, new ClientFilesRowChangeEvent(((ClientFilesRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveClientFileRow(ClientFileRow row) {
+            public void RemoveClientFilesRow(ClientFilesRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -576,7 +585,7 @@ namespace MiniTorrentLibrary {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "ClientFileDataTable";
+                attribute2.FixedValue = "ClientFilesDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -856,7 +865,9 @@ namespace MiniTorrentLibrary {
                 this.columnDownPath.MaxLength = 2147483647;
                 this.columnActive.AllowDBNull = false;
                 this.columnAdmin.AllowDBNull = false;
+                this.columnIP.AllowDBNull = false;
                 this.columnIP.MaxLength = 50;
+                this.columnPort.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -990,7 +1001,7 @@ namespace MiniTorrentLibrary {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class FilesDataTable : global::System.Data.TypedTableBase<FilesRow> {
             
-            private global::System.Data.DataColumn columnID;
+            private global::System.Data.DataColumn columnId;
             
             private global::System.Data.DataColumn columnName;
             
@@ -1031,9 +1042,9 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDColumn {
+            public global::System.Data.DataColumn IdColumn {
                 get {
-                    return this.columnID;
+                    return this.columnId;
                 }
             }
             
@@ -1103,9 +1114,9 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public FilesRow FindByID(int ID) {
+            public FilesRow FindById(int Id) {
                 return ((FilesRow)(this.Rows.Find(new object[] {
-                            ID})));
+                            Id})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1125,7 +1136,7 @@ namespace MiniTorrentLibrary {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnID = base.Columns["ID"];
+                this.columnId = base.Columns["Id"];
                 this.columnName = base.Columns["Name"];
                 this.columnSize = base.Columns["Size"];
             }
@@ -1133,20 +1144,20 @@ namespace MiniTorrentLibrary {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnID);
+                this.columnId = new global::System.Data.DataColumn("Id", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnId);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
                 this.columnSize = new global::System.Data.DataColumn("Size", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSize);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnID}, true));
-                this.columnID.AutoIncrement = true;
-                this.columnID.AutoIncrementSeed = -1;
-                this.columnID.AutoIncrementStep = -1;
-                this.columnID.AllowDBNull = false;
-                this.columnID.ReadOnly = true;
-                this.columnID.Unique = true;
+                                this.columnId}, true));
+                this.columnId.AutoIncrement = true;
+                this.columnId.AutoIncrementSeed = -1;
+                this.columnId.AutoIncrementStep = -1;
+                this.columnId.AllowDBNull = false;
+                this.columnId.ReadOnly = true;
+                this.columnId.Unique = true;
                 this.columnName.AllowDBNull = false;
                 this.columnName.MaxLength = 50;
                 this.columnSize.AllowDBNull = false;
@@ -1279,25 +1290,25 @@ namespace MiniTorrentLibrary {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class ClientFileRow : global::System.Data.DataRow {
+        public partial class ClientFilesRow : global::System.Data.DataRow {
             
-            private ClientFileDataTable tableClientFile;
+            private ClientFilesDataTable tableClientFiles;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ClientFileRow(global::System.Data.DataRowBuilder rb) : 
+            internal ClientFilesRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableClientFile = ((ClientFileDataTable)(this.Table));
+                this.tableClientFiles = ((ClientFilesDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Username {
                 get {
-                    return ((string)(this[this.tableClientFile.UsernameColumn]));
+                    return ((string)(this[this.tableClientFiles.UsernameColumn]));
                 }
                 set {
-                    this[this.tableClientFile.UsernameColumn] = value;
+                    this[this.tableClientFiles.UsernameColumn] = value;
                 }
             }
             
@@ -1305,10 +1316,32 @@ namespace MiniTorrentLibrary {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int FileID {
                 get {
-                    return ((int)(this[this.tableClientFile.FileIDColumn]));
+                    return ((int)(this[this.tableClientFiles.FileIDColumn]));
                 }
                 set {
-                    this[this.tableClientFile.FileIDColumn] = value;
+                    this[this.tableClientFiles.FileIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ClientsRow ClientsRow {
+                get {
+                    return ((ClientsRow)(this.GetParentRow(this.Table.ParentRelations["ClientsFK"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["ClientsFK"]);
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public FilesRow FilesRow {
+                get {
+                    return ((FilesRow)(this.GetParentRow(this.Table.ParentRelations["FilesFK"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["FilesFK"]);
                 }
             }
         }
@@ -1397,12 +1430,7 @@ namespace MiniTorrentLibrary {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string IP {
                 get {
-                    try {
-                        return ((string)(this[this.tableClients.IPColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'IP\' in table \'Clients\' is DBNull.", e);
-                    }
+                    return ((string)(this[this.tableClients.IPColumn]));
                 }
                 set {
                     this[this.tableClients.IPColumn] = value;
@@ -1413,12 +1441,7 @@ namespace MiniTorrentLibrary {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int Port {
                 get {
-                    try {
-                        return ((int)(this[this.tableClients.PortColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Port\' in table \'Clients\' is DBNull.", e);
-                    }
+                    return ((int)(this[this.tableClients.PortColumn]));
                 }
                 set {
                     this[this.tableClients.PortColumn] = value;
@@ -1427,26 +1450,13 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIPNull() {
-                return this.IsNull(this.tableClients.IPColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIPNull() {
-                this[this.tableClients.IPColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsPortNull() {
-                return this.IsNull(this.tableClients.PortColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetPortNull() {
-                this[this.tableClients.PortColumn] = global::System.Convert.DBNull;
+            public ClientFilesRow[] GetClientFilesRows() {
+                if ((this.Table.ChildRelations["ClientsFK"] == null)) {
+                    return new ClientFilesRow[0];
+                }
+                else {
+                    return ((ClientFilesRow[])(base.GetChildRows(this.Table.ChildRelations["ClientsFK"])));
+                }
             }
         }
         
@@ -1466,12 +1476,12 @@ namespace MiniTorrentLibrary {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ID {
+            public int Id {
                 get {
-                    return ((int)(this[this.tableFiles.IDColumn]));
+                    return ((int)(this[this.tableFiles.IdColumn]));
                 }
                 set {
-                    this[this.tableFiles.IDColumn] = value;
+                    this[this.tableFiles.IdColumn] = value;
                 }
             }
             
@@ -1496,28 +1506,39 @@ namespace MiniTorrentLibrary {
                     this[this.tableFiles.SizeColumn] = value;
                 }
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ClientFilesRow[] GetClientFilesRows() {
+                if ((this.Table.ChildRelations["FilesFK"] == null)) {
+                    return new ClientFilesRow[0];
+                }
+                else {
+                    return ((ClientFilesRow[])(base.GetChildRows(this.Table.ChildRelations["FilesFK"])));
+                }
+            }
         }
         
         /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class ClientFileRowChangeEvent : global::System.EventArgs {
+        public class ClientFilesRowChangeEvent : global::System.EventArgs {
             
-            private ClientFileRow eventRow;
+            private ClientFilesRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileRowChangeEvent(ClientFileRow row, global::System.Data.DataRowAction action) {
+            public ClientFilesRowChangeEvent(ClientFilesRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ClientFileRow Row {
+            public ClientFilesRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1613,7 +1634,7 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class ClientFileTableAdapter : global::System.ComponentModel.Component {
+    public partial class ClientFilesTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
         
@@ -1627,7 +1648,7 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public ClientFileTableAdapter() {
+        public ClientFilesTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -1724,36 +1745,17 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
             this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "ClientFile";
+            tableMapping.DataSetTable = "ClientFiles";
             tableMapping.ColumnMappings.Add("Username", "Username");
             tableMapping.ColumnMappings.Add("FileID", "FileID");
             this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[ClientFile] WHERE (([Username] = @Original_Username) AND ([Fil" +
-                "eID] = @Original_FileID))";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_FileID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FileID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[ClientFile] ([Username], [FileID]) VALUES (@Username, @FileID)" +
-                ";\r\nSELECT Username, FileID FROM ClientFile WHERE (FileID = @FileID) AND (Usernam" +
-                "e = @Username)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[ClientFiles] ([Username], [FileID]) VALUES (@Username, @FileID" +
+                ")";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@FileID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FileID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[ClientFile] SET [Username] = @Username, [FileID] = @FileID WHERE ((" +
-                "[Username] = @Original_Username) AND ([FileID] = @Original_FileID));\r\nSELECT Use" +
-                "rname, FileID FROM ClientFile WHERE (FileID = @FileID) AND (Username = @Username" +
-                ")";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@FileID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FileID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_FileID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FileID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1769,7 +1771,7 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Username, FileID FROM dbo.ClientFile";
+            this._commandCollection[0].CommandText = "SELECT Username, FileID FROM dbo.ClientFiles";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1777,7 +1779,7 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(MiniTorrentDBDataSet.ClientFileDataTable dataTable) {
+        public virtual int Fill(MiniTorrentDBDataSet.ClientFilesDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -1790,9 +1792,9 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual MiniTorrentDBDataSet.ClientFileDataTable GetData() {
+        public virtual MiniTorrentDBDataSet.ClientFilesDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            MiniTorrentDBDataSet.ClientFileDataTable dataTable = new MiniTorrentDBDataSet.ClientFileDataTable();
+            MiniTorrentDBDataSet.ClientFilesDataTable dataTable = new MiniTorrentDBDataSet.ClientFilesDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1800,7 +1802,7 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(MiniTorrentDBDataSet.ClientFileDataTable dataTable) {
+        public virtual int Update(MiniTorrentDBDataSet.ClientFilesDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
@@ -1808,7 +1810,7 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int Update(MiniTorrentDBDataSet dataSet) {
-            return this.Adapter.Update(dataSet, "ClientFile");
+            return this.Adapter.Update(dataSet, "ClientFiles");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1824,34 +1826,6 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int Update(global::System.Data.DataRow[] dataRows) {
             return this.Adapter.Update(dataRows);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(string Original_Username, int Original_FileID) {
-            if ((Original_Username == null)) {
-                throw new global::System.ArgumentNullException("Original_Username");
-            }
-            else {
-                this.Adapter.DeleteCommand.Parameters[0].Value = ((string)(Original_Username));
-            }
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_FileID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1880,49 +1854,6 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
                     this.Adapter.InsertCommand.Connection.Close();
                 }
             }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Username, int FileID, string Original_Username, int Original_FileID) {
-            if ((Username == null)) {
-                throw new global::System.ArgumentNullException("Username");
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(Username));
-            }
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(FileID));
-            if ((Original_Username == null)) {
-                throw new global::System.ArgumentNullException("Original_Username");
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Original_Username));
-            }
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(Original_FileID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Original_Username, int Original_FileID) {
-            return this.Update(Original_Username, Original_FileID, Original_Username, Original_FileID);
         }
     }
     
@@ -2058,15 +1989,15 @@ namespace MiniTorrentLibrary.MiniTorrentDBDataSetTableAdapters {
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Clients] WHERE (([Username] = @Original_Username) AND ([Password] = @Original_Password) AND ([Active] = @Original_Active) AND ([Admin] = @Original_Admin) AND ((@IsNull_IP = 1 AND [IP] IS NULL) OR ([IP] = @Original_IP)) AND ((@IsNull_Port = 1 AND [Port] IS NULL) OR ([Port] = @Original_Port)))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Clients] WHERE (([Username] = @Original_Username) AND ([Passwo" +
+                "rd] = @Original_Password) AND ([Active] = @Original_Active) AND ([Admin] = @Orig" +
+                "inal_Admin) AND ([IP] = @Original_IP) AND ([Port] = @Original_Port))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Password", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Password", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Active", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Active", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Admin", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Admin", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_IP", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IP", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IP", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IP", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Port", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Port", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Port", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Port", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
@@ -2083,7 +2014,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Port", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Port", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Clients] SET [Username] = @Username, [Password] = @Password, [UpPath] = @UpPath, [DownPath] = @DownPath, [Active] = @Active, [Admin] = @Admin, [IP] = @IP, [Port] = @Port WHERE (([Username] = @Original_Username) AND ([Password] = @Original_Password) AND ([Active] = @Original_Active) AND ([Admin] = @Original_Admin) AND ((@IsNull_IP = 1 AND [IP] IS NULL) OR ([IP] = @Original_IP)) AND ((@IsNull_Port = 1 AND [Port] IS NULL) OR ([Port] = @Original_Port)));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Clients] SET [Username] = @Username, [Password] = @Password, [UpPath] = @UpPath, [DownPath] = @DownPath, [Active] = @Active, [Admin] = @Admin, [IP] = @IP, [Port] = @Port WHERE (([Username] = @Original_Username) AND ([Password] = @Original_Password) AND ([Active] = @Original_Active) AND ([Admin] = @Original_Admin) AND ([IP] = @Original_IP) AND ([Port] = @Original_Port));
 SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Clients WHERE (Username = @Username)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -2098,9 +2029,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Password", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Password", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Active", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Active", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Admin", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Admin", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_IP", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IP", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IP", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IP", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Port", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Port", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Port", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Port", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -2179,7 +2108,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(string Original_Username, string Original_Password, bool Original_Active, bool Original_Admin, string Original_IP, global::System.Nullable<int> Original_Port) {
+        public virtual int Delete(string Original_Username, string Original_Password, bool Original_Active, bool Original_Admin, string Original_IP, int Original_Port) {
             if ((Original_Username == null)) {
                 throw new global::System.ArgumentNullException("Original_Username");
             }
@@ -2195,21 +2124,12 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_Active));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_Admin));
             if ((Original_IP == null)) {
-                this.Adapter.DeleteCommand.Parameters[4].Value = ((object)(1));
-                this.Adapter.DeleteCommand.Parameters[5].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("Original_IP");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[4].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[5].Value = ((string)(Original_IP));
+                this.Adapter.DeleteCommand.Parameters[4].Value = ((string)(Original_IP));
             }
-            if ((Original_Port.HasValue == true)) {
-                this.Adapter.DeleteCommand.Parameters[6].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[7].Value = ((int)(Original_Port.Value));
-            }
-            else {
-                this.Adapter.DeleteCommand.Parameters[6].Value = ((object)(1));
-                this.Adapter.DeleteCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_Port));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2230,7 +2150,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string Username, string Password, string UpPath, string DownPath, bool Active, bool Admin, string IP, global::System.Nullable<int> Port) {
+        public virtual int Insert(string Username, string Password, string UpPath, string DownPath, bool Active, bool Admin, string IP, int Port) {
             if ((Username == null)) {
                 throw new global::System.ArgumentNullException("Username");
             }
@@ -2258,17 +2178,12 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(Active));
             this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(Admin));
             if ((IP == null)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("IP");
             }
             else {
                 this.Adapter.InsertCommand.Parameters[6].Value = ((string)(IP));
             }
-            if ((Port.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[7].Value = ((int)(Port.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
+            this.Adapter.InsertCommand.Parameters[7].Value = ((int)(Port));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2289,7 +2204,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Username, string Password, string UpPath, string DownPath, bool Active, bool Admin, string IP, global::System.Nullable<int> Port, string Original_Username, string Original_Password, bool Original_Active, bool Original_Admin, string Original_IP, global::System.Nullable<int> Original_Port) {
+        public virtual int Update(string Username, string Password, string UpPath, string DownPath, bool Active, bool Admin, string IP, int Port, string Original_Username, string Original_Password, bool Original_Active, bool Original_Admin, string Original_IP, int Original_Port) {
             if ((Username == null)) {
                 throw new global::System.ArgumentNullException("Username");
             }
@@ -2317,17 +2232,12 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(Active));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(Admin));
             if ((IP == null)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("IP");
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[6].Value = ((string)(IP));
             }
-            if ((Port.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Port.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Port));
             if ((Original_Username == null)) {
                 throw new global::System.ArgumentNullException("Original_Username");
             }
@@ -2343,21 +2253,12 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_Active));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_Admin));
             if ((Original_IP == null)) {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("Original_IP");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[13].Value = ((string)(Original_IP));
+                this.Adapter.UpdateCommand.Parameters[12].Value = ((string)(Original_IP));
             }
-            if ((Original_Port.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[14].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((int)(Original_Port.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[14].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
-            }
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((int)(Original_Port));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2378,7 +2279,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Password, string UpPath, string DownPath, bool Active, bool Admin, string IP, global::System.Nullable<int> Port, string Original_Username, string Original_Password, bool Original_Active, bool Original_Admin, string Original_IP, global::System.Nullable<int> Original_Port) {
+        public virtual int Update(string Password, string UpPath, string DownPath, bool Active, bool Admin, string IP, int Port, string Original_Username, string Original_Password, bool Original_Active, bool Original_Admin, string Original_IP, int Original_Port) {
             return this.Update(Original_Username, Password, UpPath, DownPath, Active, Admin, IP, Port, Original_Username, Original_Password, Original_Active, Original_Admin, Original_IP, Original_Port);
         }
     }
@@ -2504,37 +2405,37 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "Files";
-            tableMapping.ColumnMappings.Add("ID", "ID");
+            tableMapping.ColumnMappings.Add("Id", "Id");
             tableMapping.ColumnMappings.Add("Name", "Name");
             tableMapping.ColumnMappings.Add("Size", "Size");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Files] WHERE (([ID] = @Original_ID) AND ([Name] = @Original_Na" +
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Files] WHERE (([Id] = @Original_Id) AND ([Name] = @Original_Na" +
                 "me) AND ([Size] = @Original_Size))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Size", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Size", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Files] ([Name], [Size]) VALUES (@Name, @Size);\r\nSELECT ID, Nam" +
-                "e, Size FROM Files WHERE (ID = SCOPE_IDENTITY())";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Files] ([Name], [Size]) VALUES (@Name, @Size);\r\nSELECT Id, Nam" +
+                "e, Size FROM Files WHERE (Id = SCOPE_IDENTITY())";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Size", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Size", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Files] SET [Name] = @Name, [Size] = @Size WHERE (([ID] = @Original_" +
-                "ID) AND ([Name] = @Original_Name) AND ([Size] = @Original_Size));\r\nSELECT ID, Na" +
-                "me, Size FROM Files WHERE (ID = @ID)";
+            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Files] SET [Name] = @Name, [Size] = @Size WHERE (([Id] = @Original_" +
+                "Id) AND ([Name] = @Original_Name) AND ([Size] = @Original_Size));\r\nSELECT Id, Na" +
+                "me, Size FROM Files WHERE (Id = @Id)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Size", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Size", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Size", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Size", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2550,7 +2451,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, Name, Size FROM dbo.Files";
+            this._commandCollection[0].CommandText = "SELECT Id, Name, Size FROM dbo.Files";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -2611,8 +2512,8 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ID, string Original_Name, int Original_Size) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
+        public virtual int Delete(int Original_Id, string Original_Name, int Original_Size) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Id));
             if ((Original_Name == null)) {
                 throw new global::System.ArgumentNullException("Original_Name");
             }
@@ -2668,7 +2569,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Name, int Size, int Original_ID, string Original_Name, int Original_Size, int ID) {
+        public virtual int Update(string Name, int Size, int Original_Id, string Original_Name, int Original_Size, int Id) {
             if ((Name == null)) {
                 throw new global::System.ArgumentNullException("Name");
             }
@@ -2676,7 +2577,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                 this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(Name));
             }
             this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(Size));
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(Original_ID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(Original_Id));
             if ((Original_Name == null)) {
                 throw new global::System.ArgumentNullException("Original_Name");
             }
@@ -2684,7 +2585,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                 this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(Original_Name));
             }
             this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_Size));
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(ID));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Id));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2705,8 +2606,8 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Name, int Size, int Original_ID, string Original_Name, int Original_Size) {
-            return this.Update(Name, Size, Original_ID, Original_Name, Original_Size, Original_ID);
+        public virtual int Update(string Name, int Size, int Original_Id, string Original_Name, int Original_Size) {
+            return this.Update(Name, Size, Original_Id, Original_Name, Original_Size, Original_Id);
         }
     }
     
@@ -2722,7 +2623,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         
         private UpdateOrderOption _updateOrder;
         
-        private ClientFileTableAdapter _clientFileTableAdapter;
+        private ClientFilesTableAdapter _clientFilesTableAdapter;
         
         private ClientsTableAdapter _clientsTableAdapter;
         
@@ -2748,12 +2649,12 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public ClientFileTableAdapter ClientFileTableAdapter {
+        public ClientFilesTableAdapter ClientFilesTableAdapter {
             get {
-                return this._clientFileTableAdapter;
+                return this._clientFilesTableAdapter;
             }
             set {
-                this._clientFileTableAdapter = value;
+                this._clientFilesTableAdapter = value;
             }
         }
         
@@ -2804,9 +2705,9 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._clientFileTableAdapter != null) 
-                            && (this._clientFileTableAdapter.Connection != null))) {
-                    return this._clientFileTableAdapter.Connection;
+                if (((this._clientFilesTableAdapter != null) 
+                            && (this._clientFilesTableAdapter.Connection != null))) {
+                    return this._clientFilesTableAdapter.Connection;
                 }
                 if (((this._clientsTableAdapter != null) 
                             && (this._clientsTableAdapter.Connection != null))) {
@@ -2829,7 +2730,7 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._clientFileTableAdapter != null)) {
+                if ((this._clientFilesTableAdapter != null)) {
                     count = (count + 1);
                 }
                 if ((this._clientsTableAdapter != null)) {
@@ -2849,15 +2750,6 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateUpdatedRows(MiniTorrentDBDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._clientFileTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.ClientFile.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
-                updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
-                if (((updatedRows != null) 
-                            && (0 < updatedRows.Length))) {
-                    result = (result + this._clientFileTableAdapter.Update(updatedRows));
-                    allChangedRows.AddRange(updatedRows);
-                }
-            }
             if ((this._clientsTableAdapter != null)) {
                 global::System.Data.DataRow[] updatedRows = dataSet.Clients.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
@@ -2876,6 +2768,15 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                     allChangedRows.AddRange(updatedRows);
                 }
             }
+            if ((this._clientFilesTableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.ClientFiles.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+                updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
+                if (((updatedRows != null) 
+                            && (0 < updatedRows.Length))) {
+                    result = (result + this._clientFilesTableAdapter.Update(updatedRows));
+                    allChangedRows.AddRange(updatedRows);
+                }
+            }
             return result;
         }
         
@@ -2886,14 +2787,6 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateInsertedRows(MiniTorrentDBDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._clientFileTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.ClientFile.Select(null, null, global::System.Data.DataViewRowState.Added);
-                if (((addedRows != null) 
-                            && (0 < addedRows.Length))) {
-                    result = (result + this._clientFileTableAdapter.Update(addedRows));
-                    allAddedRows.AddRange(addedRows);
-                }
-            }
             if ((this._clientsTableAdapter != null)) {
                 global::System.Data.DataRow[] addedRows = dataSet.Clients.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
@@ -2910,6 +2803,14 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                     allAddedRows.AddRange(addedRows);
                 }
             }
+            if ((this._clientFilesTableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.ClientFiles.Select(null, null, global::System.Data.DataViewRowState.Added);
+                if (((addedRows != null) 
+                            && (0 < addedRows.Length))) {
+                    result = (result + this._clientFilesTableAdapter.Update(addedRows));
+                    allAddedRows.AddRange(addedRows);
+                }
+            }
             return result;
         }
         
@@ -2920,6 +2821,14 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateDeletedRows(MiniTorrentDBDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
+            if ((this._clientFilesTableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.ClientFiles.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+                if (((deletedRows != null) 
+                            && (0 < deletedRows.Length))) {
+                    result = (result + this._clientFilesTableAdapter.Update(deletedRows));
+                    allChangedRows.AddRange(deletedRows);
+                }
+            }
             if ((this._filesTableAdapter != null)) {
                 global::System.Data.DataRow[] deletedRows = dataSet.Files.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
@@ -2933,14 +2842,6 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
                     result = (result + this._clientsTableAdapter.Update(deletedRows));
-                    allChangedRows.AddRange(deletedRows);
-                }
-            }
-            if ((this._clientFileTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.ClientFile.Select(null, null, global::System.Data.DataViewRowState.Deleted);
-                if (((deletedRows != null) 
-                            && (0 < deletedRows.Length))) {
-                    result = (result + this._clientFileTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -2983,8 +2884,8 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._clientFileTableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._clientFileTableAdapter.Connection) == false))) {
+            if (((this._clientFilesTableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._clientFilesTableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
                         "tring.");
             }
@@ -3030,13 +2931,13 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._clientFileTableAdapter != null)) {
-                    revertConnections.Add(this._clientFileTableAdapter, this._clientFileTableAdapter.Connection);
-                    this._clientFileTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._clientFileTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
-                    if (this._clientFileTableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._clientFileTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._clientFileTableAdapter.Adapter);
+                if ((this._clientFilesTableAdapter != null)) {
+                    revertConnections.Add(this._clientFilesTableAdapter, this._clientFilesTableAdapter.Connection);
+                    this._clientFilesTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
+                    this._clientFilesTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
+                    if (this._clientFilesTableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._clientFilesTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._clientFilesTableAdapter.Adapter);
                     }
                 }
                 if ((this._clientsTableAdapter != null)) {
@@ -3115,9 +3016,9 @@ SELECT Username, Password, UpPath, DownPath, Active, Admin, IP, Port FROM Client
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._clientFileTableAdapter != null)) {
-                    this._clientFileTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._clientFileTableAdapter]));
-                    this._clientFileTableAdapter.Transaction = null;
+                if ((this._clientFilesTableAdapter != null)) {
+                    this._clientFilesTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._clientFilesTableAdapter]));
+                    this._clientFilesTableAdapter.Transaction = null;
                 }
                 if ((this._clientsTableAdapter != null)) {
                     this._clientsTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._clientsTableAdapter]));

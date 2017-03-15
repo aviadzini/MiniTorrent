@@ -175,7 +175,7 @@ namespace MiniTorrentClient
             for (int i = 0; i < fp.CountClients; i++)
             {
                 FileDetails file = fp.FilesList[i];
-                dataGrid.Items.Add(new Item() { Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
+                dataGrid.Items.Add(new Item() { Username = file.Username, FileName = file.FileName, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
             }
         }
         
@@ -289,6 +289,7 @@ namespace MiniTorrentClient
     public class Item
     {
         public string Username { get; set; }
+        public string FileName { get; set; }
         public int FileSize { get; set; }
         public int Port { get; set; }
         public string IP { get; set; }

@@ -98,7 +98,48 @@ namespace MiniTorrentServer
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
-                        if (!File.isFileExist(fs.FileName))
+                        if(fs.FileName.CompareTo("*") == 0)
+                        {
+                            List<FileDetails> lfd = new List<FileDetails>();
+                            List<File> listFile = new List<File>();
+                            List<ClientFile> listClient = new List<ClientFile>();
+
+                            listFile = File.getAllFilesList();
+                            Client client = new Client();
+
+                            foreach (var item in listFile)
+                            {
+                                listClient = ClientFile.getAllFilesById(item.Id);
+                                foreach (var item2 in listClient)
+                                {
+                                    Tuple<string, int> d = client.getIpAndPort(item2.Username);
+                                    int size = item.Size;
+
+                                    FileDetails f = new FileDetails
+                                    {
+                                        Username = item2.Username,
+                                        FileName = item.Name,
+                                        FileSize = size,
+                                        Ip = d.Item1,
+                                        Port = d.Item2
+                                    };
+
+                                    lfd.Add(f);
+                                }
+                            }
+
+                            FilePackage fp = new FilePackage
+                            {
+                                Exist = true,
+                                CountClients = lfd.Count,
+                                FilesList = lfd
+                            };
+
+                            byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(fp) + ServerConstants.EOF);
+                            handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
+                        }
+
+                        else if (!File.isFileExist(fs.FileName))
                         {
                             FilePackage fp = new FilePackage
                             {
@@ -115,7 +156,7 @@ namespace MiniTorrentServer
                             List<File> listFile = new List<File>();
                             List<ClientFile> listClient = new List<ClientFile>();
 
-                            listFile = File.getAllFilesList(fs.FileName);
+                            listFile = File.getAllFilesListByName(fs.FileName);
                             Client client = new Client();
 
                             foreach (var item in listFile)
@@ -129,6 +170,7 @@ namespace MiniTorrentServer
                                     FileDetails f = new FileDetails
                                     {
                                         Username = item2.Username,
+                                        FileName = item.Name,
                                         FileSize = size,
                                         Ip = d.Item1,
                                         Port = d.Item2
@@ -141,7 +183,6 @@ namespace MiniTorrentServer
                             FilePackage fp = new FilePackage
                             {
                                 Exist = true,
-                                FileName = fs.FileName,
                                 CountClients = lfd.Count,
                                 FilesList = lfd
                             };

@@ -102,10 +102,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\MiniTorrentDB.mdf" />
-    <Content Include="App_Data\MiniTorrentDB_log.ldf">
-      <DependentUpon>MiniTorrentDB.mdf</DependentUpon>
-    </Content>
     <Content Include="ClientPage.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
