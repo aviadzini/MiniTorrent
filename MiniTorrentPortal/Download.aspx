@@ -19,7 +19,7 @@
              
         </p>
         <asp:Label ID =  "FilesLabel" runat="server" Text="Files in application"/> 
-        <table id = "FilesTable" runat = "server" cellpadding="5" />
+        <asp:GridView ID = "GridView1" runat = "server" CellPadding = "10" CellSpacing = "10" />
         <p>
          <asp:Label ID =  "SumLable" runat="server" Text=""/> 
         </p>

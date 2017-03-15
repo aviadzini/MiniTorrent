@@ -39,14 +39,15 @@
             this.serverTB.Size = new System.Drawing.Size(385, 313);
             this.serverTB.TabIndex = 0;
             // 
-            // Form1
+            // ServerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(409, 337);
             this.Controls.Add(this.serverTB);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "ServerWindow";
+            this.Text = "Server Window";
             this.ResumeLayout(false);
             this.PerformLayout();
 

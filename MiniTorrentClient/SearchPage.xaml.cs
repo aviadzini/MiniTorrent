@@ -20,11 +20,11 @@ namespace MiniTorrentClient
         private string downPath;
 
         private string file = "";
-        byte[] buffer = new byte[ServerConstants.BufferSize];
+        private byte[] buffer = new byte[ServerConstants.BufferSize];
         private StringBuilder sb = new StringBuilder();
 
-        private int index = 1;
-      
+        private BinaryWriter bw = new BinaryWriter(new MemoryStream());
+
         private string response = string.Empty;
 
         public SearchPage(Socket clientSocket, ClientsDetailsPackage cdp)
@@ -77,6 +77,8 @@ namespace MiniTorrentClient
                 sb.Append(Encoding.ASCII.GetString(buffer, 0, received));
                 string content = sb.ToString();
 
+                buffer = new byte[ServerConstants.BufferSize];
+
                 if (content.IndexOf(ServerConstants.EOF) > -1)
                 {
                     content = content.Substring(0, content.Length - 5);
@@ -86,13 +88,14 @@ namespace MiniTorrentClient
                     if (deserialized.PackageType == typeof(FileSearch))
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
-                        sendFile(fs.FileName, handler);
+                        handler.BeginSendFile(upPath + fs.FileName, new AsyncCallback(SendFileCallback), handler);
                     }
                 }
 
                 else
                     handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
 
+                buffer = new byte[ServerConstants.BufferSize];
                 sb.Clear();
                 handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
             }
@@ -103,44 +106,12 @@ namespace MiniTorrentClient
             try
             {
                 Socket handler = (Socket)ar.AsyncState;
+                handler.EndSendFile(ar);
             }
 
             catch (Exception e)
             {
                 MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void sendFile(string fileName, Socket socket)
-        {
-            Socket handler = socket;
-            FileStream fin = null;
-
-            try
-            {
-                FileInfo ftemp = new FileInfo(upPath + fileName);
-                long total = ftemp.Length;
-                long ToatlSent = 0;
-
-                fin = new FileStream(upPath + fileName, FileMode.Open, FileAccess.Read);
-
-                while (ToatlSent < total)
-                {
-                    index = fin.Read(buffer, 0, buffer.Length);
-                    handler.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(SendFileCallback), handler);
-                    ToatlSent = ToatlSent + index;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                MessageBoxResult result = MessageBox.Show("A Exception occured in transfer" + ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            finally
-            {
-                if (fin != null)
-                    fin.Close();
             }
         }
 
@@ -174,7 +145,7 @@ namespace MiniTorrentClient
 
                 clientSocket.Send(Encoding.ASCII.GetBytes(serialized + ServerConstants.EOF));
                 
-                byte[] receiveBuffer = new byte[1024];
+                byte[] receiveBuffer = new byte[ServerConstants.BufferSize];
                 int received = clientSocket.Receive(receiveBuffer);
                 response = Encoding.ASCII.GetString(receiveBuffer, 0, received);
                 response = response.Substring(0, response.Length - 5);
@@ -183,6 +154,8 @@ namespace MiniTorrentClient
 
                 if (!fp.Exist)
                 {
+                    label.Visibility = Visibility.Hidden;
+                    dataGrid.Visibility = Visibility.Hidden;
                     MessageBox.Show("The File Is Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
@@ -197,10 +170,12 @@ namespace MiniTorrentClient
 
         private void AddExistFiles(FilePackage fp)
         {
+            dataGrid.Items.Clear();
+
             for (int i = 0; i < fp.CountClients; i++)
             {
                 FileDetails file = fp.FilesList[i];
-                dataGrid.Items.Add(new Item() { NO = (i+1), Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
+                dataGrid.Items.Add(new Item() { Username = file.Username, FileSize = file.FileSize, Port = file.Port, IP = file.Ip });
             }
         }
         
@@ -210,8 +185,8 @@ namespace MiniTorrentClient
 
             clientSocket.Disconnect(true);
             clientSocket.Dispose();
-
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Item item = dataGrid.SelectedItem as Item;
@@ -256,40 +231,12 @@ namespace MiniTorrentClient
             {
                 downloadSocket.EndSend(ar);
 
-                GetFile(file);
+                downloadSocket.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadFileCallback), null);
             }
 
             catch (Exception e)
             {
                 MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void GetFile(string FileName)
-        {
-            FileStream fout = new FileStream(downPath + FileName, FileMode.Create, FileAccess.Write);
-
-            long rby = 0;
-            try
-            {
-                downloadSocket.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadFileCallback), null);
-                while (index > 0)
-                {
-                    fout.Write(buffer, 0, index);
-                    rby = rby + index;
-                    downloadSocket.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadFileCallback), null);
-                }
-            }
-
-            catch (Exception ed)
-            {
-                Console.WriteLine("A Exception occured in file transfer" + ed.Message);
-            }
-
-            finally
-            {
-                if (fout != null)
-                    fout.Close();
             }
         }
 
@@ -297,19 +244,50 @@ namespace MiniTorrentClient
         {
             try
             {
-                index = downloadSocket.EndReceive(ar);
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                double total = 0.0;
+
+                int bytes = downloadSocket.EndReceive(ar);
+                while (bytes > 0)
+                {
+                    total += bytes;
+                    bw.Write(buffer, 0, bytes);
+                    if (bytes < buffer.Length)
+                        break;
+                    bytes = downloadSocket.Receive(buffer, 0, buffer.Length, SocketFlags.None);
+                }
+
+                bw.Flush();
+                using (FileStream fs = System.IO.File.Create(downPath + file))
+                {
+                    ((MemoryStream)bw.BaseStream).WriteTo(fs);
+                }
+
+                watch.Stop();
+
+                double elapsedS = watch.ElapsedMilliseconds / 1000.0;
+                total = total / 1000.0;
+
+                string massage = "Total time: " + elapsedS + " seconds.\r\n";
+                massage += "File size: " + total + " KB.\r\n";
+                massage += "Bit rate: " + total / elapsedS + " Kbps."; 
+
+                MessageBoxResult result = MessageBox.Show(massage, "Download information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
             catch (Exception e)
             {
                 MessageBoxResult result = MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            downloadSocket.Disconnect(true);
+            downloadSocket.Dispose();
         }
     }
 
     public class Item
     {
-        public int NO { get; set; }
         public string Username { get; set; }
         public int FileSize { get; set; }
         public int Port { get; set; }

@@ -38,11 +38,22 @@ namespace MiniTorrentLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\App_Data\\Mini" +
-            "TorrentDB.mdf;Integrated Security=True;Connect Timeout=30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\MiniTorrentDB" +
+            ".mdf;Integrated Security=True;Connect Timeout=30")]
         public string MiniTorrentDBConnectionString1 {
             get {
                 return ((string)(this["MiniTorrentDBConnectionString1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\App_Data\\Mini" +
+            "TorrentDB.mdf;Integrated Security=True;Connect Timeout=30")]
+        public string MiniTorrentDBConnectionString2 {
+            get {
+                return ((string)(this["MiniTorrentDBConnectionString2"]));
             }
         }
     }

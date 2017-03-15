@@ -114,6 +114,10 @@
       <Project>{f7918fe1-326e-44c9-9675-3bcc8cd37ec0}</Project>
       <Name>MiniTorrentLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MiniTorrentPortal\MiniTorrentPortal.csproj">
+      <Project>{ca9a02ad-bb98-4731-a024-53b3304b07c4}</Project>
+      <Name>MiniTorrentPortal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

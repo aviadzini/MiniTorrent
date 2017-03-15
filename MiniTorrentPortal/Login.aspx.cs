@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI;
 using MiniTorrentLibrary;
 
@@ -13,15 +12,16 @@ namespace MiniTorrentPortal
 
         protected void LoginOnClick(object sender, EventArgs e)
         {
-            var client = ClientsDBO.getClientsByUsernamePassword(UsernameTB.Text, PasswordTB.Text);
-
-            if (client == null)
+            if (!Client.isClientExist(UsernameTB.Text, PasswordTB.Text))
                 ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
                    "alert(' Username or password is incorrect '); window.location='" +
                    Request.ApplicationPath + "Login.aspx';", true);
 
             else
             {
+                Client client = new Client();
+                client.getClient(UsernameTB.Text);
+
                 if (client.Admin)
                     Response.Redirect("AdminPage.aspx?Name=" + UsernameTB.Text);
 

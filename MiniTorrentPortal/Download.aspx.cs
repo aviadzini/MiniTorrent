@@ -2,76 +2,47 @@
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using MiniTorrentLibrary;
+using System.Data;
 
 namespace MiniTorrentPortal
 {
     public partial class Download : Page
     {
+        private DataTable dt;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            HtmlTableRow row = new HtmlTableRow();
-            HtmlTableCell cell = new HtmlTableCell();
-
-            int count = 0;
-
-            var DistinctItems = FilesDBO.getAllDistinctFiles();
-
-            foreach (var item in DistinctItems)
+            if (!IsPostBack)
             {
-                count++;
-
-                row = new HtmlTableRow();
-                cell = new HtmlTableCell();
-
-                cell.InnerText = (count).ToString();
-                row.Cells.Add(cell);
-
-                cell = new HtmlTableCell();
-
-                cell.InnerText = item.Name;
-                row.Cells.Add(cell);
-
-                FilesTable.Rows.Add(row);
+                dt = File.getAllFiles();
+                BindGrid();
             }
+        }
 
-            var listOfClients = ClientsDBO.getAllClients();
-            var activeClients = ClientsDBO.getAllActiveClients();
-            var filesList = FilesDBO.getAllFiles();
+        private void BindGrid()
+        {
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
 
-            SumLable.Text = "Total users: " + listOfClients.Count +
-                            "\r\nTotal Active Users:" + activeClients.Count +
-                            "\r\nTotal Files: " + filesList.Count;
+            SumLable.Text = "Total users: " + Client.getNumOfClients() +
+                "\r\nTotal Active Users:" + Client.getNumOfActiveClients() +
+                "\r\nTotal Files: " + dt.Rows.Count;
         }
 
         protected void SearchB_Click(object sender, EventArgs e)
         {
-            HtmlTableRow row = new HtmlTableRow();
-            HtmlTableCell cell = new HtmlTableCell();
-
             if (SearchTB.Text != "")
             {
-                var DistinctItems = FilesDBO.getAllDistinctFilesByName(SearchTB.Text);
-
-                FilesTable.Rows.Clear();
-
-                foreach (var item in DistinctItems)
-                {
-                    cell = new HtmlTableCell();
-
-                    cell.InnerText = item.Name;
-                    row.Cells.Add(cell);
-
-                    FilesTable.Rows.Add(row);
-                }
+                dt = File.getAllFilesByName(SearchTB.Text);
+                BindGrid();
 
                 FilesLabel.Text = "";
+            }
 
-                var c = ClientFileDBO.getClientFileByName(SearchTB.Text);
-
-                var filesList = FilesDBO.getFilesByName(SearchTB.Text);
-
-                SumLable.Text = "Total active users have the file : " + c.Count +
-                                "\nTotal Files: " + filesList.Count;
+            else
+            {
+                dt = File.getAllFiles();
+                BindGrid();
             }
         }
     }

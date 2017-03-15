@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using MiniTorrentLibrary;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 
 namespace MiniTorrentClient
 {
@@ -55,6 +57,15 @@ namespace MiniTorrentClient
 
         private string getJsonData()
         {
+           /* List<MiniTorrentLibrary.File> list = new List<MiniTorrentLibrary.File>();
+
+            string[] allfiles = Directory.GetFiles(@"C:\Up");
+            foreach (var file in allfiles)
+            {
+                FileInfo info = new FileInfo(file);
+                list.Add(new MiniTorrentLibrary.File (info.Name, (int)info.Length));
+            }*/
+
             var pw = new PackageWrapper();
 
             pw.PackageType = typeof(LoginPackage);
@@ -63,9 +74,11 @@ namespace MiniTorrentClient
                 Username = usernameTB.Text,
                 Password = passwordTB.Text,
                 IP = Ip,
-                Port = port
+                Port = port/*,
+                NumOfFiles = list.Count,
+                FileList = new List<MiniTorrentLibrary.File>(list)*/
             };
-
+            
             return JsonConvert.SerializeObject(pw) + ServerConstants.EOF;
         }
 
@@ -121,13 +134,13 @@ namespace MiniTorrentClient
                 if (received > 0)
                 {
                     response = Encoding.ASCII.GetString(buffer, 0, received);
-
                     response = response.Substring(0, response.Length - 5);
 
                     ClientsDetailsPackage cdp = (ClientsDetailsPackage)JsonConvert.DeserializeObject(response, typeof(ClientsDetailsPackage));
 
                     if (cdp.Exist)
                     {
+
                         Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                         (Action)(() =>
                         {
@@ -172,6 +185,16 @@ namespace MiniTorrentClient
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "Please Enter Your Password")
                 textBox.Clear();
+        }
+
+        private void signUpB_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://localhost:8080/Register.aspx");
+            }
+
+            catch { }
         }
     }
 }

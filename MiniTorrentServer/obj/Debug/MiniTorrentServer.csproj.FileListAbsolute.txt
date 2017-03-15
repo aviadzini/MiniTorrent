@@ -58,3 +58,5 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\obj\Debug\MiniTorre
 C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentClient.pdb
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentClient.exe
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentClient.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentDB.mdf
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentServer\bin\Debug\MiniTorrentDB_log.ldf

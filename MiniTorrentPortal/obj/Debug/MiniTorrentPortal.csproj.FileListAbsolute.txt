@@ -109,3 +109,5 @@ C:\Users\user\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorre
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\obj\Debug\MiniTorrentPortal.csprojResolveAssemblyReference.cache
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\MiniTorrentLibrary.dll
 C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\MiniTorrentLibrary.pdb
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\MiniTorrentDB.mdf
+C:\Users\AviadZini\Documents\GitHub\MiniTorrent\MiniTorrentPortal\bin\MiniTorrentDB_log.ldf

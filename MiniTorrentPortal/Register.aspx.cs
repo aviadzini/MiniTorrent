@@ -41,25 +41,10 @@ namespace MiniTorrentPortal
             else
             {
                 string message = "";
+                Client client = new Client(UsernameTB.Text, PasswordTB.Text, UpPathTB.Text, DownPathTB.Text);
 
-                var c = ClientsDBO.getClientsByName(UsernameTB.Text);
-
-                if (c.Count == 0)
-                {
-                    var client = new Clients
-                    {
-                        Username = UsernameTB.Text,
-                        Password = PasswordTB.Text,
-                        UpPath = UpPathTB.Text,
-                        DownPath = DownPathTB.Text,
-                        Active = false,
-                        Admin = false
-                    };
-
-                    ClientsDBO.insertClient(client);
-
+                if (client.insertClient())
                     message = "Registration successful.";
-                }
 
                 else
                     message = "Username already exists.\\nPlease choose a different username.";

@@ -2,18 +2,20 @@
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Linq;
 using MiniTorrentLibrary;
 
 namespace MiniTorrentPortal
 {
     public partial class ClientPage : Page
     {
-        string username = "";
+        private string username = "";
+        private Client client = new Client();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             username = Request.QueryString["Name"];
+
+            client.getClient(username);
 
             if (!IsPostBack)
                 BindGrid();
@@ -21,20 +23,14 @@ namespace MiniTorrentPortal
 
         protected void LogoutOnClick(object sender, EventArgs e)
         {
-            
-
             Response.Redirect("HomePage.html");
         }
 
         private void BindGrid()
         {
-            MiniTorrentDatabaseDataContext db = new MiniTorrentDatabaseDataContext();
+            DataSet ds = Client.getClientDataSet(username);
 
-            var c = from clients in db.Clients
-                    where clients.Username == username
-                    select new { clients.Username, clients.Password, clients.UpPath, clients.DownPath };
-
-            GridView1.DataSource = c;
+            GridView1.DataSource = ds;
             GridView1.DataBind();
         }
 
@@ -52,9 +48,7 @@ namespace MiniTorrentPortal
             string upPath = (row.Cells[3].Controls[0] as TextBox).Text;
             string downPath = (row.Cells[4].Controls[0] as TextBox).Text;
 
-            ClientsDBO.updatePassword(username, password);
-            ClientsDBO.updateUpPath(username, upPath);
-            ClientsDBO.updateDownPath(username, downPath);
+            client.updateClient(password, upPath, downPath);
 
             GridView1.EditIndex = -1;
             BindGrid();

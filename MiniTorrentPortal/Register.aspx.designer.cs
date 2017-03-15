@@ -58,15 +58,6 @@ namespace MiniTorrentPortal {
         protected global::System.Web.UI.WebControls.TextBox UpPathTB;
         
         /// <summary>
-        /// UploadPathIB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton UploadPathIB;
-        
-        /// <summary>
         /// DownPathTB control.
         /// </summary>
         /// <remarks>
@@ -74,15 +65,6 @@ namespace MiniTorrentPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox DownPathTB;
-        
-        /// <summary>
-        /// DownPathIB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton DownPathIB;
         
         /// <summary>
         /// RegisterB control.
