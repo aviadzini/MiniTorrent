@@ -8,6 +8,7 @@ using MiniTorrentLibrary;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Media;
 
 namespace MiniTorrentClient
 {
@@ -57,14 +58,14 @@ namespace MiniTorrentClient
 
         private string getJsonData()
         {
-           /* List<MiniTorrentLibrary.File> list = new List<MiniTorrentLibrary.File>();
+            List<MiniTorrentLibrary.File> list = new List<MiniTorrentLibrary.File>();
 
             string[] allfiles = Directory.GetFiles(@"C:\Up");
             foreach (var file in allfiles)
             {
                 FileInfo info = new FileInfo(file);
                 list.Add(new MiniTorrentLibrary.File (info.Name, (int)info.Length));
-            }*/
+            }
 
             var pw = new PackageWrapper();
 
@@ -72,11 +73,10 @@ namespace MiniTorrentClient
             pw.Package = new LoginPackage
             {
                 Username = usernameTB.Text,
-                Password = passwordTB.Text,
+                Password = passwordBox.Password,
                 IP = Ip,
-                Port = port/*,
-                NumOfFiles = list.Count,
-                FileList = new List<MiniTorrentLibrary.File>(list)*/
+                Port = port,
+                FileList = new List<MiniTorrentLibrary.File>(list)
             };
             
             return JsonConvert.SerializeObject(pw) + ServerConstants.EOF;
@@ -84,10 +84,10 @@ namespace MiniTorrentClient
 
         private void loginB_Click(object sender, RoutedEventArgs e)
         {
-            if (string.Compare(usernameTB.Text, "") == 0 || string.Compare(passwordTB.Text, "") == 0)
+            if (string.Compare(usernameTB.Text, "") == 0 || string.Compare(passwordBox.Password, "") == 0)
             {
                 usernameTB.Clear();
-                passwordTB.Clear();
+                passwordBox.Clear();
 
                 MessageBoxResult result = MessageBox.Show("Username and password cannot be empty!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -140,7 +140,6 @@ namespace MiniTorrentClient
 
                     if (cdp.Exist)
                     {
-
                         Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                         (Action)(() =>
                         {
@@ -157,7 +156,7 @@ namespace MiniTorrentClient
                             (Action)(() =>
                             {
                                 usernameTB.Clear();
-                                passwordTB.Clear();
+                                passwordBox.Clear();
                             }
                             ));
                         
@@ -175,16 +174,18 @@ namespace MiniTorrentClient
 
         private void ClickUserNameTB(object sender, RoutedEventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "Please Enter Your Username")
-                textBox.Clear();
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.Foreground = new SolidColorBrush(Colors.Black);
+            tb.GotFocus -= ClickUserNameTB;
         }
 
-        private void ClickPassowrdTB(object sender, RoutedEventArgs e)
+        private void ClickPasswordBox(object sender, RoutedEventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "Please Enter Your Password")
-                textBox.Clear();
+            PasswordBox tb = (PasswordBox)sender;
+            tb.Password = string.Empty;
+            tb.Foreground = new SolidColorBrush(Colors.Black);
+            tb.GotFocus -= ClickPasswordBox;
         }
 
         private void signUpB_Click(object sender, RoutedEventArgs e)

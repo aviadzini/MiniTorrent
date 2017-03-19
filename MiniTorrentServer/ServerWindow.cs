@@ -14,7 +14,6 @@ namespace MiniTorrentServer
         public static int NumberOfConnections = 0;
 
         private Socket serverSocket;
-        private List<Socket> clientSockets = new List<Socket>();
 
         private byte[] buffer = new byte[ServerConstants.BufferSize];
         private StringBuilder sb = new StringBuilder();
@@ -29,7 +28,7 @@ namespace MiniTorrentServer
             SetupServer();
         }
 
-        public void SetupServer()
+        private void SetupServer()
         {
             serverTB.AppendText("Setting up server...\r\n");
 
@@ -54,10 +53,9 @@ namespace MiniTorrentServer
             }
         }
 
-        public void AcceptCallback(IAsyncResult ar)
+        private void AcceptCallback(IAsyncResult ar)
         {
             Socket handler = serverSocket.EndAccept(ar);
-            clientSockets.Add(handler);
             
             serverTB.AppendText("Connected to client at " + handler.RemoteEndPoint.ToString() + "\r\n");
             serverTB.AppendText("Client #" + ++NumberOfConnections + " at "+ handler.RemoteEndPoint.ToString() + "\r\n\r\n");
@@ -68,7 +66,7 @@ namespace MiniTorrentServer
             serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
 
-        public void ReadCallback(IAsyncResult ar)
+        private void ReadCallback(IAsyncResult ar)
         {
             Socket handler = (Socket)ar.AsyncState;
             int received = handler.EndReceive(ar);
@@ -98,73 +96,53 @@ namespace MiniTorrentServer
                     {
                         FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
 
-                        if(fs.FileName.CompareTo("*") == 0)
-                        {
-                            List<FileDetails> lfd = new List<FileDetails>();
-                            List<File> listFile = new List<File>();
-                            List<ClientFile> listClient = new List<ClientFile>();
+                        List<FileDetails> lfd = new List<FileDetails>();
+                        List<File> listFile = new List<File>();
+                        List<ClientFile> listClient = new List<ClientFile>();
+                        Client client = new Client();
+                        FilePackage fp = new FilePackage();
 
+                        if (fs.FileName.CompareTo("*") == 0)
+                        {
                             listFile = File.getAllFilesList();
-                            Client client = new Client();
 
                             foreach (var item in listFile)
                             {
                                 listClient = ClientFile.getAllFilesById(item.Id);
                                 foreach (var item2 in listClient)
                                 {
-                                    Tuple<string, int> d = client.getIpAndPort(item2.Username);
-                                    int size = item.Size;
+                                    client.getClient(item2.Username);
 
                                     FileDetails f = new FileDetails
                                     {
                                         Username = item2.Username,
                                         FileName = item.Name,
-                                        FileSize = size,
-                                        Ip = d.Item1,
-                                        Port = d.Item2
+                                        FileSize = item.Size,
+                                        Ip = client.Ip,
+                                        Port = client.Port
                                     };
 
                                     lfd.Add(f);
                                 }
                             }
 
-                            FilePackage fp = new FilePackage
-                            {
-                                Exist = true,
-                                CountClients = lfd.Count,
-                                FilesList = lfd
-                            };
-
-                            byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(fp) + ServerConstants.EOF);
-                            handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
+                            fp.Exist = true;
+                            fp.FilesList = lfd;
                         }
 
                         else if (!File.isFileExist(fs.FileName))
-                        {
-                            FilePackage fp = new FilePackage
-                            {
-                                Exist = false
-                            };
-
-                            byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(fp) + ServerConstants.EOF);
-                            handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
-                        }
+                            fp.Exist = false;
 
                         else
                         {
-                            List<FileDetails> lfd = new List<FileDetails>();
-                            List<File> listFile = new List<File>();
-                            List<ClientFile> listClient = new List<ClientFile>();
-
                             listFile = File.getAllFilesListByName(fs.FileName);
-                            Client client = new Client();
 
                             foreach (var item in listFile)
                             {
                                 listClient = ClientFile.getAllFilesById(item.Id);
                                 foreach (var item2 in listClient)
                                 {
-                                    Tuple<string, int> d = client.getIpAndPort(item2.Username);
+                                    client.getClient(item2.Username);
                                     int size = item.Size;
 
                                     FileDetails f = new FileDetails
@@ -172,33 +150,26 @@ namespace MiniTorrentServer
                                         Username = item2.Username,
                                         FileName = item.Name,
                                         FileSize = size,
-                                        Ip = d.Item1,
-                                        Port = d.Item2
+                                        Ip = client.Ip,
+                                        Port = client.Port
                                     };
 
                                     lfd.Add(f);
                                 }
                             }
 
-                            FilePackage fp = new FilePackage
-                            {
-                                Exist = true,
-                                CountClients = lfd.Count,
-                                FilesList = lfd
-                            };
-
-                            byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(fp) + ServerConstants.EOF);
-                            handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
+                            fp.Exist = true;
+                            fp.FilesList = lfd;
                         }
+
+                        byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(fp) + ServerConstants.EOF);
+                        handler.BeginSend(sendAnswer, 0, sendAnswer.Length, 0, new AsyncCallback(SendCallback), handler);
                     }
 
                     else
                     {
                         LogoutPackage lp = (LogoutPackage)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
                         Client.setLogOut(lp.Username);
-
-                        handler.Disconnect(true);
-                        handler.Dispose();
                     }
                 }
 

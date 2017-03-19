@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -307,12 +308,12 @@ namespace MiniTorrentLibrary
             Client c = new Client();
             c.getClient(lp.Username);
 
-            //foreach (var item in lp.FileList)
-            //{
-            //    item.insertFile();
-            //    ClientFile cf = new ClientFile(lp.Username, item.Id);
-            //    cf.insertClientFile();
-            //}
+            foreach (var item in lp.FileList)
+            {
+                int id = item.insertFile();
+                ClientFile cf = new ClientFile(lp.Username, id);
+                cf.insertClientFile();
+            }
 
             return new ClientsDetailsPackage { Exist = true, Username = c.Username, UpPath = c.UpPath, DownPath = c.DownPath, IP = c.Ip, Port = c.Port };
         }
@@ -351,27 +352,31 @@ namespace MiniTorrentLibrary
 
                 command.ExecuteScalar();
             }
-        }
 
-        public Tuple<string, int> getIpAndPort(string username)
-        {
-            getClient(username);
-
-            return new Tuple<string, int>(Ip, Port);
+            ClientFile.removeAllFilesByUsername(username);
         }
     }
 
     public class File
     {
+        [JsonProperty("Id")]
         public int Id { get; private set; }
-        public string Name { get; private set; }
-        public int Size { get; private set; }
 
-        private static int ID_GEN = 0;
+        [JsonProperty("Name")]
+        public string Name { get; private set; }
+
+        [JsonProperty("Size")]
+        public int Size { get; private set; }
 
         public File(string name, int size)
         {
-            Id = ++ID_GEN;
+            Name = name;
+            Size = size;
+        }
+
+        public File(int id, string name, int size)
+        {
+            Id = id;
             Name = name;
             Size = size;
         }
@@ -380,10 +385,12 @@ namespace MiniTorrentLibrary
         {
         }
 
-        public void insertFile()
+        public int insertFile()
         {
+            int id = 0;
+
             string connectionString = ConfigurationManager.ConnectionStrings["MiniTorrentLibrary.Properties.Settings.MiniTorrentDBConnectionString"].ConnectionString;
-            string query = "INSERT INTO Files (Name, Size) VALUES (@name, @size)";
+            string query = "INSERT INTO Files (Name, Size) output INSERTED.Id VALUES (@name, @size)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -392,6 +399,24 @@ namespace MiniTorrentLibrary
                 
                 command.Parameters.AddWithValue("@name", Name);
                 command.Parameters.AddWithValue("@size", Size);
+
+                id = (int)command.ExecuteScalar();
+            }
+
+            return id;
+        }
+
+        public static void removeFileById(int id)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MiniTorrentLibrary.Properties.Settings.MiniTorrentDBConnectionString"].ConnectionString;
+            string query = "DELETE from Files where Id = @id";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@id", id);
 
                 command.ExecuteScalar();
             }
@@ -477,7 +502,7 @@ namespace MiniTorrentLibrary
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    list.Add(new File(reader[1].ToString(), int.Parse(reader[2].ToString())));
+                    list.Add(new File(int.Parse(reader[0].ToString()), reader[1].ToString(), int.Parse(reader[2].ToString())));
                 }
                 reader.Close();
             }
@@ -502,7 +527,7 @@ namespace MiniTorrentLibrary
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    list.Add(new File(reader[1].ToString(), int.Parse(reader[2].ToString())));
+                    list.Add(new File(int.Parse(reader[0].ToString()), reader[1].ToString(), int.Parse(reader[2].ToString())));
                 }
                 reader.Close();
             }
@@ -529,7 +554,7 @@ namespace MiniTorrentLibrary
         public void insertClientFile()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MiniTorrentLibrary.Properties.Settings.MiniTorrentDBConnectionString"].ConnectionString;
-            string query = "INSERT INTO ClientFiles VALUES (@username, @fileId)";
+            string query = "INSERT INTO ClientFiles (Username, FileID) VALUES (@username, (Select Id From Files where Id = @fileId))";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -541,6 +566,52 @@ namespace MiniTorrentLibrary
 
                 command.ExecuteScalar();
             }
+        }
+
+        public static void removeAllFilesByUsername(string username)
+        {
+            List<int> list = getAllIdByUsername(username);
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MiniTorrentLibrary.Properties.Settings.MiniTorrentDBConnectionString"].ConnectionString;
+            string query = "DELETE from ClientFiles where Username = @username";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@username", username);
+
+                command.ExecuteScalar();
+            }
+
+            foreach(var item in list)
+                File.removeFileById(item);
+        }
+
+        private static List<int> getAllIdByUsername(string username)
+        {
+            List<int> list = new List<int>();
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MiniTorrentLibrary.Properties.Settings.MiniTorrentDBConnectionString"].ConnectionString;
+            string query = "SELECT FileID from ClientFiles where Username = @username";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@username", username);
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(int.Parse(reader[0].ToString()));
+                }
+                reader.Close();
+            }
+
+            return list;
         }
 
         public static List<ClientFile> getAllFilesById(int id)

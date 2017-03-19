@@ -23,6 +23,7 @@ namespace MiniTorrentLibrary
         public string Password { get; set; }
         public string IP { get; set; }
         public int Port { get; set; }
+        public List<File> FileList { get; set; }
     }
 
     public class FileSearch
@@ -33,7 +34,6 @@ namespace MiniTorrentLibrary
     public class FilePackage
     {
         public bool Exist { get; set; }
-        public int CountClients { get; set; }
         public List<FileDetails> FilesList { get; set; }
     }
 
