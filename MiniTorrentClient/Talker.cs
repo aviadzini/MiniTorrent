@@ -25,10 +25,9 @@ namespace MiniTorrentClient
             this.downPath = downPath;
             this.fileName = fileName;
 
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
             try
             {
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 socket.BeginConnect(new IPEndPoint(IPAddress.Parse(ip), port), new AsyncCallback(ConnectCallback), null);
             }
 
@@ -44,9 +43,11 @@ namespace MiniTorrentClient
             {
                 socket.EndConnect(ar);
 
-                PackageWrapper pw = new PackageWrapper();
-                pw.PackageType = typeof(FileSearch);
-                pw.Package = new FileSearch { FileName = fileName };
+                PackageWrapper pw = new PackageWrapper
+                {
+                    PackageType = typeof(FileSearch),
+                    Package = new FileSearch { FileName = fileName }
+                };
 
                 byte[] sendAnswer = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF);
 
@@ -89,7 +90,8 @@ namespace MiniTorrentClient
                     bw.Write(buffer, 0, bytes);
                     if (bytes < buffer.Length)
                         break;
-                    bytes = socket.Receive(buffer, 0, buffer.Length, SocketFlags.None);
+                    buffer = new byte[ServerConstants.BufferSize];
+                    bytes = socket.Receive(buffer, 0, ServerConstants.BufferSize, SocketFlags.None);
                 }
 
                 bw.Flush();
@@ -107,18 +109,15 @@ namespace MiniTorrentClient
                 massage += "File size: " + total + " KB.\r\n";
                 massage += "Bit rate: " + total / elapsedS + " Kbps.";
 
-               MessageBox.Show(massage, "Download information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(massage, "Download information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
             }
 
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            finally
-            {
-                socket.Shutdown(SocketShutdown.Both);
-                socket.Close();
             }
         }
     }

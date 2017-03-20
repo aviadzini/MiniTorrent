@@ -13,6 +13,7 @@ namespace MiniTorrentClient
         private Socket clientSocket;
         private ClientsDetailsPackage cdp;
         private Listener listener;
+        private Talker talker;
 
         private string response = string.Empty;
 
@@ -96,7 +97,7 @@ namespace MiniTorrentClient
             int port = item.Port;
             string ip = item.IP;
 
-            Talker talker = new Talker(ip, port, cdp.DownPath, item.FileName);
+            talker = new Talker(ip, port, cdp.DownPath, item.FileName);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -110,6 +111,8 @@ namespace MiniTorrentClient
             };
 
             clientSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(pw) + ServerConstants.EOF));
+
+            listener.Close();
 
             clientSocket.Shutdown(SocketShutdown.Both);
             clientSocket.Close();

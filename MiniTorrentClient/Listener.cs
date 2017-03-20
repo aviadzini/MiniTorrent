@@ -56,37 +56,43 @@ namespace MiniTorrentClient
 
         private void ReadCallback(IAsyncResult ar)
         {
-            Socket handler = (Socket)ar.AsyncState;
-            int received = handler.EndReceive(ar);
-
-            if (received > 0)
+            try
             {
-                sb.Append(Encoding.ASCII.GetString(buffer, 0, received));
-                string content = sb.ToString();
+                Socket handler = (Socket)ar.AsyncState;
+                int received = handler.EndReceive(ar);
 
-                buffer = new byte[ServerConstants.BufferSize];
-
-                if (content.IndexOf(ServerConstants.EOF) > -1)
+                if (received > 0)
                 {
-                    content = content.Substring(0, content.Length - 5);
+                    sb.Append(Encoding.ASCII.GetString(buffer, 0, received));
+                    string content = sb.ToString();
 
-                    var deserialized = JsonConvert.DeserializeObject<PackageWrapper>(content);
-                    if (deserialized.PackageType == typeof(FileSearch))
+                    buffer = new byte[ServerConstants.BufferSize];
+
+                    if (content.IndexOf(ServerConstants.EOF) > -1)
                     {
-                        FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
-                        
-                        handler.BeginSendFile(upPath + fs.FileName, new AsyncCallback(SendCallback), handler);
+                        content = content.Substring(0, content.Length - 5);
+
+                        var deserialized = JsonConvert.DeserializeObject<PackageWrapper>(content);
+                        if (deserialized.PackageType == typeof(FileSearch))
+                        {
+                            FileSearch fs = (FileSearch)JsonConvert.DeserializeObject(Convert.ToString(deserialized.Package), deserialized.PackageType);
+                            handler.BeginSendFile(upPath + fs.FileName, new AsyncCallback(SendCallback), handler);
+                        }
                     }
+
+                    else
+                        handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
                 }
 
-                else
-                    handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
-
-                buffer = new byte[ServerConstants.BufferSize];
                 sb.Clear();
-                handler.BeginReceive(buffer, 0, ServerConstants.BufferSize, 0, new AsyncCallback(ReadCallback), handler);
+                buffer = new byte[ServerConstants.BufferSize];
             }
-        }
+            
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+}
 
         private void SendCallback(IAsyncResult ar)
         {
